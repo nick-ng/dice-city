@@ -1,0 +1,11 @@
+
+node_modules
+dist-back
+dist-common
+dist-front
+.env
+.gitignore
+.prettier
+docker-compose.yml
+Dockerfile
+README.md

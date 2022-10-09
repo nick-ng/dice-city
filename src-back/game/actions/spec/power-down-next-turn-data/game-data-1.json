@@ -1,0 +1,1475 @@
+{
+  "description": "Waiting for 1 player to decide if they want to power down next turn.",
+  "id": "e89277e3-f818-4770-b52a-937aa955379b",
+  "shortId": "8d",
+  "host": "c87fc696-4d44-4695-8939-de70de6a9d35",
+  "maxPlayers": 8,
+  "players": [
+    { "id": "c87fc696-4d44-4695-8939-de70de6a9d35", "name": "Nick" },
+    { "id": "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx", "name": "Nick Tablet" },
+    { "id": "409b6578-8f27-40ae-8152-35e50bd01516", "name": "Nick Opera" },
+    { "id": "b5794db6-14aa-4eb4-ae5e-ae4829e1cc8d", "name": "Nick Edge" }
+  ],
+  "gameSettings": {
+    "map": {
+      "name": "Risky Exchange",
+      "width": 12,
+      "height": 16,
+      "items": [
+        { "id": 0, "type": "dock", "number": 1, "x": 5, "y": 15 },
+        { "id": 1, "type": "dock", "number": 2, "x": 6, "y": 15 },
+        { "id": 2, "type": "dock", "number": 3, "x": 3, "y": 14 },
+        { "id": 3, "type": "dock", "number": 4, "x": 8, "y": 14 },
+        { "id": 4, "type": "dock", "number": 5, "x": 1, "y": 13 },
+        { "id": 5, "type": "dock", "number": 6, "x": 10, "y": 13 },
+        { "id": 6, "type": "dock", "number": 7, "x": 0, "y": 12 },
+        { "id": 7, "type": "dock", "number": 8, "x": 11, "y": 12 },
+        { "id": 8, "type": "flag", "number": 1, "x": 7, "y": 1 },
+        { "id": 9, "type": "flag", "number": 2, "x": 9, "y": 7 },
+        { "id": 10, "type": "flag", "number": 3, "x": 1, "y": 4 },
+        { "id": 11, "type": "wall", "x": 0, "y": 2, "x1": -1, "y1": 2 },
+        { "id": 12, "type": "wall", "x": 0, "y": 4, "x1": -1, "y1": 4 },
+        { "id": 13, "type": "wall", "x": 0, "y": 7, "x1": -1, "y1": 7 },
+        { "id": 14, "type": "wall", "x": 0, "y": 9, "x1": -1, "y1": 9 },
+        { "id": 15, "type": "wall", "x": 1, "y": 10, "x1": 1, "y1": 11 },
+        { "id": 16, "type": "wall", "x": 2, "y": 10, "x1": 3, "y1": 10 },
+        { "id": 17, "type": "wall", "x": 2, "y": 11, "x1": 2, "y1": 12 },
+        { "id": 18, "type": "wall", "x": 4, "y": 11, "x1": 4, "y1": 12 },
+        { "id": 19, "type": "wall", "x": 7, "y": 11, "x1": 7, "y1": 12 },
+        { "id": 20, "type": "wall", "x": 9, "y": 11, "x1": 9, "y1": 12 },
+        { "id": 21, "type": "wall", "x": 11, "y": 9, "x1": 12, "y1": 9 },
+        { "id": 22, "type": "wall", "x": 10, "y": 9, "x1": 10, "y1": 8 },
+        { "id": 23, "type": "wall", "x": 11, "y": 7, "x1": 12, "y1": 7 },
+        { "id": 24, "type": "wall", "x": 11, "y": 4, "x1": 12, "y1": 4 },
+        { "id": 25, "type": "wall", "x": 11, "y": 2, "x1": 12, "y1": 2 },
+        { "id": 26, "type": "wall", "x": 9, "y": 0, "x1": 9, "y1": -1 },
+        { "id": 27, "type": "wall", "x": 7, "y": 0, "x1": 7, "y1": -1 },
+        { "id": 28, "type": "wall", "x": 4, "y": 0, "x1": 4, "y1": -1 },
+        { "id": 29, "type": "wall", "x": 2, "y": 0, "x1": 2, "y1": -1 },
+        { "id": 30, "type": "wall", "x": 9, "y": 2, "x1": 8, "y1": 2 },
+        { "id": 31, "type": "wall", "x": 7, "y": 4, "x1": 6, "y1": 4 },
+        { "id": 32, "type": "wall", "x": 7, "y": 4, "x1": 7, "y1": 5 },
+        { "id": 33, "type": "wall", "x": 4, "y": 4, "x1": 5, "y1": 4 },
+        { "id": 34, "type": "wall", "x": 4, "y": 4, "x1": 4, "y1": 5 },
+        { "id": 35, "type": "wall", "x": 4, "y": 7, "x1": 4, "y1": 6 },
+        { "id": 36, "type": "wall", "x": 4, "y": 7, "x1": 5, "y1": 7 },
+        { "id": 37, "type": "wall", "x": 7, "y": 7, "x1": 6, "y1": 7 },
+        { "id": 38, "type": "wall", "x": 7, "y": 7, "x1": 7, "y1": 6 },
+        { "id": 39, "type": "wall", "x": 2, "y": 12, "x1": 2, "y1": 11 },
+        { "id": 40, "type": "wall", "x": 4, "y": 12, "x1": 4, "y1": 11 },
+        { "id": 41, "type": "wall", "x": 4, "y": 12, "x1": 3, "y1": 12 },
+        { "id": 42, "type": "wall", "x": 7, "y": 12, "x1": 7, "y1": 11 },
+        { "id": 43, "type": "wall", "x": 7, "y": 12, "x1": 8, "y1": 12 },
+        { "id": 44, "type": "wall", "x": 9, "y": 12, "x1": 9, "y1": 11 },
+        { "id": 45, "type": "wall", "x": 1, "y": 13, "x1": 0, "y1": 13 },
+        { "id": 46, "type": "wall", "x": 1, "y": 13, "x1": 2, "y1": 13 },
+        { "id": 47, "type": "wall", "x": 10, "y": 13, "x1": 9, "y1": 13 },
+        { "id": 48, "type": "wall", "x": 10, "y": 13, "x1": 11, "y1": 13 },
+        { "id": 49, "type": "wall", "x": 5, "y": 14, "x1": 6, "y1": 14 },
+        { "id": 50, "type": "wall", "x": 5, "y": 15, "x1": 6, "y1": 15 },
+        { "id": 51, "type": "pit", "x": 0, "y": 10 },
+        { "id": 52, "type": "pit", "x": 2, "y": 1 },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 6,
+          "y": 10,
+          "id": 53
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 6,
+          "y": 9,
+          "id": 54
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 6,
+          "y": 8,
+          "id": 55
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 6,
+          "y": 7,
+          "id": 56
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 6,
+          "y": 4,
+          "id": 57
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 6,
+          "y": 3,
+          "id": 58
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 6,
+          "y": 2,
+          "id": 59
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 6,
+          "y": 1,
+          "id": 60
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 6,
+          "y": 0,
+          "id": 61
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 3,
+          "y": 11,
+          "id": 62
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 3,
+          "y": 10,
+          "id": 63
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 3,
+          "y": 9,
+          "id": 64
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 10,
+          "y": 11,
+          "id": 65
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 11,
+          "y": 8,
+          "id": 66
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 10,
+          "y": 8,
+          "id": 67
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 9,
+          "y": 8,
+          "id": 68
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 11,
+          "y": 5,
+          "id": 69
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 10,
+          "y": 5,
+          "id": 70
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 9,
+          "y": 5,
+          "id": 71
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 8,
+          "y": 5,
+          "id": 72
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 7,
+          "y": 5,
+          "id": 73
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 4,
+          "y": 5,
+          "id": 74
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 3,
+          "y": 5,
+          "id": 75
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 2,
+          "y": 5,
+          "id": 76
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 1,
+          "y": 5,
+          "id": 77
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 0,
+          "y": 5,
+          "id": 78
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 11,
+          "y": 1,
+          "id": 79
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 0,
+          "y": 1,
+          "id": 80
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 3,
+          "y": 2,
+          "id": 81
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 3,
+          "y": 1,
+          "id": 82
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 3,
+          "y": 0,
+          "id": 83
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 0,
+          "y": 3,
+          "id": 84
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 1,
+          "y": 3,
+          "id": 85
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 2,
+          "y": 3,
+          "id": 86
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 1,
+          "y": 6,
+          "id": 87
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 2,
+          "y": 6,
+          "id": 88
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 3,
+          "y": 6,
+          "id": 89
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 4,
+          "y": 6,
+          "id": 90
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 11,
+          "y": 10,
+          "id": 91
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 2,
+          "y": 8,
+          "id": 92
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 1,
+          "y": 8,
+          "id": 93
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 0,
+          "y": 8,
+          "id": 94
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 8,
+          "y": 0,
+          "id": 95
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 8,
+          "y": 1,
+          "id": 96
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 8,
+          "y": 2,
+          "id": 97
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 8,
+          "y": 3,
+          "id": 98
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "up",
+          "speed": 1,
+          "x": 10,
+          "y": 0,
+          "id": 99
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 8,
+          "y": 9,
+          "id": 100
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 8,
+          "y": 10,
+          "id": 101
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 8,
+          "y": 11,
+          "id": 102
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 5,
+          "y": 0,
+          "id": 103
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 5,
+          "y": 1,
+          "id": 104
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 5,
+          "y": 2,
+          "id": 105
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 5,
+          "y": 3,
+          "id": 106
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 1,
+          "x": 5,
+          "y": 4,
+          "id": 107
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 2,
+          "x": 5,
+          "y": 7,
+          "id": 108
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 2,
+          "x": 5,
+          "y": 8,
+          "id": 109
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 2,
+          "x": 5,
+          "y": 9,
+          "id": 110
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 2,
+          "x": 5,
+          "y": 10,
+          "id": 111
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "down",
+          "speed": 2,
+          "x": 5,
+          "y": 11,
+          "id": 112
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 2,
+          "x": 7,
+          "y": 6,
+          "id": 113
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 2,
+          "x": 8,
+          "y": 6,
+          "id": 114
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 2,
+          "x": 9,
+          "y": 6,
+          "id": 115
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 2,
+          "x": 10,
+          "y": 6,
+          "id": 116
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 2,
+          "x": 11,
+          "y": 6,
+          "id": 117
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 2,
+          "x": 9,
+          "y": 3,
+          "id": 118
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 2,
+          "x": 10,
+          "y": 3,
+          "id": 119
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 2,
+          "x": 11,
+          "y": 3,
+          "id": 120
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 0,
+          "y": 14,
+          "id": 121
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 1,
+          "y": 14,
+          "id": 122
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 3,
+          "y": 15,
+          "id": 123
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "right",
+          "speed": 1,
+          "x": 4,
+          "y": 15,
+          "id": 124
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 7,
+          "y": 15,
+          "id": 125
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 8,
+          "y": 15,
+          "id": 126
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 10,
+          "y": 14,
+          "id": 127
+        },
+        {
+          "type": "straight-conveyor",
+          "direction": "left",
+          "speed": 1,
+          "x": 11,
+          "y": 14,
+          "id": 128
+        },
+        { "type": "repair", "x": 0, "y": 0, "id": 129 },
+        { "type": "repair", "x": 11, "y": 11, "id": 130 },
+        { "type": "repair", "x": 7, "y": 7, "id": 131 }
+      ]
+    },
+    "timerStart": "never",
+    "timerSeconds": 30
+  },
+  "gameSecrets": {
+    "password": "ac774385-c3e0-4059-9291-352ccc964345",
+    "remainingDeck": ["program-card-65", "program-card-46"],
+    "instructionQueue": [
+      {
+        "type": "program-card-instruction",
+        "playerId": "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx",
+        "payload": {
+          "id": "program-card-75",
+          "action": "Move 2",
+          "priority": 75
+        },
+        "register": 0
+      },
+      {
+        "type": "program-card-instruction",
+        "playerId": "409b6578-8f27-40ae-8152-35e50bd01516",
+        "payload": {
+          "id": "program-card-43",
+          "action": "Back Up",
+          "priority": 43
+        },
+        "register": 0
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 2 },
+        "register": 0
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 1 },
+        "register": 0
+      },
+      {
+        "type": "lasers-fire-instruction",
+        "payload": { "shooter": "robots" },
+        "register": 0
+      },
+      { "type": "touch-checkpoint-instruction", "register": 0 },
+      {
+        "type": "program-card-instruction",
+        "playerId": "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx",
+        "payload": {
+          "id": "program-card-34",
+          "action": "Rotate Right",
+          "priority": 34
+        },
+        "register": 1
+      },
+      {
+        "type": "program-card-instruction",
+        "playerId": "409b6578-8f27-40ae-8152-35e50bd01516",
+        "payload": {
+          "id": "program-card-02",
+          "action": "U-Turn",
+          "priority": 2
+        },
+        "register": 1
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 2 },
+        "register": 1
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 1 },
+        "register": 1
+      },
+      {
+        "type": "lasers-fire-instruction",
+        "payload": { "shooter": "robots" },
+        "register": 1
+      },
+      { "type": "touch-checkpoint-instruction", "register": 1 },
+      {
+        "type": "program-card-instruction",
+        "playerId": "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx",
+        "payload": {
+          "id": "program-card-83",
+          "action": "Move 3",
+          "priority": 83
+        },
+        "register": 2
+      },
+      {
+        "type": "program-card-instruction",
+        "playerId": "409b6578-8f27-40ae-8152-35e50bd01516",
+        "payload": {
+          "id": "program-card-30",
+          "action": "Rotate Right",
+          "priority": 30
+        },
+        "register": 2
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 2 },
+        "register": 2
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 1 },
+        "register": 2
+      },
+      {
+        "type": "lasers-fire-instruction",
+        "payload": { "shooter": "robots" },
+        "register": 2
+      },
+      { "type": "touch-checkpoint-instruction", "register": 2 },
+      {
+        "type": "program-card-instruction",
+        "playerId": "409b6578-8f27-40ae-8152-35e50bd01516",
+        "payload": {
+          "id": "program-card-60",
+          "action": "Move 1",
+          "priority": 60
+        },
+        "register": 3
+      },
+      {
+        "type": "program-card-instruction",
+        "playerId": "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx",
+        "payload": {
+          "id": "program-card-15",
+          "action": "Rotate Left",
+          "priority": 15
+        },
+        "register": 3
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 2 },
+        "register": 3
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 1 },
+        "register": 3
+      },
+      {
+        "type": "lasers-fire-instruction",
+        "payload": { "shooter": "robots" },
+        "register": 3
+      },
+      { "type": "touch-checkpoint-instruction", "register": 3 },
+      {
+        "type": "program-card-instruction",
+        "playerId": "409b6578-8f27-40ae-8152-35e50bd01516",
+        "payload": {
+          "id": "program-card-61",
+          "action": "Move 1",
+          "priority": 61
+        },
+        "register": 4
+      },
+      {
+        "type": "program-card-instruction",
+        "playerId": "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx",
+        "payload": {
+          "id": "program-card-49",
+          "action": "Move 1",
+          "priority": 49
+        },
+        "register": 4
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 2 },
+        "register": 4
+      },
+      {
+        "type": "conveyors-move-instruction",
+        "payload": { "minSpeed": 1 },
+        "register": 4
+      },
+      {
+        "type": "lasers-fire-instruction",
+        "payload": { "shooter": "robots" },
+        "register": 4
+      },
+      { "type": "touch-checkpoint-instruction", "register": 4 }
+    ]
+  },
+  "playerSecrets": {
+    "c87fc696-4d44-4695-8939-de70de6a9d35": {
+      "password": "ff44c779-004c-4af8-a9e6-dc7ba5942576",
+      "programRegisters": [null, null, null, null, null],
+      "cardsInHand": []
+    },
+    "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx": {
+      "password": "762ad58d-krhn-vs0d-m6k1-1hht630oc00d",
+      "programRegisters": [
+        "program-card-75",
+        "program-card-34",
+        "program-card-83",
+        "program-card-15",
+        "program-card-49"
+      ],
+      "cardsInHand": [
+        "program-card-07",
+        "program-card-39",
+        "program-card-58",
+        "program-card-47"
+      ]
+    },
+    "409b6578-8f27-40ae-8152-35e50bd01516": {
+      "password": "35c87cd9-5ea9-4566-a988-a17528a1110c",
+      "programRegisters": [
+        "program-card-43",
+        "program-card-02",
+        "program-card-30",
+        "program-card-60",
+        "program-card-61"
+      ],
+      "cardsInHand": ["program-card-29", "program-card-09", "program-card-28"]
+    },
+    "b5794db6-14aa-4eb4-ae5e-ae4829e1cc8d": {
+      "password": "7428cf11-18d6-4191-8916-f454bb04e28c",
+      "programRegisters": [null, null, null, null, null],
+      "cardsInHand": []
+    }
+  },
+  "gameState": {
+    "state": "main",
+    "finishedProgrammingPlayers": [
+      "b5794db6-14aa-4eb4-ae5e-ae4829e1cc8d",
+      "c87fc696-4d44-4695-8939-de70de6a9d35",
+      "409b6578-8f27-40ae-8152-35e50bd01516",
+      "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx"
+    ],
+    "poweringDownNextTurn": [
+      { "playerId": "c87fc696-4d44-4695-8939-de70de6a9d35", "decision": "no" },
+      { "playerId": "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx", "decision": "no" },
+      { "playerId": "b5794db6-14aa-4eb4-ae5e-ae4829e1cc8d", "decision": "no" }
+    ],
+    "flagsTouched": {
+      "c87fc696-4d44-4695-8939-de70de6a9d35": 0,
+      "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx": 1,
+      "409b6578-8f27-40ae-8152-35e50bd01516": 0,
+      "b5794db6-14aa-4eb4-ae5e-ae4829e1cc8d": 0
+    },
+    "robots": [
+      {
+        "playerId": "c87fc696-4d44-4695-8939-de70de6a9d35",
+        "status": "powered-down",
+        "damagePoints": 0,
+        "lockedRegisters": [],
+        "lives": 3,
+        "position": { "x": 6, "y": 6, "facing": "up" },
+        "archiveMarkerId": 3,
+        "design": 0
+      },
+      {
+        "playerId": "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx",
+        "status": "ok",
+        "damagePoints": 0,
+        "lockedRegisters": [],
+        "lives": 3,
+        "position": { "x": 7, "y": 1, "facing": "down" },
+        "archiveMarkerId": 8,
+        "design": 1
+      },
+      {
+        "playerId": "409b6578-8f27-40ae-8152-35e50bd01516",
+        "status": "ok",
+        "damagePoints": 1,
+        "lockedRegisters": [],
+        "lives": 3,
+        "position": { "x": 6, "y": 5, "facing": "down" },
+        "archiveMarkerId": 131,
+        "design": 2
+      },
+      {
+        "playerId": "b5794db6-14aa-4eb4-ae5e-ae4829e1cc8d",
+        "status": "powered-down",
+        "damagePoints": 0,
+        "lockedRegisters": [],
+        "lives": 2,
+        "position": { "x": 3, "y": 8, "facing": "up" },
+        "archiveMarkerId": 2,
+        "design": 3
+      }
+    ],
+    "turn": 0,
+    "turnPhase": 0,
+    "seatOrder": [
+      "loahc8dw-1sc7-sbmn-fngz-3a6si14x4wvx",
+      "409b6578-8f27-40ae-8152-35e50bd01516",
+      "b5794db6-14aa-4eb4-ae5e-ae4829e1cc8d",
+      "c87fc696-4d44-4695-8939-de70de6a9d35"
+    ],
+    "discardedCards": [
+      "program-card-16",
+      "program-card-10",
+      "program-card-19",
+      "program-card-79",
+      "program-card-12",
+      "program-card-06",
+      "program-card-04",
+      "program-card-40",
+      "program-card-57",
+      "program-card-11",
+      "program-card-18",
+      "program-card-35",
+      "program-card-55",
+      "program-card-24",
+      "program-card-78",
+      "program-card-72",
+      "program-card-22",
+      "program-card-23",
+      "program-card-25",
+      "program-card-20",
+      "program-card-84",
+      "program-card-42",
+      "program-card-52",
+      "program-card-37",
+      "program-card-69",
+      "program-card-70",
+      "program-card-74",
+      "program-card-81",
+      "program-card-80",
+      "program-card-21",
+      "program-card-62",
+      "program-card-31",
+      "program-card-27",
+      "program-card-68",
+      "program-card-66",
+      "program-card-77",
+      "program-card-45",
+      "program-card-26",
+      "program-card-63",
+      "program-card-13",
+      "program-card-05",
+      "program-card-48",
+      "program-card-64",
+      "program-card-56",
+      "program-card-67",
+      "program-card-82",
+      "program-card-08",
+      "program-card-53",
+      "program-card-14",
+      "program-card-59",
+      "program-card-51",
+      "program-card-44",
+      "program-card-50",
+      "program-card-36",
+      "program-card-54",
+      "program-card-17",
+      "program-card-73",
+      "program-card-01",
+      "program-card-38",
+      "program-card-32",
+      "program-card-76",
+      "program-card-71",
+      "program-card-03",
+      "program-card-41",
+      "program-card-33"
+    ],
+    "cardMap": {
+      "program-card-01": {
+        "id": "program-card-01",
+        "action": "U-Turn",
+        "priority": 1
+      },
+      "program-card-02": {
+        "id": "program-card-02",
+        "action": "U-Turn",
+        "priority": 2
+      },
+      "program-card-03": {
+        "id": "program-card-03",
+        "action": "U-Turn",
+        "priority": 3
+      },
+      "program-card-04": {
+        "id": "program-card-04",
+        "action": "U-Turn",
+        "priority": 4
+      },
+      "program-card-05": {
+        "id": "program-card-05",
+        "action": "U-Turn",
+        "priority": 5
+      },
+      "program-card-06": {
+        "id": "program-card-06",
+        "action": "U-Turn",
+        "priority": 6
+      },
+      "program-card-07": {
+        "id": "program-card-07",
+        "action": "Rotate Left",
+        "priority": 7
+      },
+      "program-card-08": {
+        "id": "program-card-08",
+        "action": "Rotate Right",
+        "priority": 8
+      },
+      "program-card-09": {
+        "id": "program-card-09",
+        "action": "Rotate Left",
+        "priority": 9
+      },
+      "program-card-10": {
+        "id": "program-card-10",
+        "action": "Rotate Right",
+        "priority": 10
+      },
+      "program-card-11": {
+        "id": "program-card-11",
+        "action": "Rotate Left",
+        "priority": 11
+      },
+      "program-card-12": {
+        "id": "program-card-12",
+        "action": "Rotate Right",
+        "priority": 12
+      },
+      "program-card-13": {
+        "id": "program-card-13",
+        "action": "Rotate Left",
+        "priority": 13
+      },
+      "program-card-14": {
+        "id": "program-card-14",
+        "action": "Rotate Right",
+        "priority": 14
+      },
+      "program-card-15": {
+        "id": "program-card-15",
+        "action": "Rotate Left",
+        "priority": 15
+      },
+      "program-card-16": {
+        "id": "program-card-16",
+        "action": "Rotate Right",
+        "priority": 16
+      },
+      "program-card-17": {
+        "id": "program-card-17",
+        "action": "Rotate Left",
+        "priority": 17
+      },
+      "program-card-18": {
+        "id": "program-card-18",
+        "action": "Rotate Right",
+        "priority": 18
+      },
+      "program-card-19": {
+        "id": "program-card-19",
+        "action": "Rotate Left",
+        "priority": 19
+      },
+      "program-card-20": {
+        "id": "program-card-20",
+        "action": "Rotate Right",
+        "priority": 20
+      },
+      "program-card-21": {
+        "id": "program-card-21",
+        "action": "Rotate Left",
+        "priority": 21
+      },
+      "program-card-22": {
+        "id": "program-card-22",
+        "action": "Rotate Right",
+        "priority": 22
+      },
+      "program-card-23": {
+        "id": "program-card-23",
+        "action": "Rotate Left",
+        "priority": 23
+      },
+      "program-card-24": {
+        "id": "program-card-24",
+        "action": "Rotate Right",
+        "priority": 24
+      },
+      "program-card-25": {
+        "id": "program-card-25",
+        "action": "Rotate Left",
+        "priority": 25
+      },
+      "program-card-26": {
+        "id": "program-card-26",
+        "action": "Rotate Right",
+        "priority": 26
+      },
+      "program-card-27": {
+        "id": "program-card-27",
+        "action": "Rotate Left",
+        "priority": 27
+      },
+      "program-card-28": {
+        "id": "program-card-28",
+        "action": "Rotate Right",
+        "priority": 28
+      },
+      "program-card-29": {
+        "id": "program-card-29",
+        "action": "Rotate Left",
+        "priority": 29
+      },
+      "program-card-30": {
+        "id": "program-card-30",
+        "action": "Rotate Right",
+        "priority": 30
+      },
+      "program-card-31": {
+        "id": "program-card-31",
+        "action": "Rotate Left",
+        "priority": 31
+      },
+      "program-card-32": {
+        "id": "program-card-32",
+        "action": "Rotate Right",
+        "priority": 32
+      },
+      "program-card-33": {
+        "id": "program-card-33",
+        "action": "Rotate Left",
+        "priority": 33
+      },
+      "program-card-34": {
+        "id": "program-card-34",
+        "action": "Rotate Right",
+        "priority": 34
+      },
+      "program-card-35": {
+        "id": "program-card-35",
+        "action": "Rotate Left",
+        "priority": 35
+      },
+      "program-card-36": {
+        "id": "program-card-36",
+        "action": "Rotate Right",
+        "priority": 36
+      },
+      "program-card-37": {
+        "id": "program-card-37",
+        "action": "Rotate Left",
+        "priority": 37
+      },
+      "program-card-38": {
+        "id": "program-card-38",
+        "action": "Rotate Right",
+        "priority": 38
+      },
+      "program-card-39": {
+        "id": "program-card-39",
+        "action": "Rotate Left",
+        "priority": 39
+      },
+      "program-card-40": {
+        "id": "program-card-40",
+        "action": "Rotate Right",
+        "priority": 40
+      },
+      "program-card-41": {
+        "id": "program-card-41",
+        "action": "Rotate Left",
+        "priority": 41
+      },
+      "program-card-42": {
+        "id": "program-card-42",
+        "action": "Rotate Right",
+        "priority": 42
+      },
+      "program-card-43": {
+        "id": "program-card-43",
+        "action": "Back Up",
+        "priority": 43
+      },
+      "program-card-44": {
+        "id": "program-card-44",
+        "action": "Back Up",
+        "priority": 44
+      },
+      "program-card-45": {
+        "id": "program-card-45",
+        "action": "Back Up",
+        "priority": 45
+      },
+      "program-card-46": {
+        "id": "program-card-46",
+        "action": "Back Up",
+        "priority": 46
+      },
+      "program-card-47": {
+        "id": "program-card-47",
+        "action": "Back Up",
+        "priority": 47
+      },
+      "program-card-48": {
+        "id": "program-card-48",
+        "action": "Back Up",
+        "priority": 48
+      },
+      "program-card-49": {
+        "id": "program-card-49",
+        "action": "Move 1",
+        "priority": 49
+      },
+      "program-card-50": {
+        "id": "program-card-50",
+        "action": "Move 1",
+        "priority": 50
+      },
+      "program-card-51": {
+        "id": "program-card-51",
+        "action": "Move 1",
+        "priority": 51
+      },
+      "program-card-52": {
+        "id": "program-card-52",
+        "action": "Move 1",
+        "priority": 52
+      },
+      "program-card-53": {
+        "id": "program-card-53",
+        "action": "Move 1",
+        "priority": 53
+      },
+      "program-card-54": {
+        "id": "program-card-54",
+        "action": "Move 1",
+        "priority": 54
+      },
+      "program-card-55": {
+        "id": "program-card-55",
+        "action": "Move 1",
+        "priority": 55
+      },
+      "program-card-56": {
+        "id": "program-card-56",
+        "action": "Move 1",
+        "priority": 56
+      },
+      "program-card-57": {
+        "id": "program-card-57",
+        "action": "Move 1",
+        "priority": 57
+      },
+      "program-card-58": {
+        "id": "program-card-58",
+        "action": "Move 1",
+        "priority": 58
+      },
+      "program-card-59": {
+        "id": "program-card-59",
+        "action": "Move 1",
+        "priority": 59
+      },
+      "program-card-60": {
+        "id": "program-card-60",
+        "action": "Move 1",
+        "priority": 60
+      },
+      "program-card-61": {
+        "id": "program-card-61",
+        "action": "Move 1",
+        "priority": 61
+      },
+      "program-card-62": {
+        "id": "program-card-62",
+        "action": "Move 1",
+        "priority": 62
+      },
+      "program-card-63": {
+        "id": "program-card-63",
+        "action": "Move 1",
+        "priority": 63
+      },
+      "program-card-64": {
+        "id": "program-card-64",
+        "action": "Move 1",
+        "priority": 64
+      },
+      "program-card-65": {
+        "id": "program-card-65",
+        "action": "Move 1",
+        "priority": 65
+      },
+      "program-card-66": {
+        "id": "program-card-66",
+        "action": "Move 1",
+        "priority": 66
+      },
+      "program-card-67": {
+        "id": "program-card-67",
+        "action": "Move 2",
+        "priority": 67
+      },
+      "program-card-68": {
+        "id": "program-card-68",
+        "action": "Move 2",
+        "priority": 68
+      },
+      "program-card-69": {
+        "id": "program-card-69",
+        "action": "Move 2",
+        "priority": 69
+      },
+      "program-card-70": {
+        "id": "program-card-70",
+        "action": "Move 2",
+        "priority": 70
+      },
+      "program-card-71": {
+        "id": "program-card-71",
+        "action": "Move 2",
+        "priority": 71
+      },
+      "program-card-72": {
+        "id": "program-card-72",
+        "action": "Move 2",
+        "priority": 72
+      },
+      "program-card-73": {
+        "id": "program-card-73",
+        "action": "Move 2",
+        "priority": 73
+      },
+      "program-card-74": {
+        "id": "program-card-74",
+        "action": "Move 2",
+        "priority": 74
+      },
+      "program-card-75": {
+        "id": "program-card-75",
+        "action": "Move 2",
+        "priority": 75
+      },
+      "program-card-76": {
+        "id": "program-card-76",
+        "action": "Move 2",
+        "priority": 76
+      },
+      "program-card-77": {
+        "id": "program-card-77",
+        "action": "Move 2",
+        "priority": 77
+      },
+      "program-card-78": {
+        "id": "program-card-78",
+        "action": "Move 2",
+        "priority": 78
+      },
+      "program-card-79": {
+        "id": "program-card-79",
+        "action": "Move 3",
+        "priority": 79
+      },
+      "program-card-80": {
+        "id": "program-card-80",
+        "action": "Move 3",
+        "priority": 80
+      },
+      "program-card-81": {
+        "id": "program-card-81",
+        "action": "Move 3",
+        "priority": 81
+      },
+      "program-card-82": {
+        "id": "program-card-82",
+        "action": "Move 3",
+        "priority": 82
+      },
+      "program-card-83": {
+        "id": "program-card-83",
+        "action": "Move 3",
+        "priority": 83
+      },
+      "program-card-84": {
+        "id": "program-card-84",
+        "action": "Move 3",
+        "priority": 84
+      }
+    }
+  },
+  "lastActionId": "1658617606181-0",
+  "gameServer": null,
+  "resumeAction": null
+}

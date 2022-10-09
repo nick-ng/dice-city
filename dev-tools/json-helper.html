@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pig Dice Game Tester</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style></style>
+  </head>
+
+  <body>
+    <div id="app">
+      <input :value="jsonString" @input="handleJsonInput" />
+      <pre>{{ jsonObject }}</pre>
+    </div>
+  </body>
+
+  <script>
+    (() => {
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            jsonString: "",
+            jsonObject: {},
+          };
+        },
+        methods: {
+          handleJsonInput(event) {
+            this.jsonString = event.target.value;
+            try {
+              this.jsonObject = JSON.parse(this.jsonString);
+            } catch (e) {
+              this.jsonObject = {
+                error: e,
+              };
+            }
+          },
+        },
+        mounted() {},
+        unmounted() {},
+      }).mount("#app");
+    })();
+  </script>
+</html>

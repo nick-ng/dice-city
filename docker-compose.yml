@@ -1,0 +1,36 @@
+version: "3.4"
+
+services:
+  dice-city-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    ports:
+      - "3232:8080"
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules/
+  dice-city-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules/
+    command: npm run dev-worker
+  dice-city-front-end:
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules/
+    command: npm run dev-front
+  redis:
+    image: redis:alpine
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "5052:6379"
+    volumes:
+      - ./volumes/redis:/data
+      - ./configs/redis.conf:/usr/local/etc/redis/redis.conf

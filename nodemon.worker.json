@@ -1,0 +1,5 @@
+{
+  "watch": ["dist-back/"],
+  "ext": "js,ts,jsx,tsx,json",
+  "delay": 500
+}

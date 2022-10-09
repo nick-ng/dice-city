@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["DOM", "es2021"],
+    "outDir": "../dist-front",
+    "jsx": "react"
+  },
+  "references": [{ "path": "../src-common" }],
+  "files": ["./index.ts"],
+  "include": ["./**/*"]
+}

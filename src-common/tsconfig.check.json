@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../dist-common",
+    "composite": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  }
+}

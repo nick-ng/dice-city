@@ -1,0 +1,31 @@
+name: Deploy Front-end
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: |
+          git config user.email nick-ng@users.noreply.github.com
+          git config user.name "${GITHUB_ACTOR}"
+          npm ci
+          npm run build-back
+          API_ORIGIN=https://dice-city-server.pux.one npm run build-front
+          cp ./static/* ./dist-front
+          cp ./dist-front/index.html ./dist-front/404.html
+          echo dice-city.pux.one > ./dist-front/CNAME
+          git checkout --orphan gh-pages
+          git reset
+          cp ./dist-front/* ./
+          git add $(ls ./dist-front)
+          git commit -m "$(date) deploy front-end"
+          git push --force origin gh-pages

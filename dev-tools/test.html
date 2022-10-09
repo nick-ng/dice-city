@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pig Dice Game Tester</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+      button {
+        font-size: 28px;
+      }
+
+      .columnContainer {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .column {
+        margin: 0px 5px;
+        padding: 5px;
+        border: 1px solid #808080;
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <p>Game ID: {{ gameId }}</p>
+      <div class="columnContainer">
+        <div class="column">
+          <h2>{{ player1.name }} (Host)</h2>
+          <button @click="newGame">New Game</button>
+          <button @click="getGame1">Update Game</button>
+          <button @click="startGame1">Start Game</button>
+          <button @click="rollDice(1)">Roll Dice</button>
+          <button @click="bankScore(1)">Bank Score</button>
+          <pre>{{ output1 }}</pre>
+        </div>
+        <div class="column">
+          <h2>{{ player2.name }}</h2>
+          <button @click="joinGame2">Join Game</button>
+          <button @click="getGame2">Update Game</button>
+          <button @click="joinGame2b">Join Wrong Game</button>
+          <button @click="startGame2">Start Game</button>
+          <button @click="rollDice(2)">Roll Dice</button>
+          <button @click="bankScore(2)">Bank Score</button>
+          <pre>{{ output2 }}</pre>
+        </div>
+        <div class="column">
+          <h2>{{ player3.name }}</h2>
+          <button @click="joinGame3">Join Game</button>
+          <button @click="getGame3">Update Game</button>
+          <pre>{{ output3 }}</pre>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    (() => {
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            player1: {
+              id: "d48147b1-8af0-4fba-b089-7cd358fd6005",
+              password: "158dc9e8-dcb5-415c-a5a8-b74e283d080b",
+              name: "Player 1",
+            },
+            player2: {
+              id: "373e326c-57c6-48d3-ad20-738cc137f941",
+              password: "a77a185b-af6f-481f-b62b-4dab63038faf",
+              name: "Player 2",
+            },
+            player3: {
+              id: "0787dabb-96ce-464e-85de-44f7997b28f3",
+              password: "f6def226-4c84-421b-a0c4-a4764b1f7cca",
+              name: "Player 3",
+            },
+            gameId: null,
+            output1: null,
+            output2: null,
+            output3: null,
+          };
+        },
+        methods: {
+          newGame() {
+            (async () => {
+              const res = await fetch("/api/game", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                  "x-player-id": this.player1.id,
+                  "x-player-password": this.player1.password,
+                },
+                body: JSON.stringify({
+                  playerName: this.player1.name,
+                }),
+              });
+
+              const resJson = await res.json();
+              this.output1 = resJson;
+              this.gameId = resJson.gameData.id;
+            })();
+          },
+          getGame1() {
+            (async () => {
+              if (!this.gameId) {
+                this.output1 = "You haven't made a game yet.";
+                return;
+              }
+
+              const res = await fetch(`/api/game/${this.gameId}`, {
+                method: "GET",
+                headers: {
+                  "x-player-id": this.player1.id,
+                  "x-player-password": this.player1.password,
+                },
+              });
+
+              const resJson = await res.json();
+              this.output1 = resJson;
+            })();
+          },
+          startGame1() {
+            (async () => {
+              const res = await fetch(`/api/game/${this.gameId}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                  "x-player-id": this.player1.id,
+                  "x-player-password": this.player1.password,
+                },
+                body: JSON.stringify({
+                  action: "start",
+                }),
+              });
+
+              const resJson = await res.json();
+              this.output1 = resJson;
+            })();
+          },
+          joinGame2() {
+            (async () => {
+              const res = await fetch(`/api/game/${this.gameId}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                  "x-player-id": this.player2.id,
+                  "x-player-password": this.player2.password,
+                },
+                body: JSON.stringify({
+                  action: "join",
+                  playerName: this.player2.name,
+                }),
+              });
+
+              const resJson = await res.json();
+              this.output2 = resJson;
+            })();
+          },
+          joinGame2b() {
+            (async () => {
+              try {
+                const res = await fetch(`/api/game/${this.gameId}b`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                    "x-player-id": this.player2.id,
+                    "x-player-password": this.player2.password,
+                  },
+                  body: JSON.stringify({
+                    action: "join",
+                    playerName: this.player2.name,
+                  }),
+                });
+
+                const resJson = await res.json();
+                this.output2 = resJson;
+              } catch (e) {
+                this.output2 = e.message;
+              }
+            })();
+          },
+          getGame2() {
+            (async () => {
+              if (!this.gameId) {
+                this.output2 = "Game not made yet.";
+                return;
+              }
+
+              const res = await fetch(`/api/game/${this.gameId}`, {
+                method: "GET",
+                headers: {
+                  "x-player-id": this.player2.id,
+                  "x-player-password": this.player2.password,
+                },
+              });
+
+              const resJson = await res.json();
+              this.output2 = resJson;
+            })();
+          },
+          startGame2() {
+            (async () => {
+              const res = await fetch(`/api/game/${this.gameId}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                  "x-player-id": this.player2.id,
+                  "x-player-password": this.player2.password,
+                },
+                body: JSON.stringify({
+                  action: "start",
+                }),
+              });
+
+              const resJson = await res.json();
+              this.output2 = resJson;
+            })();
+          },
+          joinGame3() {
+            (async () => {
+              const res = await fetch(`/api/game/${this.gameId}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                  "x-player-id": this.player3.id,
+                  "x-player-password": this.player3.password,
+                },
+                body: JSON.stringify({
+                  action: "join",
+                  playerName: this.player3.name,
+                }),
+              });
+
+              const resJson = await res.json();
+              this.output3 = resJson;
+            })();
+          },
+          getGame3() {
+            (async () => {
+              if (!this.gameId) {
+                this.output3 = "Game not made yet.";
+                return;
+              }
+
+              const res = await fetch(`/api/game/${this.gameId}`, {
+                method: "GET",
+                headers: {
+                  "x-player-id": this.player3.id,
+                  "x-player-password": this.player3.password,
+                },
+              });
+
+              const resJson = await res.json();
+              this.output3 = resJson;
+            })();
+          },
+          rollDice(n) {
+            (async () => {
+              if (!this.gameId) {
+                this[`output${n}`] = "Game not made yet.";
+                return;
+              }
+
+              const res = await fetch(`/api/game/${this.gameId}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                  "x-player-id": this[`player${n}`].id,
+                  "x-player-password": this[`player${n}`].password,
+                },
+                body: JSON.stringify({
+                  action: "roll",
+                }),
+              });
+
+              const resJson = await res.json();
+              this[`output${n}`] = resJson;
+            })();
+          },
+          bankScore(n) {
+            (async () => {
+              if (!this.gameId) {
+                this[`output${n}`] = "Game not made yet.";
+                return;
+              }
+
+              const res = await fetch(`/api/game/${this.gameId}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json;charset=utf-8",
+                  "x-player-id": this[`player${n}`].id,
+                  "x-player-password": this[`player${n}`].password,
+                },
+                body: JSON.stringify({
+                  action: "bank",
+                }),
+              });
+
+              const resJson = await res.json();
+              this[`output${n}`] = resJson;
+            })();
+          },
+        },
+        mounted() {},
+        unmounted() {},
+      }).mount("#app");
+    })();
+  </script>
+</html>

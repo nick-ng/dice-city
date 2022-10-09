@@ -1,0 +1,13 @@
+{
+  "ignore": [
+    "src-back/*",
+    "dev-tools/*",
+    "dist/*",
+    "dist-back/*",
+    "dist-front/*",
+    "static/*",
+    "package.json"
+  ],
+  "ext": "js,ts,jsx,tsx,json",
+  "delay": 2000
+}

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Robot Race - Card Stacker</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+      button {
+        font-size: 18px;
+      }
+
+      .columnContainer {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .column {
+        margin: 0px 5px;
+        padding: 5px;
+        border: 1px solid #808080;
+        display: flex;
+        flex-direction: column;
+      }
+
+      button + button,
+      div + button {
+        margin-top: 1em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="columnContainer">
+        <div class="column">
+          <button @click="chooseCard('Move 3')">Move 3</button>
+          <button @click="chooseCard('Move 2')">Move 2</button>
+          <button @click="chooseCard('Move 1')">Move 1</button>
+          <button @click="chooseCard('Back Up')">Back Up</button>
+          <div>
+            <button @click="chooseCard('Rotate Left')">Rotate Left</button
+            ><button @click="chooseCard('Rotate Right')">Rotate Right</button>
+          </div>
+          <button @click="chooseCard('U-Turn')">U-Turn</button>
+        </div>
+        <pre>{{ remainingDeck }}</pre>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    (() => {
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          const cardList = Object.freeze([
+            // 1 - 6 (6)
+            "U-Turn",
+            "U-Turn",
+            "U-Turn",
+            "U-Turn",
+            "U-Turn",
+            "U-Turn",
+            // 7 - 42 (36)
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            "Rotate Left",
+            "Rotate Right",
+            // 43 - 48 (6)
+            "Back Up",
+            "Back Up",
+            "Back Up",
+            "Back Up",
+            "Back Up",
+            "Back Up",
+            // 49 - 66 (18)
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            "Move 1",
+            // 67 - 78 (12)
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            "Move 2",
+            // 79 - 84 (6)
+            "Move 3",
+            "Move 3",
+            "Move 3",
+            "Move 3",
+            "Move 3",
+            "Move 3",
+          ]);
+
+          const getCardMap = () => {
+            console.debug(
+              "Move 1",
+              cardList.filter((a) => a === "Move 1").length,
+              18
+            );
+            console.debug(
+              "Move 2",
+              cardList.filter((a) => a === "Move 2").length,
+              12
+            );
+            console.debug(
+              "Move 3",
+              cardList.filter((a) => a === "Move 3").length,
+              6
+            );
+            console.debug(
+              "Back Up",
+              cardList.filter((a) => a === "Back Up").length,
+              6
+            );
+            console.debug(
+              "Rotate Right",
+              cardList.filter((a) => a === "Rotate Right").length,
+              18
+            );
+            console.debug(
+              "Rotate Left",
+              cardList.filter((a) => a === "Rotate Left").length,
+              18
+            );
+            console.debug(
+              "U-Turn",
+              cardList.filter((a) => a === "U-Turn").length,
+              6
+            );
+
+            return cardList.reduce((prev, curr, i) => {
+              const priority = i + 1;
+              const id = `program-card-${priority.toString().padStart(2, "0")}`;
+
+              prev[id] = {
+                id,
+                action: curr,
+                priority,
+              };
+
+              return prev;
+            }, {});
+          };
+
+          const shuffle = (inputArray) =>
+            [...inputArray]
+              .map((data) => ({
+                data,
+                sortValue: Math.random(),
+              }))
+              .sort((a, b) => a.sortValue - b.sortValue)
+              .map(({ data }) => data);
+
+          const cardMap = getCardMap();
+
+          return {
+            remainingDeck: [],
+            discardedCards: shuffle(Object.keys(cardMap)),
+            cardMap,
+          };
+        },
+        methods: {
+          chooseCard(action) {
+            for (const cardId of this.discardedCards) {
+              const card = this.cardMap[cardId];
+              if (card.action === action) {
+                this.discardedCards = this.discardedCards.filter(
+                  (id) => id !== cardId
+                );
+                this.remainingDeck = this.remainingDeck.concat([cardId]);
+                return;
+              }
+            }
+          },
+        },
+        mounted() {},
+        unmounted() {},
+      }).mount("#app");
+    })();
+  </script>
+</html>

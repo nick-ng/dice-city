@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["DOM", "es2021"],
+    "outDir": "../dist-front",
+    "jsx": "react",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  }
+}
