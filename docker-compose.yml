@@ -4,16 +4,19 @@ services:
   dice-city-server:
     build:
       context: .
-      dockerfile: Dockerfile.node
+      dockerfile: Dockerfile
+      target: dev
     ports:
       - "3232:8080"
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules/
+    command: npm run dev-back
   dice-city-worker:
     build:
       context: .
-      dockerfile: Dockerfile.node
+      dockerfile: Dockerfile
+      target: dev
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules/
@@ -21,7 +24,8 @@ services:
   dice-city-front-end:
     build:
       context: .
-      dockerfile: Dockerfile.node
+      dockerfile: Dockerfile
+      target: dev
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules/

@@ -5,15 +5,7 @@ const SoundsContext = createContext<{
 }>({});
 
 const SoundsContextProvider = ({ children }: { children: ReactNode }) => {
-  return (
-    <SoundsContext.Provider
-      value={{
-        timer: new Audio("/timer.mp3"),
-      }}
-    >
-      {children}
-    </SoundsContext.Provider>
-  );
+  return <SoundsContext.Provider value={{}}>{children}</SoundsContext.Provider>;
 };
 
 export const useSounds = () => useContext(SoundsContext);

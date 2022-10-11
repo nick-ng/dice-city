@@ -1,20 +1,13 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
-const OPTIONS_STORE = "ROBOT_RACE_OPTIONS";
+const OPTIONS_STORE = "DICE_CITY_OPTIONS";
 
 export interface Options {
   ping?: number;
-  smallerPriorityFirst: boolean;
-  predictiveMode: boolean;
-  colors: string[];
   preferredVoice?: string;
 }
 
-export const defaultOptions: Options = {
-  smallerPriorityFirst: true,
-  predictiveMode: true,
-  colors: ["#FF71CE", "#05FFA1", "#01CDFE", "#FFFB96"],
-};
+export const defaultOptions: Options = {};
 
 const OptionsContext = createContext<{
   options: Options;

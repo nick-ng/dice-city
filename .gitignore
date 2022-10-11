@@ -1,5 +1,6 @@
 dist-*
 volumes/
+pages/js/
 
 # Logs
 logs

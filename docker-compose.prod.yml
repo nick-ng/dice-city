@@ -8,6 +8,7 @@ services:
     restart: always
     ports:
       - "${PORT}:8080"
+    command: node ./dist-back/main.js
   dice-city-worker:
     build:
       context: .
