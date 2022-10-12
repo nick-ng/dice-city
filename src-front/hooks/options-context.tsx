@@ -5,6 +5,9 @@ const OPTIONS_STORE = "DICE_CITY_OPTIONS";
 export interface Options {
   ping?: number;
   preferredVoice?: string;
+  playerName?: string;
+  playerId?: string;
+  playerPassword?: string;
 }
 
 export const defaultOptions: Options = {};
@@ -19,7 +22,7 @@ const OptionsContext = createContext<{
 
 const OptionsContextProvider = ({ children }: { children: ReactNode }) => {
   const savedOptionsString = localStorage.getItem(OPTIONS_STORE);
-  let savedOptions = null;
+  let savedOptions = {};
   if (savedOptionsString) {
     try {
       savedOptions = JSON.parse(savedOptionsString);

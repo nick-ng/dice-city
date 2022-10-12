@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-  dice-city-server:
+  server:
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,7 +12,7 @@ services:
       - ./:/usr/src/app
       - /usr/src/app/node_modules/
     command: npm run dev-back
-  dice-city-worker:
+  worker:
     build:
       context: .
       dockerfile: Dockerfile
@@ -21,7 +21,7 @@ services:
       - ./:/usr/src/app
       - /usr/src/app/node_modules/
     command: npm run dev-worker
-  dice-city-front-end:
+  front-end:
     build:
       context: .
       dockerfile: Dockerfile
@@ -30,6 +30,16 @@ services:
       - ./:/usr/src/app
       - /usr/src/app/node_modules/
     command: npm run dev-front
+  tailwind:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules/
+    command: npm run tailwind-watch
+    tty: true
   redis:
     image: redis:alpine
     command: redis-server /usr/local/etc/redis/redis.conf
