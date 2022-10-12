@@ -6,7 +6,8 @@
     "dist-back/*",
     "dist-front/*",
     "static/*",
-    "package.json"
+    "package.json",
+    "pages/js"
   ],
   "ext": "js,ts,jsx,tsx,json",
   "delay": 2000

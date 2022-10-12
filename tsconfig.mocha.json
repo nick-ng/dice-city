@@ -1,0 +1,17 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "types": ["mocha", "node"],
+    "baseUrl": ".",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "paths": {
+      "common": ["src-common"],
+      "back": ["src-back"],
+      "front": ["src-front"]
+    }
+  },
+  "references": [{ "path": "./src-common" }],
+  "exclude": ["node_modules"]
+}

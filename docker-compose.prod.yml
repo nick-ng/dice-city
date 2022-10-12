@@ -4,14 +4,17 @@ services:
   dice-city-server:
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
+      target: prod
     restart: always
     ports:
       - "${PORT}:8080"
+    command: node ./dist-back/main.js
   dice-city-worker:
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
+      target: prod
     restart: always
     scale: 1
     command: node ./dist-back/worker.js
