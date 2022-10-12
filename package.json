@@ -4,7 +4,7 @@
   "description": "Based on a board game.",
   "main": "./dist-back/main.js",
   "scripts": {
-    "test": "ts-mocha -p tsconfig.base.json **/*.spec.ts",
+    "test": "TS_NODE_PROJECT='./tsconfig.mocha.json' mocha",
     "once": "NODE_ENV=development rm -rf ./dist-* && tsc --build ./src-back/tsconfig.json",
     "dev-back": "NODE_ENV=development tsc --build ./src-back/tsconfig.json --watch & nodemon --config nodemon.main.json ./dist-back/main.js",
     "dev-front": "tailwindcss -i ./src-front/base.css -o ./dist-front/output.css --watch & NODE_ENV=development nodemon -L --config nodemon.front.json ./esbuild.dev.config.js",
@@ -14,7 +14,6 @@
     "build-back": "NODE_ENV=production tsc --build ./src-back/tsconfig.json",
     "build-front": "NODE_ENV=production node esbuild.config.js && tailwindcss -i ./src-front/base.css -o ./dist-front/output.css --minify",
     "check-build": "rm -rf ./dist-* && tsc --build ./src-back/tsconfig.check.json && node esbuild.check.config.js",
-    "heroku-postbuild": "npm run build-back && npm run build-front",
     "sim-deploy": "rm -rf ./dist-* && npm run heroku-postbuild && npm run serve",
     "prepare": "husky install"
   },
@@ -65,7 +64,7 @@
     "nodemon": "^2.0.16",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
-    "ts-mocha": "^10.0.0"
+    "ts-node": "^10.9.1"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
