@@ -6,7 +6,7 @@ import type {
   ActionIncomingMessageObject,
   WebsocketIncomingMessageObject,
 } from "../../dist-common/game-action-types";
-import { decodeGameData } from "../../dist-common/decoders/game";
+import { decodeGameData } from "../../dist-common/decoders/game-a";
 import { sleep } from "../../dist-common/utils";
 
 import StreamHelper from "../redis/stream-helper";
