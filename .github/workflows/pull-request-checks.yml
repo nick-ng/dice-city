@@ -14,4 +14,4 @@ jobs:
       - run: |
           npm install
           npm run check-build
-          npm run test
+          npm run test-ci
