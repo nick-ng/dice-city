@@ -16,6 +16,37 @@ import { pipe } from "fp-ts/function";
 
 import { uuidishDecoder } from "./misc";
 
+const tags = literal(
+  "major",
+  "cup",
+  "bread",
+  "wheat",
+  "cow",
+  "cog",
+  "factory",
+  "fruit"
+);
+const colours = literal("blue", "green", "red", "purple");
+
+export const buildingDecoder = struct({
+  key: string,
+  display: string,
+  tag: tags,
+  picture: array(string),
+  cost: number,
+  effect: string,
+});
+
+export const landmarkDecoder = pipe(struct({}), intersect(buildingDecoder));
+
+export const establishmentDecoder = pipe(
+  struct({
+    colour: colours,
+    activationNumbers: array(number),
+  }),
+  intersect(buildingDecoder)
+);
+
 export const playerDecoder = struct({
   id: uuidishDecoder,
   name: string,
@@ -32,10 +63,12 @@ export const gameSettingsDecoder = struct({
   timeLimitType: literal("off", "on"),
 });
 
-export const gameStateDecoder = struct({});
+export const gameStateDecoder = struct({
+  supply: array(string),
+});
 
 export const gameSecretsDecoder = struct({
-  remainingDeck: array(uuidishDecoder),
+  remainingDeck: array(string),
 });
 
 export const playerSecretsDecoder = struct({
