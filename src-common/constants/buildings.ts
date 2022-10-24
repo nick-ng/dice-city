@@ -1,4 +1,4 @@
-import type { Establishment, Landmark } from "../types";
+import type { Deck, DeckBlueprint, Establishment, Landmark } from "../types";
 
 const addKeyProperty = <T>(obj: {
   [key: string]: T;
@@ -191,3 +191,86 @@ const tempEstablishments: { [key: string]: Omit<Establishment, "key"> } = {
 
 export const establishments: { [key: string]: Establishment } =
   addKeyProperty(tempEstablishments);
+
+export const baseDeck: DeckBlueprint = [
+  {
+    card: "wheatField",
+    count: 6,
+  },
+  {
+    card: "ranch",
+    count: 6,
+  },
+  {
+    card: "bakery",
+    count: 6,
+  },
+  {
+    card: "cafe",
+    count: 6,
+  },
+  {
+    card: "convenienceStore",
+    count: 6,
+  },
+  {
+    card: "forest",
+    count: 6,
+  },
+  {
+    card: "stadium",
+    count: 4,
+  },
+  {
+    card: "tvStation",
+    count: 4,
+  },
+  {
+    card: "businessCentre",
+    count: 4,
+  },
+  {
+    card: "cheeseFactory",
+    count: 6,
+  },
+  {
+    card: "furnitureFactory",
+    count: 6,
+  },
+  {
+    card: "mine",
+    count: 6,
+  },
+  {
+    card: "familyRestaurant",
+    count: 6,
+  },
+  {
+    card: "appleOrchard",
+    count: 6,
+  },
+  {
+    card: "fruitAndVegetableMarket",
+    count: 6,
+  },
+];
+
+export const makeDeck = (blueprint: DeckBlueprint): Deck => {
+  return blueprint.reduce((accumulator, { card, count }) => {
+    const padLength = (count - 1).toString().length;
+
+    return accumulator.concat(
+      [...Array(count).keys()].map(
+        (n) => `${card}:${n.toString().padStart(padLength, "0")}`
+      )
+    );
+  }, [] as string[]);
+};
+
+export const getDeck = (cardSet: "base" = "base"): Deck => {
+  switch (cardSet) {
+    case "base":
+    default:
+      return makeDeck(baseDeck);
+  }
+};
