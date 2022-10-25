@@ -10,7 +10,7 @@
     "dev-back": "NODE_ENV=development tsc --build ./src-back/tsconfig.json --watch & nodemon --config nodemon.main.json ./dist-back/main.js",
     "dev-front": "NODE_ENV=development nodemon -L --config nodemon.front.json ./esbuild.dev.config.js",
     "dev-worker": "NODE_ENV=development nodemon --config nodemon.worker.json ./dist-back/worker.js",
-    "start": "docker compose build && docker compose up -d",
+    "start": "npm run stop && docker compose build && docker compose up -d && docker compose logs -f",
     "stop": "docker compose down",
     "tailwind-watch": "tailwindcss -i ./src-front/base.css -o ./dist-front/output.css --watch --poll",
     "serve": "node ./dist-back/main.js",

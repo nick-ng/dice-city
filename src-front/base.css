@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
   body {
     @apply bg-white text-black dark:bg-gray-700 dark:text-white;
   }
@@ -17,5 +23,14 @@
 
   h2 {
     @apply text-xl;
+  }
+
+  .coin-float {
+    @apply float-left flex h-full items-end;
+    shape-outside: inset(calc(100% - 32px) 0 0);
+  }
+
+  .coin {
+    @apply flex h-8 w-8 items-center justify-center rounded-full border border-black;
   }
 }
