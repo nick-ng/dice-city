@@ -21,7 +21,6 @@ const components: {
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function DevFrontEnd() {
-  console.info("__API_ORIGIN__", __API_ORIGIN__);
   return (
     <Container className="grid h-full grid-cols-[auto_1fr] gap-2">
       <div className="h-full overflow-y-auto">
@@ -33,6 +32,7 @@ export default function DevFrontEnd() {
               <Link to={`/dev/${path}`}>{name}</Link>
             </li>
           ))}
+          <li>API_ORIGIN: {__API_ORIGIN__}</li>
         </ul>
       </div>
       <div className="h-full border">
