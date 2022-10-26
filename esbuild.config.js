@@ -2,6 +2,7 @@ require("esbuild")
   .build({
     entryPoints: ["src-front/index.tsx"],
     bundle: true,
+    splitting: true,
     tsconfig: "./src-front/tsconfig.json",
     metafile: true,
     minify: true,
