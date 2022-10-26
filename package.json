@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Based on a board game.",
   "main": "./dist-back/main.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "test-ci": "TS_NODE_PROJECT='./tsconfig.mocha.json' mocha",
     "test": "TS_NODE_PROJECT='./tsconfig.mocha.json' NODE_ENV=development mocha",
@@ -63,7 +63,8 @@
     "tailwindcss": "^3.1.8",
     "typescript": "^4.7.3",
     "vite": "^3.1.8",
-    "ws": "^8.7.0"
+    "ws": "^8.7.0",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "concurrently": "^7.2.1",
@@ -72,8 +73,7 @@
     "mocha": "^10.0.0",
     "nodemon": "^2.0.16",
     "prettier": "^2.7.1",
-    "prettier-plugin-tailwindcss": "^0.1.13",
-    "ts-node": "^10.9.1"
+    "prettier-plugin-tailwindcss": "^0.1.13"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

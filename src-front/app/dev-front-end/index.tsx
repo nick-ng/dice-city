@@ -1,7 +1,7 @@
 import React, { lazy, LazyExoticComponent } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
-import Container from "@front/layout/container";
+import Container from "../../layout/container";
 
 const components: {
   name: string;
