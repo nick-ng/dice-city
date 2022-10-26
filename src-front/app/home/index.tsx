@@ -1,6 +1,6 @@
 import React from "react";
 
-import Container from "src-front/layout/container";
+import Container from "@front/layout/container";
 import TopBar from "../top-bar";
 
 export default function Home() {

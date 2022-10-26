@@ -48,7 +48,7 @@ export default function Establishment({ building }: EstablishmentProps) {
             {cost}
           </div>
         </div>
-        <div className="text-left">{effectWithPictuers}</div>
+        <div className="text-left leading-snug">{effectWithPictuers}</div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { lazy, LazyExoticComponent } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
-import Container from "src-front/layout/container";
+import Container from "@front/layout/container";
 
 const components: {
   name: string;
@@ -21,10 +21,12 @@ const components: {
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function DevFrontEnd() {
+  console.info("__API_ORIGIN__", __API_ORIGIN__);
   return (
     <Container className="grid h-full grid-cols-[auto_1fr] gap-2">
       <div className="h-full overflow-y-auto">
-        <h1>Components</h1>
+        <h1>Dev Page</h1>
+        <h2>Components</h2>
         <ul>
           {components.map(({ name, path }) => (
             <li key={path}>

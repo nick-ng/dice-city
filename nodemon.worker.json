@@ -1,5 +1,6 @@
 {
   "watch": ["dist-back/"],
   "ext": "js,ts,jsx,tsx,json",
-  "delay": 500
+  "delay": 500,
+  "pollingInterval": 1000
 }

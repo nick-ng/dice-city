@@ -3,8 +3,10 @@ import { useState, useEffect, useRef } from "react";
 import type { WebsocketIncomingMessageObject } from "dist-common/game-action-types";
 import type { PlayerGameData, PlayerDetails } from "dist-common/game-types";
 
-declare const API_ORIGIN: string;
-const WEBSOCKET_URL = (API_ORIGIN || location.origin).replace(/^http/i, "ws");
+const WEBSOCKET_URL = (__API_ORIGIN__ || location.origin).replace(
+  /^http/i,
+  "ws"
+);
 
 const isNewWebSocketNeeded = (webSocket: WebSocket | null): boolean =>
   !webSocket ||
