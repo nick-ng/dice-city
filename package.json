@@ -18,7 +18,7 @@
     "serve": "node ./dist-back/main.js",
     "build-back": "NODE_ENV=production tsc --build ./src-back/tsconfig.json",
     "build-front": "vite build",
-    "check-build": "rm -rf ./dist-* && tsc --build ./src-back/tsconfig.check.json && node esbuild.check.config.js",
+    "check-build": "rm -rf ./dist-* && tsc --build ./src-back/tsconfig.check.json && vite build",
     "sim-deploy": "rm -rf ./dist-* && npm run heroku-postbuild && npm run serve",
     "prepare": "husky install"
   },
@@ -34,7 +34,6 @@
   },
   "homepage": "https://github.com/nick-ng/dice-city#readme",
   "dependencies": {
-    "@craftamap/esbuild-plugin-html": "^0.4.0",
     "@types/compression": "^1.7.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
