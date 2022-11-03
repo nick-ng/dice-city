@@ -1,8 +1,8 @@
 import { createClient2 } from "../redis";
-import type { GameData } from "../../dist-common/game-types";
-import type { ActionIncomingMessageObject } from "../../dist-common/game-action-types";
-import type { DefaultStreamMessageType } from "../../dist-common/redis-types";
-import { randomString } from "../../dist-common/utils";
+import type { GameData } from "@common/game-types";
+import type { ActionIncomingMessageObject } from "@common/game-action-types";
+import type { DefaultStreamMessageType } from "@common/redis-types";
+import { randomString } from "@common/utils";
 import Game from "./game-class";
 import StreamHelper from "../redis/stream-helper";
 

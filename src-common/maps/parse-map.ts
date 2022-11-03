@@ -1,7 +1,7 @@
-import type { Map } from "../game-types";
+import type { Map } from "../game-types.js";
 
-import { mapNoIdDecoder } from "../decoders/map";
-import { mapValidator } from "./map-validator";
+import { mapNoIdDecoder } from "../decoders/map.js";
+import { mapValidator } from "./map-validator.js";
 
 export const parseMap = (
   mapJSON: string

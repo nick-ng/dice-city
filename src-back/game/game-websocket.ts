@@ -5,9 +5,9 @@ import { WebSocketServer, ServerOptions, WebSocket as WebSocketType } from "ws";
 import type {
   ActionIncomingMessageObject,
   WebsocketIncomingMessageObject,
-} from "../../dist-common/game-action-types";
-import { decodeGameData } from "../../dist-common/decoders/game-a";
-import { sleep } from "../../dist-common/utils";
+} from "@common/game-action-types";
+import { decodeGameData } from "@common/decoders/game-a";
+import { sleep } from "@common/utils";
 
 import StreamHelper from "../redis/stream-helper";
 import { addAction, getRedisKeys } from "./game-redis";

@@ -3,7 +3,7 @@ import type {
   AutomaticAction,
 } from "dist-common/game-action-types";
 import type { MainGameState, Robot } from "dist-common/game-types";
-import { getCardMap, shuffle } from "../../../dist-common/card-map";
+import { getCardMap, shuffle } from "@common/card-map";
 import Game, { ROBOT_DESIGNS } from "../game-class";
 
 const robotDesigns = {

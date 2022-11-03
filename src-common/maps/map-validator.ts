@@ -5,9 +5,9 @@ import {
   MapItem,
   FlagMapItem,
   DockMapItem,
-} from "../game-types";
+} from "../game-types.js";
 
-import { isMapItemImpassable, IMPASSABLE_ITEMS } from "../utils";
+import { isMapItemImpassable, IMPASSABLE_ITEMS } from "../utils.js";
 
 interface MapWithValidation {
   map: MapNoId;

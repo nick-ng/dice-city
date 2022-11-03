@@ -18,7 +18,7 @@
     "serve": "node ./dist-back/main.js",
     "build-back": "NODE_ENV=production tsc --build ./src-back/tsconfig.json",
     "build-front": "vite build",
-    "check-build": "rm -rf ./dist-* && tsc --build ./src-back/tsconfig.check.json && vite build",
+    "check-build": "rm -rf ./dist-* && tsc --build ./src-back/tsconfig.json && vite build",
     "sim-deploy": "rm -rf ./dist-* && npm run heroku-postbuild && npm run serve",
     "prepare": "husky install"
   },
@@ -61,10 +61,11 @@
     "redis": "^4.1.0",
     "seedrandom": "^3.0.5",
     "tailwindcss": "^3.1.8",
+    "ts-node": "^10.9.1",
     "typescript": "^4.7.3",
     "vite": "^3.1.8",
     "ws": "^8.7.0",
-    "ts-node": "^10.9.1"
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "concurrently": "^7.2.1",

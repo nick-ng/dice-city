@@ -1,18 +1,18 @@
 import { randomUUID } from "crypto";
-import type { GameData, GameSettings } from "../../../dist-common/game-types";
+import type { GameData, GameSettings } from "@common/game-types.js";
 import type {
   GameAction,
   ActionIncomingMessageObject,
   AutomaticAction,
-} from "../../../dist-common/game-action-types";
+} from "@common/game-action-types.js";
 
-import { toAmbidextrousQuote } from "../../../dist-common/utils";
-import { getMap } from "../../../dist-common/maps";
-import { parseMap } from "../../../dist-common/maps/parse-map";
+import { toAmbidextrousQuote } from "@common/utils.js";
+import { getMap } from "@common/maps/index.js";
+import { parseMap } from "@common/maps/parse-map.js";
 
-import Game from "../game-class";
-import { saveGame, findGame, makeShortId, addAction } from "../game-redis";
-import { sendStartGameAction } from "../game-server";
+import Game from "../game-class.js";
+import { saveGame, findGame, makeShortId, addAction } from "../game-redis.js";
+import { sendStartGameAction } from "../game-server.js";
 
 export const newGame = async (
   playerId: string,

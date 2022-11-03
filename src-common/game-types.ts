@@ -1,6 +1,6 @@
-import D from "io-ts/Decoder";
+import * as D from "io-ts/lib/Decoder.js";
 
-import type { ActionIncomingMessageObject } from "./game-action-types";
+import type { ActionIncomingMessageObject } from "./game-action-types.js";
 
 import {
   basicMapItemDecoder,
@@ -19,7 +19,7 @@ import {
   mapItemDecoder,
   mapNoIdDecoder,
   mapDecoder,
-} from "./decoders/map";
+} from "./decoders/map.js";
 
 export interface Scores {
   [index: string]: number;

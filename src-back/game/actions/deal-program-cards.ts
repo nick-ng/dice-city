@@ -1,8 +1,8 @@
 import type {
   AutomaticAction,
   DealProgramCardsAction,
-} from "../../../dist-common/game-action-types";
-import { shuffle } from "../../../dist-common/card-map";
+} from "@common/game-action-types";
+import { shuffle } from "@common/card-map";
 import Game, { TURN_PHASES } from "../game-class";
 import { setRobotDamage } from "./utils";
 

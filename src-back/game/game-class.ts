@@ -9,14 +9,14 @@ import type {
   GameData,
   PlayerSecrets,
   LobbyGameState,
-} from "../../dist-common/game-types";
+} from "@common/game-types";
 import type {
   GameAction,
   ActionIncomingMessageObject,
-} from "../../dist-common/game-action-types";
+} from "@common/game-action-types";
 
 import { performAction } from "./game-actions";
-import { getMap } from "../../dist-common/maps";
+import { getMap } from "@common/maps";
 
 export const ROBOT_DESIGNS = [0, 1, 2, 3, 4, 5, 6, 7] as const;
 

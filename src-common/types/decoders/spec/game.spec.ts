@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { isRight, isLeft } from "fp-ts/Either";
+import { isRight, isLeft } from "fp-ts/lib/Either.js";
 
 import { playerDecoder } from "../game.js";
 

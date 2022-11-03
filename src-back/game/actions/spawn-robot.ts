@@ -1,10 +1,10 @@
 import type {
   AutomaticAction,
   SpawnRobotAction,
-} from "../../../dist-common/game-action-types";
+} from "@common/game-action-types";
 
-import canSpawnRobot from "../../../dist-common/action-validators/can-spawn-robot";
-import { getRespawnOrder } from "../../../dist-common/utils";
+import canSpawnRobot from "@common/action-validators/can-spawn-robot";
+import { getRespawnOrder } from "@common/utils";
 import Game, { TURN_PHASES } from "../game-class";
 import { setRobotDamage } from "./utils";
 

@@ -1,10 +1,10 @@
 import type {
   AutomaticAction,
   PowerDownNextTurnAction,
-} from "../../../dist-common/game-action-types";
-import type { MainGameState } from "../../../dist-common/game-types";
-import { getPowerDownDecisionOrder } from "../../../dist-common/utils";
-import canPowerDownRobot from "../../../dist-common/action-validators/can-power-down";
+} from "@common/game-action-types";
+import type { MainGameState } from "@common/game-types";
+import { getPowerDownDecisionOrder } from "@common/utils";
+import canPowerDownRobot from "@common/action-validators/can-power-down";
 
 import Game, { TURN_PHASES } from "../game-class";
 

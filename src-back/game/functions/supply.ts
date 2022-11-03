@@ -1,5 +1,5 @@
 import { produce } from "immer";
-import { Deck, Supply } from "../../../src-common/types";
+import { Deck, Supply } from "@common/types/index.js";
 
 const addCardToSupply = (supply: Supply, cardId: string): void => {
   const cardKey = cardId.split(":")[0];

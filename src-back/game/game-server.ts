@@ -1,5 +1,5 @@
-import type { ActionIncomingMessageObject } from "../../dist-common/game-action-types";
-import { sleep } from "../../dist-common/utils";
+import type { ActionIncomingMessageObject } from "@common/game-action-types";
+import { sleep } from "@common/utils";
 
 import {
   streamHelper,

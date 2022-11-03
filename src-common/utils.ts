@@ -4,7 +4,7 @@ import type {
   MainGameState,
   GameState,
   Player,
-} from "./game-types";
+} from "./game-types.js";
 
 const SOME_LETTERS = "ABCDEFGHJKLMNPQRSTUVWXY0123456789";
 export const CORPOREAL_ROBOT_STATUSES: readonly Robot["status"][] =

@@ -1,5 +1,5 @@
 import type { SetManyRegisterAction } from "dist-common/game-action-types";
-import { symmetricDifference } from "../../../dist-common/utils";
+import { symmetricDifference } from "@common/utils";
 import type Game from "../game-class";
 
 const setManyRegisters = (

@@ -4,7 +4,7 @@ import type {
   CleanUpAction,
 } from "dist-common/game-action-types";
 
-import { getRespawnOrder } from "../../../dist-common/utils";
+import { getRespawnOrder } from "@common/utils";
 import type Game from "../game-class";
 
 import { TURN_PHASES } from "../game-class";

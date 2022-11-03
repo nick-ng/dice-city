@@ -1,4 +1,4 @@
-import type { GameData } from "../game-types";
+import type { GameData } from "../game-types.js";
 
 export const decodeGameData = (data: any): GameData | null => {
   if (

@@ -2,13 +2,13 @@
   "compilerOptions": {
     "lib": ["es2021"],
     "module": "ESNext",
-    "target": "es2021",
+    "target": "ESNext",
 
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "allowSyntheticDefaultImports": true,
 
     "baseUrl": ".",

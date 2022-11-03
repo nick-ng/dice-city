@@ -3,7 +3,7 @@ import type {
   ForceSetRegistersAction,
 } from "dist-common/game-action-types";
 
-import { shuffle } from "../../../dist-common/card-map";
+import { shuffle } from "@common/card-map";
 
 import setRegister from "./set-register";
 import finishSettingRegisters from "./finish-setting-registers";

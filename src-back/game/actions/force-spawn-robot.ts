@@ -3,11 +3,8 @@ import type {
   ForceSpawnRobotAction,
 } from "dist-common/game-action-types";
 
-import { shuffle } from "../../../dist-common/card-map";
-import {
-  isRobotCorporeal,
-  isMapItemImpassable,
-} from "../../../dist-common/utils";
+import { shuffle } from "@common/card-map";
+import { isRobotCorporeal, isMapItemImpassable } from "@common/utils";
 import Game, { TURN_PHASES } from "../game-class";
 
 const SPAWN_LOCATION_OFFSETS = [

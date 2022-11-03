@@ -1,7 +1,7 @@
 import assert from "node:assert";
-import { isRight, isLeft } from "fp-ts/Either";
+import { isRight, isLeft } from "fp-ts/lib/Either.js";
 
-import { uuidishDecoder } from "../misc";
+import { uuidishDecoder } from "../misc.js";
 
 describe("Uuid decoder", () => {
   it("should accept uuids-ish strings", (done) => {

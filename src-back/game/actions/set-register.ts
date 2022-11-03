@@ -1,5 +1,5 @@
-import type { SetRegisterAction } from "../../../dist-common/game-action-types";
-import canSetRegister from "../../../dist-common/action-validators/can-set-register";
+import type { SetRegisterAction } from "@common/game-action-types";
+import canSetRegister from "@common/action-validators/can-set-register";
 import type Game from "../game-class";
 
 const setRegister = (

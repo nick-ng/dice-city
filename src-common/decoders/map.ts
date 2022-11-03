@@ -7,8 +7,8 @@ import {
   string,
   struct,
   union,
-} from "io-ts/Decoder";
-import { pipe } from "fp-ts/function";
+} from "io-ts/lib/Decoder.js";
+import { pipe } from "fp-ts/lib/function.js";
 
 const orthogonalDirections = literal("up", "down", "left", "right");
 

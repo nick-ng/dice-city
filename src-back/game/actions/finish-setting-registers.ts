@@ -1,10 +1,10 @@
 import type {
   AutomaticAction,
   FinishSettingRegistersAction,
-} from "../../../dist-common/game-action-types";
-import type { ProgramCardInstruction } from "../../../dist-common/game-types";
-import canSubmitProgram from "../../../dist-common/action-validators/can-submit-program";
-import { getPowerDownDecisionOrder } from "../../../dist-common/utils";
+} from "@common/game-action-types";
+import type { ProgramCardInstruction } from "@common/game-types";
+import canSubmitProgram from "@common/action-validators/can-submit-program";
+import { getPowerDownDecisionOrder } from "@common/utils";
 
 import Game, { TURN_PHASES } from "../game-class";
 

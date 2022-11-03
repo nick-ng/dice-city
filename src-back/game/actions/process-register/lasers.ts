@@ -1,6 +1,6 @@
 import type { Robot, MapItem, LaserMapItem } from "dist-common/game-types";
 
-import { getLaserTarget } from "../../../../dist-common/get-laser-target";
+import { getLaserTarget } from "@common/get-laser-target";
 
 import { damageRobot } from "../utils";
 

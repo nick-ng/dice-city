@@ -1,8 +1,5 @@
-import type {
-  Listener,
-  DefaultStreamMessageType,
-} from "../../dist-common/redis-types";
-import type { ActionIncomingMessageObject } from "../../dist-common/game-action-types";
+import type { Listener, DefaultStreamMessageType } from "@common/redis-types";
+import type { ActionIncomingMessageObject } from "@common/game-action-types";
 
 import { RedisClient2 } from "../redis";
 
