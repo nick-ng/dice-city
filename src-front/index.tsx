@@ -1,11 +1,11 @@
-import React, { StrictMode } from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
-import SoundsContextProvider from "./hooks/sounds-context";
-import OptionsContextProvider from "./hooks/options-context";
+import SoundsContextProvider from "./hooks/sounds-context.js";
+import OptionsContextProvider from "./hooks/options-context.js";
 
-import App from "./app";
+import App from "./app/index.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(

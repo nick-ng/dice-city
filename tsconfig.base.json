@@ -1,14 +1,24 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
+    "lib": ["es2021"],
+    "module": "ESNext",
+    "target": "ESNext",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true,
+
     "baseUrl": ".",
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "common": ["src-common"],
-      "back": ["src-back"],
-      "front": ["src-front"]
+      "@front/*": ["src-front/*"],
+      "@common/*": ["src-common/*"],
+      "@back": ["src-back/*"]
     }
   }
 }

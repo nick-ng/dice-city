@@ -1,9 +1,6 @@
 FROM node:lts-alpine as dev
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-RUN npm install
-
 FROM node:lts-alpine as prod
 
 ENV NODE_ENV=production

@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { randomUUID } from "crypto";
 
-import { getName } from "../name-generator";
+import { getName } from "../name-generator.js";
 
 const BENCHMARK_TIMEOUT = 10000;
 

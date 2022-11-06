@@ -1,7 +1,6 @@
-import React from "react";
-import { Establishment as EstablishmentType } from "src-common/types";
+import type { Establishment as EstablishmentType } from "@common/types/index.js";
 
-import { bgColours, getTag, replaceTags } from "./utils";
+import { bgColours, getTag, replaceTags } from "./utils.js";
 
 type EstablishmentProps = {
   building: EstablishmentType;
@@ -48,7 +47,7 @@ export default function Establishment({ building }: EstablishmentProps) {
             {cost}
           </div>
         </div>
-        <div className="text-left">{effectWithPictuers}</div>
+        <div className="text-left leading-snug">{effectWithPictuers}</div>
       </div>
     </div>
   );

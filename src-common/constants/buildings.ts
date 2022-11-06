@@ -1,4 +1,9 @@
-import type { Deck, DeckBlueprint, Establishment, Landmark } from "../types";
+import type {
+  Deck,
+  DeckBlueprint,
+  Establishment,
+  Landmark,
+} from "../types/index.js";
 
 const addKeyProperty = <T>(obj: {
   [key: string]: T;
@@ -11,7 +16,7 @@ const addKeyProperty = <T>(obj: {
         key,
       },
     };
-  }, {});
+  }, {} as { [key: string]: { key: string } & T });
 };
 
 const tempLandmarks: { [key: string]: Omit<Landmark, "key"> } = {

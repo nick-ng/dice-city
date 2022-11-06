@@ -1,7 +1,7 @@
 import seedrandom from "seedrandom";
 
-import { allNouns } from "./nouns";
-import { allAdjectives } from "./adjectives";
+import { allNouns } from "./nouns.js";
+import { allAdjectives } from "./adjectives.js";
 
 export const getName = (seed: string, adjectiveCount = 2) => {
   const rng = seedrandom(seed);

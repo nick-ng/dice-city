@@ -11,10 +11,10 @@ import {
   parse,
   failure,
   success,
-} from "io-ts/Decoder";
-import { pipe } from "fp-ts/function";
+} from "io-ts/lib/Decoder.js";
+import { pipe } from "fp-ts/lib/function.js";
 
-import { uuidishDecoder } from "./misc";
+import { uuidishDecoder } from "./misc.js";
 
 const tags = literal(
   "major",

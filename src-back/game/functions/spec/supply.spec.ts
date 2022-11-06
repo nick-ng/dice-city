@@ -1,9 +1,9 @@
 import assert from "node:assert";
 
-import { getDeck } from "../../../../src-common/constants/buildings";
-import { shuffle } from "../../../../src-common/utils/shuffle";
+import { getDeck } from "../../../../src-common/constants/buildings.js";
+import { shuffle } from "../../../../src-common/utils/shuffle.js";
 
-import { totalSupply } from "../supply";
+import { totalSupply } from "../supply.js";
 
 describe("total supply", () => {
   it("should use all remaining cards", (done) => {

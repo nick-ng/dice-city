@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "types": ["mocha", "node"],
     "baseUrl": ".",
@@ -7,9 +7,9 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "common": ["src-common"],
-      "back": ["src-back"],
-      "front": ["src-front"]
+      "@front/*": ["src-front/*"],
+      "@common/*": ["src-common/*"],
+      "@back": ["src-back/*"]
     }
   },
   "references": [{ "path": "./src-common" }],

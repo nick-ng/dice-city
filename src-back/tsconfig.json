@@ -1,9 +1,10 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../dist-back"
+    "outDir": "../dist-back",
+    "module": "NodeNext"
   },
   "references": [{ "path": "../src-common" }],
-  "files": ["./main.ts", "./worker.ts"],
+  "files": ["./main.ts"],
   "include": ["./**/*"]
 }

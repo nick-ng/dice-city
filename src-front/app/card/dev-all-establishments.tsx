@@ -1,10 +1,8 @@
-import React from "react";
+import { establishments } from "@common/constants/buildings.js";
+import type { Establishment as EstablishmentType } from "@common/types/index.js";
 
-import { establishments } from "src-common/constants/buildings";
-import { Establishment as EstablishmentType } from "src-common/types";
-
-import Container from "src-front/layout/container";
-import Establishment from "./establishment";
+import Container from "@front/layout/container.js";
+import Establishment from "./establishment.js";
 
 export default function DevAllEstablishments() {
   return (

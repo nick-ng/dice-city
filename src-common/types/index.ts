@@ -1,13 +1,14 @@
-import { TypeOf } from "io-ts/Decoder";
-import {
-  buildingDecoder,
-  establishmentDecoder,
-  landmarkDecoder,
-} from "./decoders/game";
+import z from "zod";
 
-export type Building = TypeOf<typeof buildingDecoder>;
-export type Establishment = TypeOf<typeof establishmentDecoder>;
-export type Landmark = TypeOf<typeof landmarkDecoder>;
+import {
+  buildingSchema,
+  establishmentSchema,
+  landmarkSchema,
+} from "./schemas/game.js";
+
+export type Building = z.infer<typeof buildingSchema>;
+export type Establishment = z.infer<typeof establishmentSchema>;
+export type Landmark = z.infer<typeof landmarkSchema>;
 
 export type DeckBlueprint = {
   card: string;

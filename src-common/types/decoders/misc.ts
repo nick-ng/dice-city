@@ -1,5 +1,5 @@
-import { string, refine } from "io-ts/Decoder";
-import { pipe } from "fp-ts/function";
+import { string, refine } from "io-ts/lib/Decoder.js";
+import { pipe } from "fp-ts/lib/function.js";
 
 export interface UuidishBrand {
   readonly Uuidish: unique symbol;

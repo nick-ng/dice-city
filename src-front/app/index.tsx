@@ -1,9 +1,9 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import Loading from "./loading";
-const Home = lazy(() => import("./home"));
-const DevFrontEnd = lazy(() => import("./dev-front-end"));
+import Loading from "./loading/index.js";
+const Home = lazy(() => import("./home/index.js"));
+const DevFrontEnd = lazy(() => import("./dev-front-end/index.js"));
 
 export default function App() {
   return (

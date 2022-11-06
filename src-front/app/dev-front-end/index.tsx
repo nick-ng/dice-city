@@ -1,7 +1,7 @@
-import React, { lazy, LazyExoticComponent } from "react";
+import { lazy, LazyExoticComponent } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
-import Container from "src-front/layout/container";
+import Container from "../../layout/container.js";
 
 const components: {
   name: string;
@@ -11,12 +11,12 @@ const components: {
   {
     name: "Loading",
     path: "loading",
-    Element: lazy(() => import("../loading")),
+    Element: lazy(() => import("../loading/index.js")),
   },
   {
     name: "Establishments",
     path: "establishments",
-    Element: lazy(() => import("../card/dev-all-establishments")),
+    Element: lazy(() => import("../card/dev-all-establishments.js")),
   },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
@@ -24,13 +24,15 @@ export default function DevFrontEnd() {
   return (
     <Container className="grid h-full grid-cols-[auto_1fr] gap-2">
       <div className="h-full overflow-y-auto">
-        <h1>Components</h1>
+        <h1>Dev Page</h1>
+        <h2>Components</h2>
         <ul>
           {components.map(({ name, path }) => (
             <li key={path}>
               <Link to={`/dev/${path}`}>{name}</Link>
             </li>
           ))}
+          <li>API_ORIGIN: {__API_ORIGIN__}</li>
         </ul>
       </div>
       <div className="h-full border">
