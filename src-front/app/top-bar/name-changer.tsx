@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 
 import { useOptions } from "@front/hooks/options-context.js";
 
+import ItemLayout from "./item-layout.js";
+
 export default function NameChanger() {
   const {
     options: { playerName },
@@ -22,7 +24,7 @@ export default function NameChanger() {
   }, []);
 
   return (
-    <div>
+    <ItemLayout>
       {editName ? (
         <form
           onSubmit={(e) => {
@@ -70,6 +72,6 @@ export default function NameChanger() {
           </button>
         </>
       )}
-    </div>
+    </ItemLayout>
   );
 }

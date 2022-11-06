@@ -1,12 +1,13 @@
-import Container from "@front/layout/container.js";
-import TopBar from "../top-bar/index.js";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-    <Container>
-      <TopBar />
+    <div>
       <h1>Dice City</h1>
       <p>Based on Machi Koro</p>
-    </Container>
+      <p>
+        <Link to="/dev">Element List</Link>
+      </p>
+    </div>
   );
 }

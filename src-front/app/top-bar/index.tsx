@@ -1,15 +1,23 @@
+import { Link } from "react-router-dom";
+
+import ItemLayout from "./item-layout.js";
 import NameChanger from "./name-changer.js";
+import Options from "./options/index.js";
 
 export default function TopBar() {
   return (
-    <div className="flex justify-between">
+    <div className="mb-1 flex justify-between">
       <NameChanger />
       <div className="grow" />
-      <div>
+      <Options />
+      <ItemLayout>
+        <Link to="/">Home</Link>
+      </ItemLayout>
+      <ItemLayout>
         <a target="_blank" href="https://github.com/nick-ng/dice-city">
           GitHub
         </a>
-      </div>
+      </ItemLayout>
     </div>
   );
 }

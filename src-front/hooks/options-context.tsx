@@ -8,9 +8,12 @@ export interface Options {
   playerName?: string;
   playerId?: string;
   playerPassword?: string;
+  darkMode?: "light" | "dark" | "system";
 }
 
-export const defaultOptions: Options = {};
+export const defaultOptions: Options = {
+  darkMode: "system",
+};
 
 const OptionsContext = createContext<{
   options: Options;

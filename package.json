@@ -20,7 +20,8 @@
     "build-front": "vite build",
     "check-build": "rm -rf ./dist-* && tsc --build ./src-back/tsconfig.json && vite build",
     "sim-deploy": "rm -rf ./dist-* && npm run heroku-postbuild && npm run serve",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "vite": "vite"
   },
   "repository": {
     "type": "git",
