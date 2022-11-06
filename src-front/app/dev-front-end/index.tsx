@@ -1,7 +1,7 @@
-import React, { lazy, LazyExoticComponent } from "react";
+import { lazy, LazyExoticComponent } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
-import Container from "../../layout/container";
+import Container from "../../layout/container.js";
 
 const components: {
   name: string;
@@ -11,12 +11,12 @@ const components: {
   {
     name: "Loading",
     path: "loading",
-    Element: lazy(() => import("../loading")),
+    Element: lazy(() => import("../loading/index.js")),
   },
   {
     name: "Establishments",
     path: "establishments",
-    Element: lazy(() => import("../card/dev-all-establishments")),
+    Element: lazy(() => import("../card/dev-all-establishments.js")),
   },
 ].sort((a, b) => a.name.localeCompare(b.name));
 

@@ -1,6 +1,4 @@
-import React from "react";
-
-import NameChanger from "./name-changer";
+import NameChanger from "./name-changer.js";
 
 export default function TopBar() {
   return (

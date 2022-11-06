@@ -1,7 +1,5 @@
-import React from "react";
-
-import Container from "@front/layout/container";
-import TopBar from "../top-bar";
+import Container from "@front/layout/container.js";
+import TopBar from "../top-bar/index.js";
 
 export default function Home() {
   return (

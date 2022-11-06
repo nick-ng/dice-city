@@ -5,13 +5,13 @@ git pull
 git branch -D gh-pages
 rm -rf ./dist-front/
 API_ORIGIN=https://dice-city-api.pux.one npm run build-front
-cp ./static/* ./dist-front
+cp -R ./static/. ./dist-front
 cp ./dist-front/index.html ./dist-front/404.html
 echo dice-city.pux.one > ./dist-front/CNAME
 
 git checkout --orphan gh-pages
 git reset
-cp ./dist-front/* ./
+cp -R ./dist-front/. ./
 git add $(ls ./dist-front)
 
 git commit -m "$(date) deploy front-end"

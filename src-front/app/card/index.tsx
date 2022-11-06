@@ -1,8 +1,7 @@
-import React from "react";
 import {
   Establishment as EstablishmentType,
   Landmark as LandmarkType,
-} from "src-common/types";
+} from "@common/types/index.js";
 
 type EstablishmentProps = {
   building: EstablishmentType;

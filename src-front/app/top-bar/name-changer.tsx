@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 
-import { useOptions } from "../../hooks/options-context";
+import { useOptions } from "@front/hooks/options-context.js";
 
 export default function NameChanger() {
   const {
