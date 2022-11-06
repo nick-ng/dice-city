@@ -1,8 +1,6 @@
 import { lazy, LazyExoticComponent } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
-import Container from "../../layout/container.js";
-
 const components: {
   name: string;
   path: string;
@@ -22,7 +20,7 @@ const components: {
 
 export default function DevFrontEnd() {
   return (
-    <Container className="grid h-full grid-cols-[auto_1fr] gap-2">
+    <div className="grid h-full grid-cols-[auto_1fr] gap-2">
       <div className="h-full overflow-y-auto">
         <h1>Dev Page</h1>
         <h2>Components</h2>
@@ -35,13 +33,29 @@ export default function DevFrontEnd() {
           <li>API_ORIGIN: {__API_ORIGIN__}</li>
         </ul>
       </div>
-      <div className="h-full border">
-        <Routes>
-          {components.map(({ path, Element }) => (
-            <Route key={path} path={`/${path}`} element={<Element />} />
-          ))}
-        </Routes>
+      <div>
+        <button
+          onClick={() => {
+            if (document.documentElement.classList.contains("dark")) {
+              document.documentElement.classList.remove("dark");
+            } else {
+              document.documentElement.classList.add("dark");
+            }
+          }}
+          className="ml-2 mb-2 rounded border border-gray-600 px-2 py-0 dark:border-gray-300"
+        >
+          Toggle Dark Mode
+        </button>{" "}
+        Clicking this button doesn't affect your Dark Mode setting. Refresh the
+        page to return to your saved Dark Mode setting.
+        <div className="h-full border">
+          <Routes>
+            {components.map(({ path, Element }) => (
+              <Route key={path} path={`/${path}`} element={<Element />} />
+            ))}
+          </Routes>
+        </div>
       </div>
-    </Container>
+    </div>
   );
 }
