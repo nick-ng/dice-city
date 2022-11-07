@@ -28,7 +28,5 @@ export const getName = (seed: string, adjectiveCount = 2) => {
   return [
     ...adjectives.sort((a, b) => a.order - b.order).map(({ value }) => value),
     noun,
-  ]
-    .map((s) => `${s[0].toUpperCase()}${s.slice(1).toLowerCase()}`)
-    .join("");
+  ].join("");
 };

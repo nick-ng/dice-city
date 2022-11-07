@@ -22,11 +22,11 @@ export const landmarkSchema = z.object({
   effect: z.string(),
 });
 
-export const establishmentSchema = landmarkSchema.merge(
-  z.object({
-    colour,
-    activationNumbers: z.array(z.number()),
-  })
-);
+const establishmentOnly = z.object({
+  colour,
+  activationNumbers: z.array(z.number()),
+});
 
-export const buildingSchema = z.union([landmarkSchema, establishmentSchema]);
+export const establishmentSchema = landmarkSchema.merge(establishmentOnly);
+
+export const buildingSchema = landmarkSchema.merge(establishmentOnly.partial());

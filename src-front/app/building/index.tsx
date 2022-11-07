@@ -1,12 +1,13 @@
-import type { Establishment as EstablishmentType } from "@common/types/index.js";
+import type { Building as BuildingType } from "@common/types/index.js";
 
 import { bgColours, getTag, replaceTags } from "./utils.js";
 
-type EstablishmentProps = {
-  building: EstablishmentType;
+type BuildingProps = {
+  building: BuildingType;
+  inactive?: boolean;
 };
 
-export default function Establishment({ building }: EstablishmentProps) {
+export default function Building({ building, inactive }: BuildingProps) {
   const {
     activationNumbers,
     display,
@@ -18,26 +19,30 @@ export default function Establishment({ building }: EstablishmentProps) {
     key,
   } = building;
 
+  const isEstablishment = colour && activationNumbers;
   const effectWithPictuers = replaceTags(effect);
+  const actualPicture = inactive ? ["🚧", "🏗️"] : picture;
 
   return (
     <div className="relative flex h-72 w-52 flex-col border border-gray-700 text-center dark:border-gray-300">
-      <div className={`${bgColours[colour]} font-bold text-white`}>
-        {activationNumbers.join(" ~ ")}
-      </div>
-      <div>
+      {isEstablishment && (
+        <div className={`${bgColours[colour]} font-bold text-white`}>
+          {activationNumbers.join(" ~ ")}
+        </div>
+      )}
+      <div className={isEstablishment ? "" : "pt-1"}>
         {getTag(tag)} {display}
       </div>
       <div
         className={`grid flex-1 place-content-center self-center ${
-          picture.length === 1 ? "grid-cols-1" : "grid-cols-2"
+          actualPicture.length === 1 ? "grid-cols-1" : "grid-cols-2"
         } ${
-          picture.length > 2 || effect.length > 60
+          actualPicture.length > 2 || effect.length > 70
             ? "text-[225%]"
-            : "text-[410%]"
+            : "text-[400%]"
         }`}
       >
-        {picture.map((emoji, i) => (
+        {actualPicture.map((emoji, i) => (
           <span key={`${key}${i}`}>{emoji}</span>
         ))}
       </div>

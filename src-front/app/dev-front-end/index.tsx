@@ -12,9 +12,9 @@ const components: {
     Element: lazy(() => import("../loading/index.js")),
   },
   {
-    name: "Establishments",
-    path: "establishments",
-    Element: lazy(() => import("../card/dev-all-establishments.js")),
+    name: "Buildings",
+    path: "buildings",
+    Element: lazy(() => import("../building/dev-all-buildings.js")),
   },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
