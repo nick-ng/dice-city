@@ -1,11 +1,11 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import type { Options } from "@front/hooks/options-context.js";
+import type { Options } from "~front/hooks/options-context.js";
 
-import { useOptions } from "@front/hooks/options-context.js";
+import { useOptions } from "~front/hooks/options-context.js";
 
-import Container from "@front/layout/container.js";
+import Container from "~front/layout/container.js";
 import Loading from "./loading/index.js";
 import TopBar from "./top-bar/index.js";
 const Home = lazy(() => import("./home/index.js"));

@@ -16,8 +16,8 @@ export default defineConfig(() => {
     },
     resolve: {
       alias: {
-        "@front": path.resolve(__dirname, "./src-front"),
-        "@common": path.resolve(__dirname, "./src-common"),
+        "~front": path.resolve(__dirname, "./src-front"),
+        "~common": path.resolve(__dirname, "./src-common"),
       },
     },
 

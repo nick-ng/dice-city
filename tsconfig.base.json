@@ -16,9 +16,10 @@
     "declaration": true,
     "declarationMap": true,
     "paths": {
-      "@front/*": ["src-front/*"],
-      "@common/*": ["src-common/*"],
-      "@back": ["src-back/*"]
+      "~front/*": ["src-front/*"],
+      "~common/*": ["src-common/*"],
+      "~back/*": ["src-back/*"]
     }
-  }
+  },
+  "ts-node": { "esm": true }
 }
