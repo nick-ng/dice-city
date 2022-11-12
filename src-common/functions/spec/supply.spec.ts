@@ -1,7 +1,7 @@
 import assert from "node:assert";
 
-import { getDeck } from "../../../../src-common/constants/buildings.js";
-import { shuffle } from "../../../../src-common/utils/shuffle.js";
+import { getDeck } from "../../constants/buildings.js";
+import { shuffle } from "../../utils/shuffle.js";
 
 import { totalSupply } from "../supply.js";
 

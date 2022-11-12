@@ -20,3 +20,8 @@ export type Deck = string[];
 export type Supply = {
   [establishmentKey: string]: string[];
 };
+
+export type City = {
+  establishments: { [establishmentKey: string]: string[] };
+  landmarks: { [landmarkKey: string]: boolean };
+};
