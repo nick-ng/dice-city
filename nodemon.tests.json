@@ -1,0 +1,6 @@
+{
+  "watch": ["src-back", "src-common", "src-front"],
+  "ext": "ts",
+  "delay": 200,
+  "pollingInterval": 1000
+}

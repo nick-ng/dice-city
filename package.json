@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "test-ci": "TS_NODE_PROJECT='./tsconfig.mocha.json' mocha",
-    "test": "TS_NODE_PROJECT='./tsconfig.mocha.json' NODE_ENV=development mocha",
+    "test-benchmark": "TS_NODE_PROJECT='./tsconfig.mocha.json' NODE_ENV=development mocha",
+    "test": "nodemon --exec npm run test-ci",
     "once": "NODE_ENV=development rm -rf ./dist-* && tsc --build ./src-back/tsconfig.json",
-    "dev-back": "NODE_ENV=development tsc --build ./src-back/tsconfig.json --watch & nodemon --legacy-watch --config nodemon.main.json ./dist-back/main.js",
+    "dev-back": "TS_NODE_PROJECT='./src-back/tsconfig.json' NODE_ENV=development tsc --build ./src-back/tsconfig.json --watch & nodemon --legacy-watch --config nodemon.main.json -r tsconfig-paths/register ./dist-back/main.js",
     "dev-front": "vite",
     "dev-worker": "NODE_ENV=development nodemon --legacy-watch --config nodemon.worker.json ./dist-back/worker.js",
     "start": "npm run stop && docker compose up -d && vite",
@@ -17,6 +18,7 @@
     "tailwind-watch": "tailwindcss -i ./src-front/base.css -o ./dist-front/output.css --watch --poll",
     "serve": "node ./dist-back/main.js",
     "build-back": "NODE_ENV=production tsc --build ./src-back/tsconfig.json",
+    "aaa": "NODE_ENV=production tsc --traceResolution -p ./src-back/tsconfig.json > out.log",
     "build-front": "vite build",
     "check-build": "rm -rf ./dist-* && tsc --build ./src-back/tsconfig.json && vite build",
     "sim-deploy": "rm -rf ./dist-* && npm run heroku-postbuild && npm run serve",
@@ -75,7 +77,9 @@
     "mocha": "^10.0.0",
     "nodemon": "^2.0.16",
     "prettier": "^2.7.1",
-    "prettier-plugin-tailwindcss": "^0.1.13"
+    "prettier-plugin-tailwindcss": "^0.1.13",
+    "ts-mocha": "^10.0.0",
+    "tsconfig-paths": "^4.1.0"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
