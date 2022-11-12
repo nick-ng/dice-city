@@ -1,4 +1,4 @@
-import type { Building as BuildingType } from "@common/types/index.js";
+import type { Building as BuildingType } from "~common/types/index.js";
 
 import { bgColours, getTag, replaceTags } from "./utils.js";
 

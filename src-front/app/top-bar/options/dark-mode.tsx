@@ -1,4 +1,4 @@
-import type { Options, useOptions } from "@front/hooks/options-context.js";
+import type { Options, useOptions } from "~front/hooks/options-context.js";
 
 export default function DarkMode({
   darkMode,

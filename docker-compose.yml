@@ -19,26 +19,6 @@ services:
     volumes:
       - ./:/usr/src/app
     command: npm run dev-worker
-  # front-end:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: dev
-  #   ports:
-  #     - "3434:3434"
-  #   volumes:
-  #     - ./:/usr/src/app
-  #     - /usr/src/app/node_modules/
-  #   command: npm run dev-front
-  # tailwind:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: dev
-  #   volumes:
-  #     - ./:/usr/src/app
-  #   command: npm run tailwind-watch
-  #   tty: true
   redis:
     image: redis:alpine
     command: redis-server /usr/local/etc/redis/redis.conf

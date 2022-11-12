@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-import { useOptions } from "@front/hooks/options-context.js";
+import { useOptions } from "~front/hooks/options-context.js";
 
 import ItemLayout from "./item-layout.js";
 
