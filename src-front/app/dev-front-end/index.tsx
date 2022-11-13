@@ -16,13 +16,27 @@ const components: {
     path: "buildings",
     Element: lazy(() => import("../building/dev-all-buildings.js")),
   },
+  {
+    name: "Supply - Total",
+    path: "supply-total",
+    Element: lazy(() => import("../supply/dev-supply.js")),
+  },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function DevFrontEnd() {
   return (
-    <div className="grid h-full grid-cols-[auto_1fr] gap-2">
-      <div className="h-full overflow-y-auto">
-        <h1>Dev Page</h1>
+    <div className="flex h-full flex-col md:grid md:flex-none md:grid-cols-[auto_1fr] md:gap-2">
+      <details className="mb-2 md:hidden">
+        <summary>Components</summary>
+        <ul>
+          {components.map(({ name, path }) => (
+            <li key={path}>
+              <Link to={`/dev/${path}`}>{name}</Link>
+            </li>
+          ))}
+        </ul>
+      </details>
+      <div className="hidden h-full overflow-y-auto md:block">
         <h2>Components</h2>
         <ul>
           {components.map(({ name, path }) => (
@@ -30,7 +44,6 @@ export default function DevFrontEnd() {
               <Link to={`/dev/${path}`}>{name}</Link>
             </li>
           ))}
-          <li>API_ORIGIN: {__API_ORIGIN__}</li>
         </ul>
       </div>
       <div>
@@ -46,8 +59,10 @@ export default function DevFrontEnd() {
         >
           Toggle Dark Mode
         </button>{" "}
-        Clicking this button doesn't affect your Dark Mode setting. Refresh the
-        page to return to your saved Dark Mode setting.
+        <span className="hidden md:inline">
+          Clicking this button doesn't affect your Dark Mode setting. Refresh
+          the page to return to your saved Dark Mode setting.
+        </span>
         <div className="h-full border">
           <Routes>
             {components.map(({ path, Element }) => (
@@ -55,6 +70,7 @@ export default function DevFrontEnd() {
             ))}
           </Routes>
         </div>
+        <div>API_ORIGIN: {__API_ORIGIN__}</div>
       </div>
     </div>
   );

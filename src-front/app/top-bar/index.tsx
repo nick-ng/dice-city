@@ -6,7 +6,7 @@ import Options from "./options/index.js";
 
 export default function TopBar() {
   return (
-    <div className="mb-1 flex justify-between">
+    <div className="mb-1 flex flex-wrap justify-end">
       <NameChanger />
       <div className="grow" />
       <Options />
