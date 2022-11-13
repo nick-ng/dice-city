@@ -1,9 +1,11 @@
 import type { Supply as SupplyType } from "~common/types/index.js";
 
-import { establishments } from "~common/constants/buildings.js";
+import {
+  establishments,
+  sortEstablishments,
+} from "~common/constants/buildings.js";
 
 import Stack from "./stack.js";
-import { sortEstablishments } from "./utils.js";
 
 export interface SupplyProps {
   supply: SupplyType;
@@ -18,7 +20,7 @@ export default function Supply({ supply, onChoose }: SupplyProps) {
   const buildings = unsortedBuildings.sort(sortEstablishments);
 
   return (
-    <div>
+    <div className="inline-block">
       {buildings.map((building) => (
         <button
           key={building.key}
