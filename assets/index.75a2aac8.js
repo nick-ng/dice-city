@@ -1,0 +1,1 @@
+import{j as i,a as e,L as n}from"./index.5bb15536.js";function d(){return i("div",{children:[e("h1",{children:"Dice City"}),e("p",{children:"Based on Machi Koro"}),e("p",{children:e(n,{to:"/dev",children:"Element List"})})]})}export{d as default};
