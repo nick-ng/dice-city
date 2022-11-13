@@ -16,6 +16,11 @@ const components: {
     path: "buildings",
     Element: lazy(() => import("../building/dev-all-buildings.js")),
   },
+  {
+    name: "Supply - Total",
+    path: "supply-total",
+    Element: lazy(() => import("../supply/dev-supply.js")),
+  },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function DevFrontEnd() {
@@ -30,7 +35,6 @@ export default function DevFrontEnd() {
               <Link to={`/dev/${path}`}>{name}</Link>
             </li>
           ))}
-          <li>API_ORIGIN: {__API_ORIGIN__}</li>
         </ul>
       </div>
       <div>
@@ -55,6 +59,7 @@ export default function DevFrontEnd() {
             ))}
           </Routes>
         </div>
+        <div>API_ORIGIN: {__API_ORIGIN__}</div>
       </div>
     </div>
   );

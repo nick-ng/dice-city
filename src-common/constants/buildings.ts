@@ -103,7 +103,7 @@ const tempEstablishments: { [key: string]: Omit<Establishment, "key"> } = {
     activationNumbers: [5],
     display: "Forest",
     tag: "cog",
-    picture: ["🌲", "🌲", "🌲", "🌲"],
+    picture: ["🌲", "🌲"],
     cost: 3,
     effect: "Get 1 coin from the bank, on anyone's turn.",
   },

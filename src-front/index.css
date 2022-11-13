@@ -17,6 +17,10 @@
     @apply text-blue-700 underline dark:text-blue-300;
   }
 
+  summary {
+    @apply cursor-pointer;
+  }
+
   h1 {
     @apply text-2xl;
   }
@@ -27,10 +31,10 @@
 
   .coin-float {
     @apply float-left flex h-full items-end;
-    shape-outside: inset(calc(100% - 32px) 0 0);
+    shape-outside: inset(calc(100% - 16px) 0 0);
   }
 
   .coin {
-    @apply flex h-8 w-8 items-center justify-center rounded-full border border-black;
+    @apply flex h-5 w-5 items-center justify-center rounded-full border border-black;
   }
 }
