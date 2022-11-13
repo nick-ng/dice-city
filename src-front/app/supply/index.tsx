@@ -1,9 +1,11 @@
 import type { Supply as SupplyType } from "~common/types/index.js";
 
-import { establishments } from "~common/constants/buildings.js";
+import {
+  establishments,
+  sortEstablishments,
+} from "~common/constants/buildings.js";
 
 import Stack from "./stack.js";
-import { sortEstablishments } from "./utils.js";
 
 export interface SupplyProps {
   supply: SupplyType;
