@@ -8,7 +8,7 @@ export default function Options() {
   return (
     <ItemLayout className="relative">
       <details>
-        <summary className="select-none underline">Options</summary>
+        <summary>Options</summary>
         <div className="absolute top-full right-0 z-10 w-max border border-gray-700 bg-white p-2 dark:border-gray-300 dark:bg-gray-800">
           <DarkMode darkMode={options.darkMode} setOptions={setOptions} />
         </div>

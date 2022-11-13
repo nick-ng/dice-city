@@ -22,7 +22,7 @@ export default function Supply({ supply, onChoose }: SupplyProps) {
       {buildings.map((building) => (
         <button
           key={building.key}
-          className="inline-block align-top"
+          className="inline-block w-min align-top"
           onClick={() => {
             onChoose && onChoose(building.key);
           }}
