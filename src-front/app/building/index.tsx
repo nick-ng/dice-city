@@ -35,7 +35,8 @@ export default function Building({ building, inactive }: BuildingProps) {
       )}
       <div className={`${isEstablishment ? "" : "pt-1"} flex`}>
         <span className="flex-1 text-xs md:text-sm">
-          {getTag(tag)} {display}
+          {getTag(tag)}
+          {display}
         </span>
         {!isEstablishment && <div className="coin mr-0.5">{cost}</div>}
       </div>
