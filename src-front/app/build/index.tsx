@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type {
   Supply as SupplyType,
   City as CityType,
 } from "~common/types/index.js";
 
-import { idToBuilding, establishments } from "~common/constants/buildings.js";
+import {
+  idToBuilding,
+  establishments,
+  landmarks,
+} from "~common/constants/buildings.js";
 import BuildingContainer from "../building/building-container.js";
 import Building from "../building/index.js";
 import Supply from "../supply/index.js";
@@ -27,19 +31,22 @@ export default function Build({
 
   const chosenBuilding = idToBuilding(chosenBuildingString);
 
+  useEffect(() => {
+    setChosenBuildingString("");
+  }, [
+    Object.entries(supply)
+      .map(([k, v]) => `${k}-${v.length}`)
+      .sort((a, b) => a.localeCompare(b))
+      .join(","),
+    city,
+  ]);
+
   return (
     <div className="flex flex-row items-start justify-start">
-      <div className="sticky top-0 inline-block p-0.5">
+      <div className="sticky top-0 inline-block">
         <p className="text-center text-sm md:text-base">Chosen Building</p>
-        {chosenBuilding ? (
-          <Building building={chosenBuilding} />
-        ) : (
-          <BuildingContainer className="flex flex-row justify-center align-middle text-3xl">
-            ❔
-          </BuildingContainer>
-        )}
         <button
-          className="mt-1 w-full rounded border border-gray-600 px-2 py-2 dark:border-gray-300 md:py-0"
+          className="button-default p-0.5 pb-1"
           disabled={!chosenBuilding}
           onClick={() => {
             if (Object.keys(establishments).includes(chosenBuildingString)) {
@@ -49,17 +56,51 @@ export default function Build({
             }
           }}
         >
-          {chosenBuilding
-            ? `Build ${chosenBuilding.display}`
-            : "Choose a Building"}
+          {chosenBuilding ? (
+            <Building building={chosenBuilding} />
+          ) : (
+            <BuildingContainer className="flex flex-row justify-center align-middle text-3xl">
+              ❔
+            </BuildingContainer>
+          )}
+
+          <span>
+            {chosenBuilding
+              ? `Build ${chosenBuilding.display}`
+              : "Choose a Building"}
+          </span>
         </button>
       </div>
-      <Supply
-        supply={supply}
-        onChoose={(buildingString) => {
-          setChosenBuildingString(buildingString);
-        }}
-      />
+      <div>
+        <p className="text-sm md:text-base">Available Buildings</p>
+        <div className="flex flex-row">
+          {Object.entries(city.landmarks).map(([landmarkKey, isBuilt]) => {
+            const tempLandmark = landmarks[landmarkKey];
+            if (!tempLandmark || isBuilt) {
+              return null;
+            }
+
+            return (
+              <button
+                key={landmarkKey}
+                className="border-default inline-block p-0.5"
+                style={{ order: tempLandmark.cost }}
+                onClick={() => {
+                  setChosenBuildingString(landmarkKey);
+                }}
+              >
+                <Building building={tempLandmark} />
+              </button>
+            );
+          })}
+        </div>
+        <Supply
+          supply={supply}
+          onChoose={(buildingString) => {
+            setChosenBuildingString(buildingString);
+          }}
+        />
+      </div>
     </div>
   );
 }

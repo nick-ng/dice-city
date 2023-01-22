@@ -33,6 +33,10 @@
     @apply cursor-not-allowed opacity-70;
   }
 
+  .button-default {
+    @apply rounded border border-gray-600 px-2 py-2 dark:border-gray-300 md:py-0;
+  }
+
   .border-default {
     @apply border border-gray-300 dark:border-gray-600;
   }
