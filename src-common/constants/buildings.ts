@@ -279,3 +279,31 @@ export const getDeck = (cardSet: "base" = "base"): Deck => {
       return makeDeck(baseDeck);
   }
 };
+
+export const idToBuilding = (id: string): Establishment | Landmark | null => {
+  const [buildingKey, _rest] = id.split(":");
+
+  return landmarks[buildingKey] || establishments[buildingKey] || null;
+};
+
+export const sortEstablishments = (
+  a: Establishment,
+  b: Establishment
+): number => {
+  const aActivation = (
+    a.activationNumbers.reduce((prev, curr) => prev + curr, 0) /
+    a.activationNumbers.length
+  ).toFixed(2);
+  const bActivation = (
+    b.activationNumbers.reduce((prev, curr) => prev + curr, 0) /
+    b.activationNumbers.length
+  ).toFixed(2);
+
+  const padLength = Math.max(
+    ...[aActivation, bActivation].map((c) => c.length)
+  );
+
+  const aString = `${aActivation.padStart(padLength, "0")}_${a.display}`;
+  const bString = `${bActivation.padStart(padLength, "0")}_${b.display}`;
+  return aString.localeCompare(bString);
+};

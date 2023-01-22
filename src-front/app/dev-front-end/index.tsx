@@ -21,6 +21,11 @@ const components: {
     path: "supply-total",
     Element: lazy(() => import("../supply/dev-supply.js")),
   },
+  {
+    name: "Build Interface",
+    path: "build-interface",
+    Element: lazy(() => import("../build/dev-build.js")),
+  },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function DevFrontEnd() {
@@ -48,6 +53,7 @@ export default function DevFrontEnd() {
       </div>
       <div>
         <button
+          className="ml-2 mb-2 rounded border border-gray-600 px-2 py-0 dark:border-gray-300"
           onClick={() => {
             if (document.documentElement.classList.contains("dark")) {
               document.documentElement.classList.remove("dark");
@@ -55,7 +61,6 @@ export default function DevFrontEnd() {
               document.documentElement.classList.add("dark");
             }
           }}
-          className="ml-2 mb-2 rounded border border-gray-600 px-2 py-0 dark:border-gray-300"
         >
           Toggle Dark Mode
         </button>{" "}

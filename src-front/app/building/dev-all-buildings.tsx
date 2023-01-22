@@ -1,6 +1,5 @@
 import { establishments, landmarks } from "~common/constants/buildings.js";
 
-import Container from "~front/layout/container.js";
 import Building from "./index.js";
 
 export default function DevAllBuildings() {

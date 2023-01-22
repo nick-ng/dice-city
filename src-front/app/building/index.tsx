@@ -2,6 +2,8 @@ import type { Building as BuildingType } from "~common/types/index.js";
 
 import { bgColours, getTag, replaceTags } from "./utils.js";
 
+import BuildingContainer from "./building-container.js";
+
 type BuildingProps = {
   building: BuildingType;
   inactive?: boolean;
@@ -24,7 +26,7 @@ export default function Building({ building, inactive }: BuildingProps) {
   const actualPicture = inactive ? ["🚧", "🏗️"] : picture;
 
   return (
-    <div className="relative flex h-52 w-28 flex-col rounded border-2 border-gray-700 text-center dark:border-gray-300 md:w-36">
+    <BuildingContainer>
       {isEstablishment && (
         <div className={`${bgColours[colour]} relative font-bold text-white`}>
           {activationNumbers.join(" ~ ")}
@@ -60,6 +62,6 @@ export default function Building({ building, inactive }: BuildingProps) {
       >
         {effectWithPictuers}
       </div>
-    </div>
+    </BuildingContainer>
   );
 }

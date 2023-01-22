@@ -18,7 +18,7 @@ export default function Stack({ establishment, count, className }: StackProps) {
 
   return (
     <div
-      className={`${className || ""} p-0.5`}
+      className={`border-default ${className || ""} p-0.5`}
       style={{ transformBox: "content-box" }}
     >
       {Array(count - 1)
@@ -26,10 +26,10 @@ export default function Stack({ establishment, count, className }: StackProps) {
         .map((_, n) => (
           <div
             key={`${key}-${n}`}
-            className="-mb-1 h-8 w-full overflow-y-hidden rounded-t border-x-2 border-t-2 border-x-gray-700 border-t-gray-700 text-center dark:border-x-gray-300 dark:border-t-gray-300"
+            className="-mb-1 hidden h-4 w-full overflow-y-hidden  md:block"
           >
             <div
-              className={`${bgColours[colour]} relative font-bold text-white`}
+              className={`${bgColours[colour]} relative rounded-t border-x-2 border-t-2 border-x-gray-700 border-t-gray-700 text-center font-bold text-white dark:border-x-gray-300 dark:border-t-gray-300`}
             >
               {activationNumbers.join(" ~ ")}
               <div className="coin absolute top-0 bottom-0 right-0.5 my-auto">
@@ -38,6 +38,7 @@ export default function Stack({ establishment, count, className }: StackProps) {
             </div>
           </div>
         ))}
+      <div className="md:hidden">&times;{count}</div>
       <Building building={establishment} />
     </div>
   );

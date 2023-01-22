@@ -11,7 +11,7 @@
     "dev-back": "TS_NODE_PROJECT='./src-back/tsconfig.json' nodemon -L ./src-back/main.ts",
     "dev-front": "vite --host",
     "dev-worker": "TS_NODE_PROJECT='./src-back/tsconfig.json' nodemon -L ./src-back/worker.ts",
-    "start": "npm run stop && docker compose up -d && vite",
+    "start": "npm run stop && docker compose up -d && vite --host",
     "dev-logs": "docker compose logs -f",
     "stop": "docker compose down",
     "serve": "node ./dist-back/main.js",
