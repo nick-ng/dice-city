@@ -46,7 +46,7 @@ export default function Build({
       <div className="sticky top-0 inline-block">
         <p className="text-center text-sm md:text-base">Chosen Building</p>
         <button
-          className="button-default p-0.5 pb-1"
+          className="button-default w-min p-0.5 pb-1"
           disabled={!chosenBuilding}
           onClick={() => {
             if (Object.keys(establishments).includes(chosenBuildingString)) {
@@ -64,7 +64,7 @@ export default function Build({
             </BuildingContainer>
           )}
 
-          <span>
+          <span className="px-0.5">
             {chosenBuilding
               ? `Build ${chosenBuilding.display}`
               : "Choose a Building"}
