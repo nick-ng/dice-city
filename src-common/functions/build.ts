@@ -1,7 +1,7 @@
 import { produce } from "immer";
 
 import type { City, Supply } from "~common/types/index.js";
-import { establishments, landmarks } from "../constants/buildings.js";
+import { establishments } from "../constants/buildings.js";
 
 export const addEstablishmentToCity = (
   city: City,
