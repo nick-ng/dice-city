@@ -29,7 +29,16 @@ const establishmentOnly = z.object({
 
 export const establishmentSchema = landmarkSchema.merge(establishmentOnly);
 
+export const supplySchema = z.record(z.string(), z.array(z.string()));
+
 export const buildingSchema = landmarkSchema.merge(establishmentOnly.partial());
+
+export const deckSchema = z.array(z.string());
+
+export const citySchema = z.object({
+  establishments: z.record(z.string(), z.array(z.string())),
+  landmarks: z.record(z.string(), z.boolean()),
+});
 
 export const playerSchema = z.object({
   id: z.string(),
@@ -39,3 +48,5 @@ export const playerSchema = z.object({
 export const playerSecretsSchema = z.object({
   password: z.string(),
 });
+
+// todo(nick-ng): make gameState = { publicState, secretState }

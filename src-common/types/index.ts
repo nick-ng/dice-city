@@ -4,6 +4,9 @@ import {
   buildingSchema,
   establishmentSchema,
   landmarkSchema,
+  supplySchema,
+  citySchema,
+  deckSchema,
 } from "./schemas/game.js";
 
 export type Building = z.infer<typeof buildingSchema>;
@@ -15,13 +18,6 @@ export type DeckBlueprint = {
   count: number;
 }[];
 
-export type Deck = string[];
-
-export type Supply = {
-  [establishmentKey: string]: string[];
-};
-
-export type City = {
-  establishments: { [establishmentKey: string]: string[] };
-  landmarks: { [landmarkKey: string]: boolean };
-};
+export type Deck = z.infer<typeof deckSchema>;
+export type Supply = z.infer<typeof supplySchema>;
+export type City = z.infer<typeof citySchema>;
