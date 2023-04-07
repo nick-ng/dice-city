@@ -30,3 +30,12 @@ const establishmentOnly = z.object({
 export const establishmentSchema = landmarkSchema.merge(establishmentOnly);
 
 export const buildingSchema = landmarkSchema.merge(establishmentOnly.partial());
+
+export const playerSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+});
+
+export const playerSecretsSchema = z.object({
+  password: z.string(),
+});
