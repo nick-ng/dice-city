@@ -49,4 +49,15 @@ export const playerSecretsSchema = z.object({
   password: z.string(),
 });
 
-// todo(nick-ng): make gameState = { publicState, secretState }
+export const publicStateSchema = z.record(
+  z.string(),
+  z.object({
+    playerId: z.string(),
+    city: citySchema,
+    money: z.number(),
+  })
+);
+
+export const gameStateSchema = z.object({
+  publicState: publicStateSchema,
+});
