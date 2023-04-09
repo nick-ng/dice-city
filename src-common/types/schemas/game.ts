@@ -58,6 +58,25 @@ export const publicStateSchema = z.record(
   })
 );
 
+export const gameDetailsDecoder = z.object({
+  id: z.string(),
+  players: z.array(playerSchema),
+  hostId: z.string(),
+});
+
+export const gameSettingsSchema = z.object({
+  timeLimitSeconds: z.number(),
+  timeLimitType: z.enum(["off", "on"]),
+});
+
 export const gameStateSchema = z.object({
   publicState: publicStateSchema,
+});
+
+export const gameDataSchema = z.object({
+  gameDetails: gameDetailsDecoder,
+  gameSettings: gameSettingsSchema,
+  gameState: gameStateSchema,
+  playersSecrets: z.record(z.string(), playerSecretsSchema),
+  lastActionId: z.string(),
 });
