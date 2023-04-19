@@ -1,4 +1,4 @@
-import { GameData } from "../../../../src-common/types/index.js";
+import type { GameData } from "~common/types/index.js";
 
 import Supply from "../../supply/index.js";
 import City from "../../city/index.js";

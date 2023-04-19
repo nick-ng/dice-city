@@ -3,6 +3,7 @@ import { Link, Route, Routes } from "react-router-dom";
 
 const components: {
   name: string;
+  section?: string;
   path: string;
   Element: LazyExoticComponent<() => JSX.Element>;
 }[] = [
@@ -13,18 +14,26 @@ const components: {
   },
   {
     name: "Buildings",
+    section: "components",
     path: "buildings",
     Element: lazy(() => import("../building/dev-all-buildings.js")),
   },
   {
     name: "Supply - Total",
+    section: "components",
     path: "supply-total",
     Element: lazy(() => import("../supply/dev-supply.js")),
   },
   {
     name: "Build Interface",
+    section: "components",
     path: "build-interface",
     Element: lazy(() => import("../build/dev-build.js")),
+  },
+  {
+    name: "State Compare",
+    path: "state-compare",
+    Element: lazy(() => import("./state-compare/index.js")),
   },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
@@ -34,26 +43,40 @@ export default function DevFrontEnd() {
       <details className="mb-2 md:hidden">
         <summary>Components</summary>
         <ul>
-          {components.map(({ name, path }) => (
-            <li key={path}>
-              <Link to={`/dev/${path}`}>{name}</Link>
-            </li>
-          ))}
+          {components.map(({ name, section, path }) => {
+            if (section !== "components") {
+              return null;
+            }
+            return (
+              <li key={path}>
+                <Link to={`/dev/${path}`}>{name}</Link>
+              </li>
+            );
+          })}
         </ul>
       </details>
       <div className="hidden h-full overflow-y-auto md:block">
         <h2>Components</h2>
         <ul>
-          {components.map(({ name, path }) => (
-            <li key={path}>
-              <Link to={`/dev/${path}`}>{name}</Link>
-            </li>
-          ))}
+          {components.map(({ name, section, path }) => {
+            if (section !== "components") {
+              return null;
+            }
+            return (
+              <li key={path}>
+                <Link to={`/dev/${path}`}>{name}</Link>
+              </li>
+            );
+          })}
+        </ul>
+        <h2>State Compare</h2>
+        <ul>
+          <Link to="/dev/state-compare">Main</Link>
         </ul>
       </div>
       <div>
         <button
-          className="ml-2 mb-2 rounded border border-gray-600 px-2 py-0 dark:border-gray-300"
+          className="mb-2 ml-2 rounded border border-gray-600 px-2 py-0 dark:border-gray-300"
           onClick={() => {
             if (document.documentElement.classList.contains("dark")) {
               document.documentElement.classList.remove("dark");
