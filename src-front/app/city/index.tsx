@@ -16,17 +16,19 @@ export interface CityProps {
 export default function City({ city, availableLandmarks }: CityProps) {
   return (
     <div>
-      <div>
-        {availableLandmarks.map(
-          (key) =>
-            landmarks[key] && (
-              <Building
-                key={key}
-                building={landmarks[key]}
-                inactive={city.landmarks[key]}
-              />
-            )
-        )}
+      <div className="">
+        {availableLandmarks
+          .sort((a, b) => landmarks[a].cost - landmarks[b].cost)
+          .map(
+            (key) =>
+              landmarks[key] && (
+                <Building
+                  key={key}
+                  building={landmarks[key]}
+                  inactive={city.landmarks[key]}
+                />
+              )
+          )}
       </div>
     </div>
   );

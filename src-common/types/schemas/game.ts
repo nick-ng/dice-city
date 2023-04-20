@@ -29,6 +29,11 @@ const establishmentOnly = z.object({
 
 export const establishmentSchema = landmarkSchema.merge(establishmentOnly);
 
+export const establishmentListSchema = z.record(
+  z.string(),
+  z.array(z.string())
+);
+
 export const supplySchema = z.record(z.string(), z.array(z.string()));
 
 export const buildingSchema = landmarkSchema.merge(establishmentOnly.partial());
@@ -36,7 +41,7 @@ export const buildingSchema = landmarkSchema.merge(establishmentOnly.partial());
 export const deckSchema = z.array(z.string());
 
 export const citySchema = z.object({
-  establishments: z.record(z.string(), z.array(z.string())),
+  establishments: establishmentListSchema,
   landmarks: z.record(z.string(), z.boolean()),
 });
 
@@ -51,7 +56,7 @@ export const playerSecretsSchema = z.object({
 
 const publicStateSchema = z.object({
   common: z.object({
-    supply: supplySchema,
+    supply: establishmentListSchema,
   }),
   players: z.record(
     z.string(),

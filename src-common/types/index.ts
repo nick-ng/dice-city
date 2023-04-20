@@ -3,6 +3,7 @@ import z from "zod";
 import {
   buildingSchema,
   establishmentSchema,
+  establishmentListSchema,
   landmarkSchema,
   supplySchema,
   citySchema,
@@ -23,6 +24,7 @@ export type DeckBlueprint = {
 }[];
 
 export type Deck = z.infer<typeof deckSchema>;
+export type EstablishmentList = z.infer<typeof establishmentListSchema>;
 export type Supply = z.infer<typeof supplySchema>;
 export type City = z.infer<typeof citySchema>;
 
