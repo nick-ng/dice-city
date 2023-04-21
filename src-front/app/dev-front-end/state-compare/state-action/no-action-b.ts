@@ -15,7 +15,7 @@ export const startingState: GameData["gameState"] = {
           landmarks: {
             radioTower: false,
             amusementPark: false,
-            shoppingMall: false,
+            shoppingMall: true,
             trainStation: false,
           },
         },
@@ -29,7 +29,7 @@ export const startingState: GameData["gameState"] = {
             ranch: ["ranch:b"],
           },
           landmarks: {
-            radioTower: false,
+            radioTower: true,
             amusementPark: false,
             shoppingMall: false,
             trainStation: false,

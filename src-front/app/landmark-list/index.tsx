@@ -35,7 +35,7 @@ export default function LandmarkList({
                 <Building
                   key={key}
                   building={landmarksReference[key]}
-                  inactive={landmarks[key]}
+                  inactive={!landmarks[key]}
                 />
               </button>
             )
