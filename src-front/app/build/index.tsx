@@ -12,7 +12,7 @@ import {
 } from "~common/constants/buildings.js";
 import BuildingContainer from "../building/building-container.js";
 import Building from "../building/index.js";
-import Supply from "../supply/index.js";
+import EstablishmentList from "../establishment-list/index.js";
 
 export interface BuildProps {
   supply: SupplyType;
@@ -94,8 +94,8 @@ export default function Build({
             );
           })}
         </div>
-        <Supply
-          supply={supply}
+        <EstablishmentList
+          establishments={supply}
           onChoose={(buildingString) => {
             setChosenBuildingString(buildingString);
           }}

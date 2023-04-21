@@ -286,6 +286,9 @@ export const idToBuilding = (id: string): Establishment | Landmark | null => {
   return landmarks[buildingKey] || establishments[buildingKey] || null;
 };
 
+export const sortLandmarks = (a: Landmark, b: Landmark): number =>
+  a.cost - b.cost;
+
 export const sortEstablishments = (
   a: Establishment,
   b: Establishment

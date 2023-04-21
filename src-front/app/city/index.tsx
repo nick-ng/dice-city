@@ -6,6 +6,8 @@ import {
 } from "~common/constants/buildings.js";
 
 import Building from "../building/index.js";
+import LandmarkList from "../landmark-list/index.js";
+import EstablishmentList from "../establishment-list/index.js";
 
 export interface CityProps {
   city: CityType;
@@ -16,20 +18,11 @@ export interface CityProps {
 export default function City({ city, availableLandmarks }: CityProps) {
   return (
     <div>
-      <div className="">
-        {availableLandmarks
-          .sort((a, b) => landmarks[a].cost - landmarks[b].cost)
-          .map(
-            (key) =>
-              landmarks[key] && (
-                <Building
-                  key={key}
-                  building={landmarks[key]}
-                  inactive={city.landmarks[key]}
-                />
-              )
-          )}
-      </div>
+      <LandmarkList
+        availableLandmarks={availableLandmarks}
+        landmarks={city.landmarks}
+      />
+      <EstablishmentList establishments={city.establishments} />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import {
 
 import Stack from "./stack.js";
 
-export interface SupplyProps {
+export interface EstablishmentListProps {
   establishments: EstablishmentListType;
   onChoose?: (buildingKey: string) => void | Promise<void>;
 }
@@ -15,41 +15,28 @@ export interface SupplyProps {
 export default function EstablishmentList({
   establishments,
   onChoose,
-}: SupplyProps) {
-  const unsortedBuildings = Object.keys(establishments)
+}: EstablishmentListProps) {
+  const buildings = Object.keys(establishments)
     .map((k) => establishmentsReference[k])
-    .filter((a) => a);
-
-  const buildings = unsortedBuildings.sort((a, b) =>
-    a.display.localeCompare(b.display)
-  );
+    .filter((a) => a)
+    .sort(sortEstablishments);
 
   return (
     <div className="flex flex-row flex-wrap items-start">
-      {buildings.map((building) => {
-        const { activationNumbers } = building;
-        const order = Math.floor(
-          (activationNumbers.reduce((prev, curr) => prev + curr, 0) /
-            activationNumbers.length) *
-            100
-        );
-
-        return (
-          <button
-            key={building.key}
-            className="inline-block w-min align-top"
-            style={{ order }}
-            onClick={() => {
-              onChoose && onChoose(building.key);
-            }}
-          >
-            <Stack
-              establishment={building}
-              count={establishments[building.key].length}
-            />
-          </button>
-        );
-      })}
+      {buildings.map((building) => (
+        <button
+          key={building.key}
+          className="inline-block w-min align-top"
+          onClick={() => {
+            onChoose && onChoose(building.key);
+          }}
+        >
+          <Stack
+            establishment={building}
+            count={establishments[building.key].length}
+          />
+        </button>
+      ))}
     </div>
   );
 }

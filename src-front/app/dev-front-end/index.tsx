@@ -22,7 +22,7 @@ const components: {
     name: "Supply - Total",
     section: "components",
     path: "supply-total",
-    Element: lazy(() => import("../supply/dev-supply.js")),
+    Element: lazy(() => import("./supply/supply-total.js")),
   },
   {
     name: "Build Interface",

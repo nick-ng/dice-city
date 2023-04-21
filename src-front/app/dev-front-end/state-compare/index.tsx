@@ -4,6 +4,7 @@ import type { GameData } from "~common/types/index.js";
 
 import StateDisplay from "./state-display.js";
 import * as noAction from "./state-action/no-action.js";
+import * as noActionB from "./state-action/no-action-b.js";
 
 const gameSettings: GameData["gameSettings"] = {
   landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
@@ -18,7 +19,7 @@ const statesAndActions = [
   },
   {
     display: "No Action 2",
-    ...noAction,
+    ...noActionB,
   },
 ].map((stateAndAction, i) => ({
   ...stateAndAction,
@@ -35,7 +36,7 @@ export default function StateCompare() {
 
   return (
     <div>
-      <h2>State Compare</h2>
+      <h1>State Compare</h1>
       <select
         value={chosenStateAndActionId}
         onChange={(e) => {
@@ -49,11 +50,14 @@ export default function StateCompare() {
         ))}
       </select>
       {startingState ? (
-        <StateDisplay
-          gameState={startingState}
-          gameSettings={gameSettings}
-          note={display || ""}
-        />
+        <div>
+          <h2>Starting State: {display}</h2>
+          <StateDisplay
+            gameState={startingState}
+            gameSettings={gameSettings}
+            note={display ? `${display} before` : ""}
+          />
+        </div>
       ) : (
         <div>No starting state</div>
       )}
