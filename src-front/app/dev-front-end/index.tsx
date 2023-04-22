@@ -1,4 +1,4 @@
-import { lazy, LazyExoticComponent } from "react";
+import { lazy, LazyExoticComponent, useEffect } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
 const components: {
@@ -37,7 +37,21 @@ const components: {
   },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
+const DARK_MODE_STORE_KEY = "DARK_MODE_STORE_KEY";
+
+const setDevDarkMode = (on: boolean): void => {
+  if (on) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+};
+
 export default function DevFrontEnd() {
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem(DARK_MODE_STORE_KEY);
+    setDevDarkMode(savedDarkMode === "on");
+  }, []);
   return (
     <div className="flex h-full flex-col md:grid md:flex-none md:grid-cols-[auto_1fr] md:gap-2">
       <details className="mb-2 md:hidden">
@@ -78,18 +92,20 @@ export default function DevFrontEnd() {
         <button
           className="mb-2 ml-2 rounded border border-gray-600 px-2 py-0 dark:border-gray-300"
           onClick={() => {
-            if (document.documentElement.classList.contains("dark")) {
-              document.documentElement.classList.remove("dark");
+            const savedDarkMode = localStorage.getItem(DARK_MODE_STORE_KEY);
+            if (savedDarkMode === "on") {
+              localStorage.setItem(DARK_MODE_STORE_KEY, "off");
+              setDevDarkMode(false);
             } else {
-              document.documentElement.classList.add("dark");
+              localStorage.setItem(DARK_MODE_STORE_KEY, "on");
+              setDevDarkMode(true);
             }
           }}
         >
           Toggle Dark Mode
         </button>{" "}
         <span className="hidden md:inline">
-          Clicking this button doesn't affect your Dark Mode setting. Refresh
-          the page to return to your saved Dark Mode setting.
+          Change dark mode setting for development only.
         </span>
         <div className="h-full border">
           <Routes>
