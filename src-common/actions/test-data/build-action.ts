@@ -1,11 +1,33 @@
-import type { GameData, Action } from "~common/types/index.js";
+import type { GameData } from "~common/types/index.js";
+import type { StateAction } from "./types.js";
 
-export const startingState: GameData["gameState"] = {
+const gameDetails = {
+  hostId: "a",
+  id: "a",
+  players: [
+    {
+      id: "a",
+      name: "Player A",
+    },
+    {
+      id: "b",
+      name: "Player B",
+    },
+  ],
+};
+
+const gameSettings = Object.freeze({
+  landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
+  timeLimitSeconds: 999,
+  timeLimitType: "off",
+});
+
+const startingState: GameData["gameState"] = {
   publicState: {
     players: {
       a: {
         playerId: "a",
-        money: 3,
+        money: 30,
         city: {
           establishments: {
             wheatField: ["wheatField:a"],
@@ -38,6 +60,8 @@ export const startingState: GameData["gameState"] = {
       },
     },
     common: {
+      activePlayerId: "a",
+      turnPhase: "before-build",
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",
@@ -137,9 +161,45 @@ export const startingState: GameData["gameState"] = {
   },
 };
 
-export const action: Action = {
-  payload: {
-    diceCount: 1,
+const startingData: GameData = {
+  gameDetails,
+  gameSettings,
+  gameState: startingState,
+  lastActionId: "1",
+  playersSecrets: {
+    a: {
+      password: "abc",
+    },
+    b: {
+      password: "bcd",
+    },
   },
-  playerId: "d",
 };
+
+export const buildActions: StateAction[] = [
+  {
+    tags: ["build"],
+    display:
+      "Build: Player A with 30 money builds cheese cactory on their turn",
+    startingData,
+    action: {
+      playerId: "a",
+      type: "build-establishment",
+      payload: {
+        establishmentKey: "cheeseFactory",
+      },
+    },
+  },
+  {
+    tags: ["build"],
+    display: "Build: Player B with 3 money builds ranch not on their turn",
+    startingData,
+    action: {
+      playerId: "b",
+      type: "build-establishment",
+      payload: {
+        establishmentKey: "ranch",
+      },
+    },
+  },
+];

@@ -1,6 +1,28 @@
-import type { GameData, Action } from "~common/types/index.js";
+import type { GameData } from "~common/types/index.js";
+import type { StateAction } from "./types.js";
 
-export const startingState: GameData["gameState"] = {
+const gameDetails = {
+  hostId: "a",
+  id: "a",
+  players: [
+    {
+      id: "a",
+      name: "Player A",
+    },
+    {
+      id: "b",
+      name: "Player B",
+    },
+  ],
+};
+
+const gameSettings = Object.freeze({
+  landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
+  timeLimitSeconds: 999,
+  timeLimitType: "off",
+});
+
+const startingState: GameData["gameState"] = {
   publicState: {
     players: {
       a: {
@@ -10,11 +32,12 @@ export const startingState: GameData["gameState"] = {
           establishments: {
             wheatField: ["wheatField:a"],
             ranch: ["ranch:a"],
+            fruitAndVegetableMarket: ["fruitAndVegetableMarket:3"],
           },
           landmarks: {
             radioTower: false,
             amusementPark: false,
-            shoppingMall: false,
+            shoppingMall: true,
             trainStation: false,
           },
         },
@@ -24,11 +47,11 @@ export const startingState: GameData["gameState"] = {
         money: 3,
         city: {
           establishments: {
-            wheatField: ["wheatField:b"],
+            wheatField: ["wheatField:b", "wheatField:4"],
             ranch: ["ranch:b"],
           },
           landmarks: {
-            radioTower: false,
+            radioTower: true,
             amusementPark: false,
             shoppingMall: false,
             trainStation: false,
@@ -37,6 +60,8 @@ export const startingState: GameData["gameState"] = {
       },
     },
     common: {
+      activePlayerId: "a",
+      turnPhase: "before-roll",
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",
@@ -68,7 +93,6 @@ export const startingState: GameData["gameState"] = {
           "fruitAndVegetableMarket:1",
           "fruitAndVegetableMarket:5",
           "fruitAndVegetableMarket:4",
-          "fruitAndVegetableMarket:3",
         ],
         furnitureFactory: [
           "furnitureFactory:3",
@@ -111,7 +135,6 @@ export const startingState: GameData["gameState"] = {
           "forest:2",
         ],
         wheatField: [
-          "wheatField:4",
           "wheatField:0",
           "wheatField:1",
           "wheatField:2",
@@ -138,9 +161,30 @@ export const startingState: GameData["gameState"] = {
   },
 };
 
-export const action: Action = {
-  payload: {
-    diceCount: 1,
+const startingData: GameData = {
+  gameDetails,
+  gameSettings,
+  gameState: startingState,
+  lastActionId: "1",
+  playersSecrets: {
+    a: {
+      password: "abc",
+    },
+    b: {
+      password: "bcd",
+    },
   },
-  playerId: "d",
+};
+
+export const noAction: StateAction = {
+  tags: ["test"],
+  display: "No Action",
+  startingData,
+  action: {
+    playerId: "d",
+    type: "roll-dice",
+    payload: {
+      diceCount: 1,
+    },
+  },
 };

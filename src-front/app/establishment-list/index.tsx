@@ -1,7 +1,7 @@
 import type { EstablishmentList as EstablishmentListType } from "~common/types/index.js";
 
 import {
-  establishments as establishmentsReference,
+  establishmentReference,
   sortEstablishments,
 } from "~common/constants/buildings.js";
 
@@ -17,7 +17,7 @@ export default function EstablishmentList({
   onChoose,
 }: EstablishmentListProps) {
   const buildings = Object.keys(establishments)
-    .map((k) => establishmentsReference[k])
+    .map((k) => establishmentReference[k])
     .filter((a) => a)
     .sort(sortEstablishments);
 

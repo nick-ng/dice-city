@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { City } from "~common/types/index.js";
 import { shuffle } from "~common/utils/shuffle.js";
 import { getDeck } from "~common/constants/buildings.js";
-import { getSupply } from "~common/functions/supply.js";
+import { getSupply } from "~common/actions/supply.js";
 
 import Build from "./index.js";
 

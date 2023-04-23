@@ -57,6 +57,13 @@ export const playerSecretsSchema = z.object({
 const publicStateSchema = z.object({
   common: z.object({
     supply: establishmentListSchema,
+    activePlayerId: z.string(),
+    turnPhase: z.enum([
+      "before-roll",
+      "after-roll",
+      "before-build",
+      "after-build",
+    ]),
   }),
   players: z.record(
     z.string(),

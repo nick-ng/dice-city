@@ -52,7 +52,9 @@ const tempLandmarks: { [key: string]: Omit<Landmark, "key"> } = {
 
 export const landmarks = addKeyProperty(tempLandmarks);
 
-const tempEstablishments: { [key: string]: Omit<Establishment, "key"> } = {
+const tempEstablishmentReference: {
+  [key: string]: Omit<Establishment, "key">;
+} = {
   wheatField: {
     colour: "blue",
     activationNumbers: [1],
@@ -194,8 +196,8 @@ const tempEstablishments: { [key: string]: Omit<Establishment, "key"> } = {
   },
 };
 
-export const establishments: { [key: string]: Establishment } =
-  addKeyProperty(tempEstablishments);
+export const establishmentReference: { [key: string]: Establishment } =
+  addKeyProperty(tempEstablishmentReference);
 
 export const baseDeck: DeckBlueprint = [
   {

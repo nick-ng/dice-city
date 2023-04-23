@@ -26,12 +26,14 @@ export default function StateDisplay({
 
   return (
     <div>
-      <h3>Supply</h3>
-      <EstablishmentList establishments={supply} />
-      <hr />
+      <div className="bg-gray-200 dark:bg-gray-700">
+        <h3>Supply</h3>
+        <EstablishmentList establishments={supply} />
+      </div>
       {Object.values(playersState).map((playerState, i) => (
         <div className={playerColors[i]} key={playerState.playerId}>
           <h3>Player: {playerState.playerId}</h3>
+          <div>Money: {playerState.money}</div>
           <City
             city={playerState.city}
             availableLandmarks={gameSettings.landmarks}
