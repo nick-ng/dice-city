@@ -7,12 +7,12 @@ import type {
 
 import {
   idToBuilding,
-  establishments,
+  establishmentReference,
   landmarks,
 } from "~common/constants/buildings.js";
 import BuildingContainer from "../building/building-container.js";
 import Building from "../building/index.js";
-import Supply from "../supply/index.js";
+import EstablishmentList from "../establishment-list/index.js";
 
 export interface BuildProps {
   supply: SupplyType;
@@ -49,7 +49,9 @@ export default function Build({
           className="button-default w-min p-0.5 pb-1"
           disabled={!chosenBuilding}
           onClick={() => {
-            if (Object.keys(establishments).includes(chosenBuildingString)) {
+            if (
+              Object.keys(establishmentReference).includes(chosenBuildingString)
+            ) {
               onBuildEstablishment(chosenBuildingString);
             } else {
               onBuildLandmark(chosenBuildingString);
@@ -94,8 +96,8 @@ export default function Build({
             );
           })}
         </div>
-        <Supply
-          supply={supply}
+        <EstablishmentList
+          establishments={supply}
           onChoose={(buildingString) => {
             setChosenBuildingString(buildingString);
           }}

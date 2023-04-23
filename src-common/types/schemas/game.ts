@@ -29,6 +29,11 @@ const establishmentOnly = z.object({
 
 export const establishmentSchema = landmarkSchema.merge(establishmentOnly);
 
+export const establishmentListSchema = z.record(
+  z.string(),
+  z.array(z.string())
+);
+
 export const supplySchema = z.record(z.string(), z.array(z.string()));
 
 export const buildingSchema = landmarkSchema.merge(establishmentOnly.partial());
@@ -36,7 +41,7 @@ export const buildingSchema = landmarkSchema.merge(establishmentOnly.partial());
 export const deckSchema = z.array(z.string());
 
 export const citySchema = z.object({
-  establishments: z.record(z.string(), z.array(z.string())),
+  establishments: establishmentListSchema,
   landmarks: z.record(z.string(), z.boolean()),
 });
 
@@ -49,14 +54,32 @@ export const playerSecretsSchema = z.object({
   password: z.string(),
 });
 
-export const publicStateSchema = z.record(
-  z.string(),
-  z.object({
-    playerId: z.string(),
-    city: citySchema,
-    money: z.number(),
-  })
-);
+const publicStateSchema = z.object({
+  common: z.object({
+    supply: establishmentListSchema,
+    activePlayerId: z.string(),
+    turnPhase: z.enum([
+      "before-roll",
+      "after-roll",
+      "before-build",
+      "after-build",
+    ]),
+  }),
+  players: z.record(
+    z.string(),
+    z.object({
+      playerId: z.string(),
+      city: citySchema,
+      money: z.number(),
+    })
+  ),
+});
+
+const secretStateSchema = z.object({
+  common: z.object({
+    deck: z.array(z.string()),
+  }),
+});
 
 export const gameDetailsDecoder = z.object({
   id: z.string(),
@@ -65,12 +88,14 @@ export const gameDetailsDecoder = z.object({
 });
 
 export const gameSettingsSchema = z.object({
+  landmarks: z.array(z.string()),
   timeLimitSeconds: z.number(),
   timeLimitType: z.enum(["off", "on"]),
 });
 
 export const gameStateSchema = z.object({
   publicState: publicStateSchema,
+  secretState: secretStateSchema,
 });
 
 export const gameDataSchema = z.object({

@@ -1,4 +1,7 @@
-import { establishments, landmarks } from "~common/constants/buildings.js";
+import {
+  establishmentReference,
+  landmarks,
+} from "~common/constants/buildings.js";
 
 import Building from "./index.js";
 
@@ -15,7 +18,7 @@ export default function DevAllBuildings() {
           <Building building={building} />
         </div>
       ))}
-      {Object.values(establishments).map((building) => (
+      {Object.values(establishmentReference).map((building) => (
         <div key={building.key} className="m-0.5">
           <Building building={building} />
         </div>

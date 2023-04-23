@@ -32,7 +32,7 @@ export default function Stack({ establishment, count, className }: StackProps) {
               className={`${bgColours[colour]} relative rounded-t border-x-2 border-t-2 border-x-gray-700 border-t-gray-700 text-center font-bold text-white dark:border-x-gray-300 dark:border-t-gray-300`}
             >
               {activationNumbers.join(" ~ ")}
-              <div className="coin absolute top-0 bottom-0 right-0.5 my-auto">
+              <div className="coin absolute bottom-0 right-0.5 top-0 my-auto">
                 {cost}
               </div>
             </div>

@@ -3,11 +3,11 @@ import z from "zod";
 import {
   buildingSchema,
   establishmentSchema,
+  establishmentListSchema,
   landmarkSchema,
   supplySchema,
   citySchema,
   deckSchema,
-  publicStateSchema,
   gameStateSchema,
   gameDataSchema,
 } from "./schemas/game.js";
@@ -24,10 +24,10 @@ export type DeckBlueprint = {
 }[];
 
 export type Deck = z.infer<typeof deckSchema>;
+export type EstablishmentList = z.infer<typeof establishmentListSchema>;
 export type Supply = z.infer<typeof supplySchema>;
 export type City = z.infer<typeof citySchema>;
 
-export type PublicState = z.infer<typeof publicStateSchema>;
 export type GameState = z.infer<typeof gameStateSchema>;
 export type GameData = z.infer<typeof gameDataSchema>;
 

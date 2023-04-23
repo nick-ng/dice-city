@@ -52,7 +52,9 @@ const tempLandmarks: { [key: string]: Omit<Landmark, "key"> } = {
 
 export const landmarks = addKeyProperty(tempLandmarks);
 
-const tempEstablishments: { [key: string]: Omit<Establishment, "key"> } = {
+const tempEstablishmentReference: {
+  [key: string]: Omit<Establishment, "key">;
+} = {
   wheatField: {
     colour: "blue",
     activationNumbers: [1],
@@ -194,8 +196,8 @@ const tempEstablishments: { [key: string]: Omit<Establishment, "key"> } = {
   },
 };
 
-export const establishments: { [key: string]: Establishment } =
-  addKeyProperty(tempEstablishments);
+export const establishmentReference: { [key: string]: Establishment } =
+  addKeyProperty(tempEstablishmentReference);
 
 export const baseDeck: DeckBlueprint = [
   {
@@ -283,8 +285,11 @@ export const getDeck = (cardSet: "base" = "base"): Deck => {
 export const idToBuilding = (id: string): Establishment | Landmark | null => {
   const [buildingKey, _rest] = id.split(":");
 
-  return landmarks[buildingKey] || establishments[buildingKey] || null;
+  return landmarks[buildingKey] || establishmentReference[buildingKey] || null;
 };
+
+export const sortLandmarks = (a: Landmark, b: Landmark): number =>
+  a.cost - b.cost;
 
 export const sortEstablishments = (
   a: Establishment,
