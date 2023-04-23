@@ -3,42 +3,6 @@ import { produce } from "immer";
 import type { Action, GameData, City, Supply } from "~common/types/index.js";
 import { establishmentReference } from "../constants/buildings.js";
 
-export const addEstablishmentToCity = (
-  city: City,
-  supply: Supply,
-  establishmentKey: string
-): { city: City; supply: Supply; error?: string } => {
-  return produce({ city, supply, error: "" }, (draft) => {
-    if (!draft.supply[establishmentKey]) {
-      draft.error = `supply doesn't have ${establishmentKey}`;
-      return;
-    }
-
-    if (!draft.city.establishments[establishmentKey]) {
-      draft.city.establishments[establishmentKey] = [];
-    }
-
-    // check if building is major and you already have it
-    const buildingInfo = establishmentReference[establishmentKey];
-    if (
-      buildingInfo.tag === "major" &&
-      draft.city.establishments[establishmentKey].length !== 0
-    ) {
-      draft.error = `already have major establishment ${establishmentKey}`;
-      return;
-    }
-
-    const buildingId = draft.supply[establishmentKey].pop();
-
-    if (typeof buildingId !== "string") {
-      draft.error = `supply is out of ${establishmentKey}`;
-      return;
-    }
-
-    draft.city.establishments[establishmentKey].push(buildingId);
-  });
-};
-
 export const buildEstablishmentAction = (
   gameData: GameData,
   action: Action
