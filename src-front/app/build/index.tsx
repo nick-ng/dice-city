@@ -7,7 +7,7 @@ import type {
 
 import {
   idToBuilding,
-  establishments,
+  establishmentReference,
   landmarks,
 } from "~common/constants/buildings.js";
 import BuildingContainer from "../building/building-container.js";
@@ -49,7 +49,9 @@ export default function Build({
           className="button-default w-min p-0.5 pb-1"
           disabled={!chosenBuilding}
           onClick={() => {
-            if (Object.keys(establishments).includes(chosenBuildingString)) {
+            if (
+              Object.keys(establishmentReference).includes(chosenBuildingString)
+            ) {
               onBuildEstablishment(chosenBuildingString);
             } else {
               onBuildLandmark(chosenBuildingString);
