@@ -285,7 +285,7 @@ export const getDeck = (cardSet: "base" = "base"): Deck => {
 export const idToBuilding = (id: string): Establishment | Landmark | null => {
   const [buildingKey, _rest] = id.split(":");
 
-  return landmarks[buildingKey] || establishments[buildingKey] || null;
+  return landmarks[buildingKey] || establishmentReference[buildingKey] || null;
 };
 
 export const sortLandmarks = (a: Landmark, b: Landmark): number =>
