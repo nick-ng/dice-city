@@ -184,7 +184,7 @@ export const buildActions: StateAction[] = [
     startingData,
     action: {
       playerId: "a",
-      type: "build-establishment",
+      type: "build",
       payload: {
         establishmentKey: "cheeseFactory",
       },
@@ -196,7 +196,7 @@ export const buildActions: StateAction[] = [
     startingData,
     action: {
       playerId: "b",
-      type: "build-establishment",
+      type: "build",
       payload: {
         establishmentKey: "ranch",
       },

@@ -1,16 +1,16 @@
 import { produce } from "immer";
 
-import type { Action, GameData, City, Supply } from "~common/types/index.js";
+import type { Action, GameData, City } from "~common/types/index.js";
 import { establishmentReference } from "../constants/buildings.js";
 
-export const buildEstablishmentAction = (
+export const buildAction = (
   gameData: GameData,
   action: Action
 ): { gameData: GameData; error?: string } => {
   let error = undefined;
   const newGameData = produce(gameData, (draftGameData) => {
-    if (action.type !== "build-establishment") {
-      error = "not build-establishment";
+    if (action.type !== "build") {
+      error = "not build";
       return;
     }
 
