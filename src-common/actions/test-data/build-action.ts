@@ -186,7 +186,32 @@ export const buildActions: StateAction[] = [
       playerId: "a",
       type: "build",
       payload: {
-        establishmentKey: "cheeseFactory",
+        buildingKey: "cheeseFactory",
+      },
+    },
+  },
+  {
+    tags: ["build"],
+    display: "Build: Player A with 30 money builds train station on their turn",
+    startingData,
+    action: {
+      playerId: "a",
+      type: "build",
+      payload: {
+        buildingKey: "trainStation",
+      },
+    },
+  },
+  {
+    tags: ["build"],
+    display:
+      "Build: Player A with 30 money builds a second shopping mall on their turn",
+    startingData,
+    action: {
+      playerId: "a",
+      type: "build",
+      payload: {
+        buildingKey: "shoppingMall",
       },
     },
   },
@@ -198,7 +223,7 @@ export const buildActions: StateAction[] = [
       playerId: "b",
       type: "build",
       payload: {
-        establishmentKey: "ranch",
+        buildingKey: "ranch",
       },
     },
   },

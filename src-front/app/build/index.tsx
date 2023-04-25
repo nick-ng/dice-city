@@ -8,7 +8,7 @@ import type {
 import {
   idToBuilding,
   establishmentReference,
-  landmarks,
+  landmarkReference,
 } from "~common/constants/buildings.js";
 import BuildingContainer from "../building/building-container.js";
 import Building from "../building/index.js";
@@ -77,7 +77,7 @@ export default function Build({
         <p className="text-sm md:text-base">Available Buildings</p>
         <div className="flex flex-row">
           {Object.entries(city.landmarks).map(([landmarkKey, isBuilt]) => {
-            const tempLandmark = landmarks[landmarkKey];
+            const tempLandmark = landmarkReference[landmarkKey];
             if (!tempLandmark || isBuilt) {
               return null;
             }

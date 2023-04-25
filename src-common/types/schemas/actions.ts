@@ -6,7 +6,7 @@ export const buildEstablishmentSchema = z.object({
   playerId,
   type: z.literal("build"),
   payload: z.object({
-    establishmentKey: z.string(),
+    buildingKey: z.string(),
   }),
 });
 

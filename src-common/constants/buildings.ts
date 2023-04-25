@@ -50,7 +50,7 @@ const tempLandmarks: { [key: string]: Omit<Landmark, "key"> } = {
   },
 };
 
-export const landmarks = addKeyProperty(tempLandmarks);
+export const landmarkReference = addKeyProperty(tempLandmarks);
 
 const tempEstablishmentReference: {
   [key: string]: Omit<Establishment, "key">;
@@ -285,7 +285,11 @@ export const getDeck = (cardSet: "base" = "base"): Deck => {
 export const idToBuilding = (id: string): Establishment | Landmark | null => {
   const [buildingKey, _rest] = id.split(":");
 
-  return landmarks[buildingKey] || establishmentReference[buildingKey] || null;
+  return (
+    landmarkReference[buildingKey] ||
+    establishmentReference[buildingKey] ||
+    null
+  );
 };
 
 export const sortLandmarks = (a: Landmark, b: Landmark): number =>

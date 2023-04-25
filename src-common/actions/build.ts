@@ -1,7 +1,10 @@
 import { produce } from "immer";
 
 import type { Action, GameData, City } from "~common/types/index.js";
-import { establishmentReference } from "../constants/buildings.js";
+import {
+  establishmentReference,
+  landmarkReference,
+} from "../constants/buildings.js";
 
 export const buildAction = (
   gameData: GameData,
@@ -15,24 +18,21 @@ export const buildAction = (
     }
 
     const { payload, playerId } = action;
-    const { establishmentKey } = payload;
-    const establishment = establishmentReference[establishmentKey];
-    if (!establishment) {
-      error = "invalid establishmentKey";
+    const { buildingKey } = payload;
+    const establishment = establishmentReference[buildingKey];
+    const landmark = landmarkReference[buildingKey];
+
+    if (!establishment && !landmark) {
+      error = "invalid buildingKey";
       return;
     }
 
-    const { gameState } = draftGameData;
+    const { gameState, gameSettings } = draftGameData;
     const { publicState } = gameState;
     const { players, common } = publicState;
     const playerState = players[playerId];
     if (!playerState) {
       error = "invalid playerId";
-      return;
-    }
-
-    if (playerState.money < establishment.cost) {
-      error = "not enough money";
       return;
     }
 
@@ -48,19 +48,45 @@ export const buildAction = (
       return;
     }
 
-    const tempEstablishmentId = supply[establishmentKey].pop();
-    if (!tempEstablishmentId) {
-      error = "no more establishments in supply";
-      return;
-    }
-
     const { city } = playerState;
-    if (!city.establishments[establishmentKey]) {
-      city.establishments[establishmentKey] = [];
+    if (establishment) {
+      if (playerState.money < establishment.cost) {
+        error = "not enough money";
+        return;
+      }
+
+      const tempEstablishmentId = supply[buildingKey].pop();
+      if (!tempEstablishmentId) {
+        error = "no more establishments in supply";
+        return;
+      }
+
+      if (!city.establishments[buildingKey]) {
+        city.establishments[buildingKey] = [];
+      }
+      city.establishments[buildingKey].push(tempEstablishmentId);
+      playerState.money = playerState.money - establishment.cost;
+      common.turnPhase = "after-build";
+    } else if (landmark) {
+      if (playerState.money < landmark.cost) {
+        error = "not enough money";
+        return;
+      }
+
+      const { landmarks } = gameSettings;
+
+      if (!landmarks.includes(buildingKey)) {
+        error = "landmark not available";
+        return;
+      }
+
+      if (city.landmarks[buildingKey]) {
+        error = "landmark already built";
+        return;
+      }
+
+      city.landmarks[buildingKey] = true;
     }
-    city.establishments[establishmentKey].push(tempEstablishmentId);
-    playerState.money = playerState.money - establishment.cost;
-    common.turnPhase = "after-build";
   });
 
   return {
