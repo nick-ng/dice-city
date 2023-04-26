@@ -55,6 +55,11 @@ export const buildAction = (
         return;
       }
 
+      if (establishment.tag === "major" && city.establishments[buildingKey]) {
+        error = "cannot have more than one of each %%major% building";
+        return;
+      }
+
       const tempEstablishmentId = supply[buildingKey].pop();
       if (!tempEstablishmentId) {
         error = "no more establishments in supply";
