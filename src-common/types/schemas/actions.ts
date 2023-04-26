@@ -4,9 +4,9 @@ const playerId = z.string();
 
 export const buildEstablishmentSchema = z.object({
   playerId,
-  type: z.literal("build-establishment"),
+  type: z.literal("build"),
   payload: z.object({
-    establishmentKey: z.string(),
+    buildingKey: z.string(),
   }),
 });
 

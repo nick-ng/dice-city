@@ -1,9 +1,6 @@
 import type { City, GameData } from "~common/types/index.js";
 
-import {
-  landmarks as landmarksReference,
-  sortLandmarks,
-} from "~common/constants/buildings.js";
+import { landmarkReference } from "~common/constants/buildings.js";
 
 import Building from "../building/index.js";
 
@@ -21,10 +18,10 @@ export default function LandmarkList({
   return (
     <div className="flex flex-row flex-wrap items-start">
       {availableLandmarks
-        .sort((a, b) => landmarksReference[a].cost - landmarksReference[b].cost)
+        .sort((a, b) => landmarkReference[a].cost - landmarkReference[b].cost)
         .map(
           (key) =>
-            landmarksReference[key] && (
+            landmarkReference[key] && (
               <button
                 key={key}
                 className="border-default inline-block p-0.5"
@@ -34,7 +31,7 @@ export default function LandmarkList({
               >
                 <Building
                   key={key}
-                  building={landmarksReference[key]}
+                  building={landmarkReference[key]}
                   inactive={!landmarks[key]}
                 />
               </button>

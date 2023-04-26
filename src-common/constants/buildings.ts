@@ -30,14 +30,20 @@ const tempLandmarks: { [key: string]: Omit<Landmark, "key"> } = {
   amusementPark: {
     display: "Amusement Park",
     tag: "major",
-    picture: ["🎡", "🎢"],
+    picture: [
+      "🎡",
+      // "🎢",
+    ],
     cost: 16,
     effect: "If you roll doubles, take another turn after this one.",
   },
   shoppingMall: {
     display: "Shopping Mall",
     tag: "major",
-    picture: ["🏬", "🛍️"],
+    picture: [
+      // "🏬",
+      "🛍️",
+    ],
     cost: 10,
     effect: "Each of your %%cup% and %%bread% establishments earn +1 coin.",
   },
@@ -50,7 +56,7 @@ const tempLandmarks: { [key: string]: Omit<Landmark, "key"> } = {
   },
 };
 
-export const landmarks = addKeyProperty(tempLandmarks);
+export const landmarkReference = addKeyProperty(tempLandmarks);
 
 const tempEstablishmentReference: {
   [key: string]: Omit<Establishment, "key">;
@@ -285,7 +291,11 @@ export const getDeck = (cardSet: "base" = "base"): Deck => {
 export const idToBuilding = (id: string): Establishment | Landmark | null => {
   const [buildingKey, _rest] = id.split(":");
 
-  return landmarks[buildingKey] || establishmentReference[buildingKey] || null;
+  return (
+    landmarkReference[buildingKey] ||
+    establishmentReference[buildingKey] ||
+    null
+  );
 };
 
 export const sortLandmarks = (a: Landmark, b: Landmark): number =>
