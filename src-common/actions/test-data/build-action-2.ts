@@ -189,4 +189,16 @@ export const buildActions2: StateAction[] = [
       },
     },
   },
+  {
+    tags: ["build", "error"],
+    display: "Build: Player B with 3 money builds amusement park on their turn",
+    startingData,
+    action: {
+      playerId: "b",
+      type: "build",
+      payload: {
+        buildingKey: "amusementPark",
+      },
+    },
+  },
 ];

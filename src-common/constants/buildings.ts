@@ -30,14 +30,20 @@ const tempLandmarks: { [key: string]: Omit<Landmark, "key"> } = {
   amusementPark: {
     display: "Amusement Park",
     tag: "major",
-    picture: ["🎡", "🎢"],
+    picture: [
+      "🎡",
+      // "🎢",
+    ],
     cost: 16,
     effect: "If you roll doubles, take another turn after this one.",
   },
   shoppingMall: {
     display: "Shopping Mall",
     tag: "major",
-    picture: ["🏬", "🛍️"],
+    picture: [
+      // "🏬",
+      "🛍️",
+    ],
     cost: 10,
     effect: "Each of your %%cup% and %%bread% establishments earn +1 coin.",
   },

@@ -23,14 +23,16 @@ export default function Building({ building, inactive }: BuildingProps) {
 
   const isEstablishment = colour && activationNumbers;
   const effectWithPictuers = replaceTags(effect);
-  const actualPicture = inactive ? ["🚧", "🏗️"] : picture;
+  const actualPicture = inactive ? ["🏗️", "🚧"] : picture;
 
   return (
-    <BuildingContainer>
+    <BuildingContainer
+      className={inactive ? "bg-yellow-50 dark:bg-yellow-950" : ""}
+    >
       {isEstablishment && (
         <div className={`${bgColours[colour]} relative font-bold text-white`}>
           {activationNumbers.join(" ~ ")}
-          <div className="coin absolute top-0 bottom-0 right-0.5 my-auto">
+          <div className="coin absolute bottom-0 right-0.5 top-0 my-auto">
             {cost}
           </div>
         </div>
