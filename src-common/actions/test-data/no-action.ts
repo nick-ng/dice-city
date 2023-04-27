@@ -62,6 +62,7 @@ const startingState: GameData["gameState"] = {
     common: {
       activePlayerId: "a",
       turnPhase: "before-roll",
+      diceRolls: [],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",

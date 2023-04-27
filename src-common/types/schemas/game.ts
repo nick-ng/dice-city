@@ -64,6 +64,7 @@ const publicStateSchema = z.object({
       "before-build",
       "after-build",
     ]),
+    diceRolls: z.array(z.number()),
   }),
   players: z.record(
     z.string(),
