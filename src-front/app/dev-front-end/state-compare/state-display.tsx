@@ -2,6 +2,7 @@ import type { GameData } from "~common/types/index.js";
 
 import EstablishmentList from "~front/app/establishment-list/index.js";
 import City from "../../city/index.js";
+import { useEffect } from "react";
 
 interface StateDisplayProps {
   note?: string;
@@ -22,11 +23,18 @@ export default function StateDisplay({
 }: StateDisplayProps) {
   const { publicState } = gameState;
   const { common: commonState, players: playersState } = publicState;
-  const { supply } = commonState;
+  const { supply, diceRolls } = commonState;
 
   return (
-    <div>
-      <div className="bg-gray-200 dark:bg-gray-700">
+    <div className="bg-gray-200 dark:bg-gray-700">
+      <div>
+        {diceRolls.length > 0 ? (
+          <div>Rolled: {diceRolls.join(", ")}</div>
+        ) : (
+          <div>No Dice Rolled</div>
+        )}
+      </div>
+      <div>
         <h3>Supply</h3>
         <EstablishmentList establishments={supply} />
       </div>

@@ -1,5 +1,5 @@
 import type { GameData } from "~common/types/index.js";
-import type { StateAction } from "./types.js";
+import type { TestScenario } from "./types.js";
 
 const gameDetails = {
   hostId: "a",
@@ -27,13 +27,12 @@ const startingState: GameData["gameState"] = {
     players: {
       a: {
         playerId: "a",
-        money: 30,
+        money: 9,
         city: {
           establishments: {
             wheatField: ["wheatField:a"],
             ranch: ["ranch:a"],
             fruitAndVegetableMarket: ["fruitAndVegetableMarket:3"],
-            businessCentre: ["businessCentre:2"],
           },
           landmarks: {
             radioTower: false,
@@ -61,8 +60,9 @@ const startingState: GameData["gameState"] = {
       },
     },
     common: {
-      activePlayerId: "a",
+      activePlayerId: "b",
       turnPhase: "before-build",
+      diceRolls: [],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",
@@ -144,6 +144,7 @@ const startingState: GameData["gameState"] = {
         ],
         cafe: ["cafe:0", "cafe:5", "cafe:3", "cafe:1", "cafe:2", "cafe:4"],
         businessCentre: [
+          "businessCentre:2",
           "businessCentre:3",
           "businessCentre:0",
           "businessCentre:1",
@@ -176,79 +177,28 @@ const startingData: GameData = {
   },
 };
 
-export const buildActions: StateAction[] = [
-  {
-    tags: ["build", "success"],
-    display:
-      "Build: Player A with 30 money builds cheese cactory on their turn",
-    startingData,
-    action: {
-      playerId: "a",
-      type: "build",
-      payload: {
-        buildingKey: "cheeseFactory",
-      },
-    },
-  },
-  {
-    tags: ["build", "success"],
-    display: "Build: Player A with 30 money builds train station on their turn",
-    startingData,
-    action: {
-      playerId: "a",
-      type: "build",
-      payload: {
-        buildingKey: "trainStation",
-      },
-    },
-  },
+export const buildTests2: TestScenario[] = [
   {
     tags: ["build", "error"],
-    display:
-      "Build: Player A with 30 money builds a second shopping mall on their turn",
-    startingData,
-    action: {
-      playerId: "a",
-      type: "build",
-      payload: {
-        buildingKey: "shoppingMall",
-      },
-    },
-  },
-  {
-    tags: ["build", "success"],
-    display: "Build: Player A with 30 money builds a stadium on their turn",
-    startingData,
-    action: {
-      playerId: "a",
-      type: "build",
-      payload: {
-        buildingKey: "stadium",
-      },
-    },
-  },
-  {
-    tags: ["build", "error"],
-    display:
-      "Build: Player A with 30 money builds a second business centre on their turn",
-    startingData,
-    action: {
-      playerId: "a",
-      type: "build",
-      payload: {
-        buildingKey: "businessCentre",
-      },
-    },
-  },
-  {
-    tags: ["build", "error"],
-    display: "Build: Player B with 3 money builds ranch not on their turn",
+    display: "Build: Player B with 3 money builds mine on their turn",
     startingData,
     action: {
       playerId: "b",
       type: "build",
       payload: {
-        buildingKey: "ranch",
+        buildingKey: "mine",
+      },
+    },
+  },
+  {
+    tags: ["build", "error"],
+    display: "Build: Player B with 3 money builds amusement park on their turn",
+    startingData,
+    action: {
+      playerId: "b",
+      type: "build",
+      payload: {
+        buildingKey: "amusementPark",
       },
     },
   },

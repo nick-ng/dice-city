@@ -4,9 +4,10 @@ import type { GameData, Action } from "~common/types/index.js";
 import { gameDataSchema } from "~common/types/schemas/game.js";
 import { performAction } from "~common/actions/index.js";
 
-import { noAction } from "~common/actions/test-data/no-action.js";
-import { buildActions } from "~common/actions/test-data/build-action.js";
-import { buildActions2 } from "~common/actions/test-data/build-action-2.js";
+import { buildTests } from "~common/actions/test-data/build-test.js";
+import { buildTests2 } from "~common/actions/test-data/build-test-2.js";
+import { rollDiceTests } from "~common/actions/test-data/roll-dice-test.js";
+import { rollDiceTests2 } from "~common/actions/test-data/roll-dice-test-2.js";
 
 import StateDisplay from "./state-display.js";
 
@@ -16,12 +17,12 @@ const gameSettings: GameData["gameSettings"] = {
   timeLimitType: "off",
 };
 
-const dataAndActions = [noAction, ...buildActions, ...buildActions2].map(
-  (stateAndAction, i) => ({
+const dataAndActions = [buildTests, buildTests2, rollDiceTests, rollDiceTests2]
+  .flat()
+  .map((stateAndAction, i) => ({
     ...stateAndAction,
     id: i,
-  })
-);
+  }));
 
 const applyAction = (
   initialData: GameData,

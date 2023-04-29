@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 import { getName } from "../../utils/name-generator.js";
 
@@ -10,9 +9,6 @@ export default function Home() {
     <div>
       <h1>Dice City</h1>
       <p>Based on Machi Koro</p>
-      <p>
-        <Link to="/dev">Element List</Link>
-      </p>
       <pre>{name}</pre>
       <button
         onClick={() => {

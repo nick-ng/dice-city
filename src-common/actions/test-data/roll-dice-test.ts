@@ -1,9 +1,9 @@
 import type { GameData } from "~common/types/index.js";
-import type { StateAction } from "./types.js";
+import type { TestScenario } from "./types.js";
 
 const gameDetails = {
   hostId: "a",
-  id: "a",
+  id: "49e5d821-0473-4185-917e-a48b803e8425",
   players: [
     {
       id: "a",
@@ -27,7 +27,7 @@ const startingState: GameData["gameState"] = {
     players: {
       a: {
         playerId: "a",
-        money: 3,
+        money: 9,
         city: {
           establishments: {
             wheatField: ["wheatField:a"],
@@ -62,6 +62,7 @@ const startingState: GameData["gameState"] = {
     common: {
       activePlayerId: "a",
       turnPhase: "before-roll",
+      diceRolls: [],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",
@@ -165,7 +166,7 @@ const startingData: GameData = {
   gameDetails,
   gameSettings,
   gameState: startingState,
-  lastActionId: "1",
+  lastActionId: "1682755618-0",
   playersSecrets: {
     a: {
       password: "abc",
@@ -176,15 +177,42 @@ const startingData: GameData = {
   },
 };
 
-export const noAction: StateAction = {
-  tags: ["test"],
-  display: "No Action",
-  startingData,
-  action: {
-    playerId: "d",
-    type: "roll-dice",
-    payload: {
-      diceCount: 1,
+export const rollDiceTests: TestScenario[] = [
+  {
+    tags: ["roll-dice", "success"],
+    display: "Roll-dice: Player A rolls 1 die on their turn",
+    startingData,
+    action: {
+      playerId: "a",
+      type: "roll-dice",
+      payload: {
+        diceCount: 1,
+      },
     },
   },
-};
+  {
+    tags: ["roll-dice", "error"],
+    display:
+      "Roll-dice: Player A rolls 2 dice on their turn without a train station",
+    startingData,
+    action: {
+      playerId: "a",
+      type: "roll-dice",
+      payload: {
+        diceCount: 2,
+      },
+    },
+  },
+  {
+    tags: ["roll-dice", "error"],
+    display: "Roll-dice: Player B rolls 1 die not on their turn",
+    startingData,
+    action: {
+      playerId: "b",
+      type: "roll-dice",
+      payload: {
+        diceCount: 1,
+      },
+    },
+  },
+];
