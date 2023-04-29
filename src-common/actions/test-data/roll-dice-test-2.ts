@@ -38,7 +38,7 @@ const startingState: GameData["gameState"] = {
             radioTower: false,
             amusementPark: false,
             shoppingMall: true,
-            trainStation: false,
+            trainStation: true,
           },
         },
       },
@@ -166,7 +166,7 @@ const startingData: GameData = {
   gameDetails,
   gameSettings,
   gameState: startingState,
-  lastActionId: "1682755618-0",
+  lastActionId: "1682757615-0",
   playersSecrets: {
     a: {
       password: "abc",
@@ -177,10 +177,11 @@ const startingData: GameData = {
   },
 };
 
-export const rollDiceTests: TestScenario[] = [
+export const rollDiceTests2: TestScenario[] = [
   {
     tags: ["roll-dice", "success"],
-    display: "Roll-dice: Player A rolls 1 die on their turn",
+    display:
+      "Roll-dice: Player A rolls 1 die on their turn with a train station",
     startingData,
     action: {
       playerId: "a",
@@ -191,9 +192,9 @@ export const rollDiceTests: TestScenario[] = [
     },
   },
   {
-    tags: ["roll-dice", "error"],
+    tags: ["roll-dice", "success"],
     display:
-      "Roll-dice: Player A rolls 2 dice on their turn without a train station",
+      "Roll-dice: Player A rolls 2 dice on their turn with a train station",
     startingData,
     action: {
       playerId: "a",
@@ -211,7 +212,7 @@ export const rollDiceTests: TestScenario[] = [
       playerId: "b",
       type: "roll-dice",
       payload: {
-        diceCount: 1,
+        diceCount: 2,
       },
     },
   },

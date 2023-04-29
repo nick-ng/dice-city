@@ -7,6 +7,7 @@ import { performAction } from "~common/actions/index.js";
 import { buildTests } from "~common/actions/test-data/build-test.js";
 import { buildTests2 } from "~common/actions/test-data/build-test-2.js";
 import { rollDiceTests } from "~common/actions/test-data/roll-dice-test.js";
+import { rollDiceTests2 } from "~common/actions/test-data/roll-dice-test-2.js";
 
 import StateDisplay from "./state-display.js";
 
@@ -16,7 +17,7 @@ const gameSettings: GameData["gameSettings"] = {
   timeLimitType: "off",
 };
 
-const dataAndActions = [buildTests, buildTests2, rollDiceTests]
+const dataAndActions = [buildTests, buildTests2, rollDiceTests, rollDiceTests2]
   .flat()
   .map((stateAndAction, i) => ({
     ...stateAndAction,
