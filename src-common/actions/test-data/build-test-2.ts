@@ -1,5 +1,5 @@
 import type { GameData } from "~common/types/index.js";
-import type { StateAction } from "./types.js";
+import type { TestScenario } from "./types.js";
 
 const gameDetails = {
   hostId: "a",
@@ -27,7 +27,7 @@ const startingState: GameData["gameState"] = {
     players: {
       a: {
         playerId: "a",
-        money: 3,
+        money: 9,
         city: {
           establishments: {
             wheatField: ["wheatField:a"],
@@ -60,8 +60,8 @@ const startingState: GameData["gameState"] = {
       },
     },
     common: {
-      activePlayerId: "a",
-      turnPhase: "before-roll",
+      activePlayerId: "b",
+      turnPhase: "before-build",
       diceRolls: [],
       supply: {
         familyRestaurant: [
@@ -177,15 +177,29 @@ const startingData: GameData = {
   },
 };
 
-export const noAction: StateAction = {
-  tags: ["test"],
-  display: "No Action",
-  startingData,
-  action: {
-    playerId: "d",
-    type: "roll-dice",
-    payload: {
-      diceCount: 1,
+export const buildTests2: TestScenario[] = [
+  {
+    tags: ["build", "error"],
+    display: "Build: Player B with 3 money builds mine on their turn",
+    startingData,
+    action: {
+      playerId: "b",
+      type: "build",
+      payload: {
+        buildingKey: "mine",
+      },
     },
   },
-};
+  {
+    tags: ["build", "error"],
+    display: "Build: Player B with 3 money builds amusement park on their turn",
+    startingData,
+    action: {
+      playerId: "b",
+      type: "build",
+      payload: {
+        buildingKey: "amusementPark",
+      },
+    },
+  },
+];

@@ -22,11 +22,22 @@ export default function StateDisplay({
 }: StateDisplayProps) {
   const { publicState } = gameState;
   const { common: commonState, players: playersState } = publicState;
-  const { supply } = commonState;
+  const { supply, diceRolls } = commonState;
 
   return (
-    <div>
-      <div className="bg-gray-200 dark:bg-gray-700">
+    <div className="bg-gray-200 dark:bg-gray-700">
+      <div>
+        {diceRolls.length > 0 ? (
+          <>
+            {diceRolls.map((roll, i) => (
+              <div key={`${roll}-${i}`}>{roll}</div>
+            ))}
+          </>
+        ) : (
+          <div>No Dice Rolled</div>
+        )}
+      </div>
+      <div>
         <h3>Supply</h3>
         <EstablishmentList establishments={supply} />
       </div>
