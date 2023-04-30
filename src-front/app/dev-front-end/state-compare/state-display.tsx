@@ -23,7 +23,9 @@ export default function StateDisplay({
 }: StateDisplayProps) {
   const { publicState } = gameState;
   const { common: commonState, players: playersState } = publicState;
-  const { supply, diceRolls } = commonState;
+  const { supply, diceRolls, processedEstablishments } = commonState;
+
+  const establishmentsInSupplyCount = Object.values(supply).flat().length;
 
   return (
     <div className="bg-gray-200 dark:bg-gray-700">
@@ -34,23 +36,48 @@ export default function StateDisplay({
           <div>No Dice Rolled</div>
         )}
       </div>
-      <div>
-        <h3>Supply</h3>
-        <EstablishmentList establishments={supply} />
-      </div>
-      {Object.values(playersState).map((playerState, i) => (
-        <div className={playerColors[i]} key={playerState.playerId}>
-          <h3>Player: {playerState.playerId}</h3>
-          <div>Money: {playerState.money}</div>
-          <City
-            city={playerState.city}
-            availableLandmarks={gameSettings.landmarks}
-            onClick={(buildingKey) => {
-              console.info(`${playerState.playerId} clicked ${buildingKey}`);
-            }}
-          />
+      {processedEstablishments.length > 0 ? (
+        <div>
+          Processed Establishments: {processedEstablishments.length}
+          <ul className="list-inside list-disc">
+            {processedEstablishments.map((establishmentKey) => (
+              <li key={establishmentKey}>{establishmentKey}</li>
+            ))}
+          </ul>
         </div>
-      ))}
+      ) : (
+        <div>No Establishments Processed</div>
+      )}
+      <details>
+        <summary className="w-max">
+          Supply {establishmentsInSupplyCount}
+        </summary>
+        <EstablishmentList establishments={supply} />
+      </details>
+      {Object.values(playersState).map((playerState, i) => {
+        const landmarkCount = Object.values(playerState.city.landmarks).filter(
+          (a) => a
+        ).length;
+        const establishmentCount = Object.values(
+          playerState.city.establishments
+        ).flat().length;
+        return (
+          <details className={playerColors[i]} key={playerState.playerId}>
+            <summary className="w-max">
+              Player {playerState.playerId}, Money: {playerState.money},
+              Landmark Count: {landmarkCount}, Establishment Count:{" "}
+              {establishmentCount}
+            </summary>
+            <City
+              city={playerState.city}
+              availableLandmarks={gameSettings.landmarks}
+              onClick={(buildingKey) => {
+                console.info(`${playerState.playerId} clicked ${buildingKey}`);
+              }}
+            />
+          </details>
+        );
+      })}
       <details>
         <summary>Debug</summary>
         <pre>{JSON.stringify(gameState, null, "  ")}</pre>

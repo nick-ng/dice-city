@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import seedrandom from "seedrandom";
 
-import type { Action, GameData, City } from "~common/types/index.js";
+import type { Action, GameData } from "~common/types/index.js";
 
 const rollDice = (count: 1 | 2, gameData: GameData, sides = 6): number[] => {
   const rng = seedrandom(`${gameData.gameDetails.id}-${gameData.lastActionId}`);
