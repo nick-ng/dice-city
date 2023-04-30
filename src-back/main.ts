@@ -7,12 +7,6 @@ import path from "path";
 import http from "http";
 import cors from "cors";
 
-import { getDeck } from "../src-common/constants/buildings.js";
-import { shuffle } from "../src-common/utils/shuffle.js";
-
-const deck = shuffle(getDeck("base"));
-console.log("deck: ", deck);
-
 const app = express();
 const server = http.createServer(app);
 

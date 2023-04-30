@@ -23,7 +23,8 @@ export default function StateDisplay({
 }: StateDisplayProps) {
   const { publicState } = gameState;
   const { common: commonState, players: playersState } = publicState;
-  const { supply, diceRolls, processedEstablishments } = commonState;
+  const { supply, diceRolls, processedEstablishments, turnEvents } =
+    commonState;
 
   const establishmentsInSupplyCount = Object.values(supply).flat().length;
 
@@ -36,21 +37,25 @@ export default function StateDisplay({
           <div>No Dice Rolled</div>
         )}
       </div>
-      {processedEstablishments.length > 0 ? (
-        <div>
-          Processed Establishments: {processedEstablishments.length}
-          <ul className="list-inside list-disc">
-            {processedEstablishments.map((establishmentKey) => (
-              <li key={establishmentKey}>{establishmentKey}</li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <div>No Establishments Processed</div>
-      )}
+      <div>
+        Processed Establishments: {processedEstablishments.length}
+        <ul className="list-inside list-disc">
+          {processedEstablishments.map((establishmentKey) => (
+            <li key={establishmentKey}>{establishmentKey}</li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        Turn Events: {turnEvents.length}
+        <ol className="list-inside list-decimal">
+          {turnEvents.map((turnEvent, i) => (
+            <li key={`${turnEvent}-${i}`}>{turnEvent}</li>
+          ))}
+        </ol>
+      </div>
       <details>
         <summary className="w-max">
-          Supply {establishmentsInSupplyCount}
+          Supply: {establishmentsInSupplyCount}
         </summary>
         <EstablishmentList establishments={supply} />
       </details>

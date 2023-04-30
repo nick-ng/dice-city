@@ -37,7 +37,7 @@ export const rollDiceAction = (
       return;
     }
 
-    const { gameState } = draftGameData;
+    const { gameState, gameDetails } = draftGameData;
     const { publicState } = gameState;
     const { players, common } = publicState;
     const playerState = players[playerId];
@@ -54,7 +54,6 @@ export const rollDiceAction = (
       return;
     }
 
-    console.log(activePlayerId, playerId);
     if (activePlayerId !== playerId) {
       error = "can only roll dice on your turn";
       return;
@@ -69,6 +68,19 @@ export const rollDiceAction = (
 
     common.turnPhase = "after-roll";
     common.diceRolls = rollDice(diceCount, gameData, 6);
+
+    const playerDetail = gameDetails.players.find(
+      (player) => player.id === activePlayerId
+    );
+    const playerName = playerDetail ? playerDetail.name : "Someone";
+    if (diceCount === 1) {
+      common.turnEvents = [`${playerName} rolled a ${common.diceRolls[0]}`];
+    } else {
+      const rollTotal = common.diceRolls.reduce((prev, curr) => prev + curr, 0);
+      common.turnEvents = [
+        `${playerName} rolled a ${rollTotal} (${common.diceRolls.join(" + ")})`,
+      ];
+    }
   });
 
   return {

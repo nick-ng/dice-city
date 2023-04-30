@@ -78,10 +78,10 @@ export default function DevBuildInterface() {
         supply={supply}
         city={city}
         onBuildEstablishment={(e) => {
-          console.log("onBuildEstablishment", e);
+          console.info("onBuildEstablishment", e);
         }}
         onBuildLandmark={(e) => {
-          console.log("onBuildLandmark", e);
+          console.info("onBuildLandmark", e);
         }}
       />
     </div>

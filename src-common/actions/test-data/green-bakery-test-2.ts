@@ -66,6 +66,7 @@ const startingState: GameData["gameState"] = {
       turnPhase: "after-roll",
       diceRolls: [1, 2],
       processedEstablishments: [],
+      turnEvents: ["Player A rolled a 3 (1 + 2)"],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",

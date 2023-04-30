@@ -12,7 +12,7 @@ export default function SupplyTotal() {
       <EstablishmentList
         establishments={supply}
         onChoose={(choice) => {
-          console.log("Chosen", choice);
+          console.info("Chosen", choice);
         }}
       />
     </div>

@@ -21,9 +21,9 @@ export const greenEstablishmentsAction = (
       return;
     }
 
-    const { gameState } = draftGameData;
+    const { gameState, gameDetails } = draftGameData;
     const { publicState } = gameState;
-    const { diceRolls, activePlayerId, processedEstablishments } =
+    const { diceRolls, activePlayerId, processedEstablishments, turnEvents } =
       publicState.common;
     const activePlayerState = publicState.players[activePlayerId];
 
@@ -39,6 +39,19 @@ export const greenEstablishmentsAction = (
                 activePlayerState.city.establishments[establishmentKey].length;
               activePlayerState.money += establishmentCount;
               processedEstablishments.push(establishmentKey);
+
+              const playerDetail = gameDetails.players.find(
+                (player) => player.id === activePlayerId
+              );
+              const playerName = playerDetail ? playerDetail.name : "Someone";
+
+              turnEvents.push(
+                `${playerName} collected ${establishmentCount} ${
+                  establishmentCount === 1 ? "coin" : "coins"
+                } from the bank through their ${
+                  establishmentCount === 1 ? "bakery" : "bakeries"
+                }`
+              );
             }
             break;
           default:

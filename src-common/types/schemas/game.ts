@@ -66,6 +66,7 @@ const publicStateSchema = z.object({
     ]),
     diceRolls: z.array(z.number()),
     processedEstablishments: z.array(z.string()),
+    turnEvents: z.array(z.string()),
   }),
   players: z.record(
     z.string(),
