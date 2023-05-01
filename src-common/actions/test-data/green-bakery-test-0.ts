@@ -2,15 +2,15 @@ import type { GameData } from "~common/types/index.js";
 import type { TestScenario } from "./types.js";
 
 const gameDetails = {
-  hostId: "a",
+  hostId: "84c45332-4911-4823-839e-996bad56ba61",
   id: "49e5d821-0473-4185-917e-a48b803e8425",
   players: [
     {
-      id: "a",
+      id: "84c45332-4911-4823-839e-996bad56ba61",
       name: "Player A",
     },
     {
-      id: "b",
+      id: "7107307a-bbd8-4b4d-a676-76c261bbbc9e",
       name: "Player B",
     },
   ],
@@ -25,9 +25,9 @@ const gameSettings = {
 const startingState: GameData["gameState"] = {
   publicState: {
     players: {
-      a: {
-        playerId: "a",
-        money: 9,
+      "84c45332-4911-4823-839e-996bad56ba61": {
+        playerId: "84c45332-4911-4823-839e-996bad56ba61",
+        money: 0,
         city: {
           establishments: {
             wheatField: ["wheatField:a"],
@@ -37,18 +37,19 @@ const startingState: GameData["gameState"] = {
           landmarks: {
             radioTower: false,
             amusementPark: false,
-            shoppingMall: true,
+            shoppingMall: false,
             trainStation: true,
           },
         },
       },
-      b: {
-        playerId: "b",
+      "7107307a-bbd8-4b4d-a676-76c261bbbc9e": {
+        playerId: "7107307a-bbd8-4b4d-a676-76c261bbbc9e",
         money: 3,
         city: {
           establishments: {
             wheatField: ["wheatField:b", "wheatField:4"],
             ranch: ["ranch:b"],
+            bakery: ["bakery:0", "bakery:3"],
           },
           landmarks: {
             radioTower: true,
@@ -60,11 +61,11 @@ const startingState: GameData["gameState"] = {
       },
     },
     common: {
-      activePlayerId: "a",
-      turnPhase: "before-roll",
-      diceRolls: [],
-      processedEstablishments: ["establishmentA", "establishmentB"],
-      turnEvents: [],
+      activePlayerId: "84c45332-4911-4823-839e-996bad56ba61",
+      turnPhase: "after-roll",
+      diceRolls: [1, 2],
+      processedEstablishments: [],
+      turnEvents: ["%84c45332-4911-4823-839e-996bad56ba61% rolled a 3 (1 + 2)"],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",
@@ -82,14 +83,7 @@ const startingState: GameData["gameState"] = {
           "appleOrchard:4",
           "appleOrchard:3",
         ],
-        bakery: [
-          "bakery:5",
-          "bakery:0",
-          "bakery:3",
-          "bakery:2",
-          "bakery:1",
-          "bakery:4",
-        ],
+        bakery: ["bakery:5", "bakery:2", "bakery:1", "bakery:4"],
         fruitAndVegetableMarket: [
           "fruitAndVegetableMarket:2",
           "fruitAndVegetableMarket:0",
@@ -168,54 +162,25 @@ const startingData: GameData = {
   gameDetails,
   gameSettings,
   gameState: startingState,
-  lastActionId: "1682757615-0",
+  lastActionId: "1682787615-0",
   playersSecrets: {
-    a: {
+    "84c45332-4911-4823-839e-996bad56ba61": {
       password: "abc",
     },
-    b: {
+    "7107307a-bbd8-4b4d-a676-76c261bbbc9e": {
       password: "bcd",
     },
   },
 };
 
-export const rollDiceTests2: TestScenario[] = [
+export const greenBakery0: TestScenario[] = [
   {
-    tags: ["roll-dice", "success"],
-    display:
-      "Roll-dice: Player A rolls 1 die on their turn with a train station",
+    tags: ["green-establishments", "bakery", "success"],
+    display: "Green-establishments: Player A rolls a 3 and has 0 bakeries",
     startingData,
     action: {
-      playerId: "a",
-      type: "roll-dice",
-      payload: {
-        diceCount: 1,
-      },
-    },
-  },
-  {
-    tags: ["roll-dice", "success"],
-    display:
-      "Roll-dice: Player A rolls 2 dice on their turn with a train station",
-    startingData,
-    action: {
-      playerId: "a",
-      type: "roll-dice",
-      payload: {
-        diceCount: 2,
-      },
-    },
-  },
-  {
-    tags: ["roll-dice", "error"],
-    display: "Roll-dice: Player B rolls 1 die not on their turn",
-    startingData,
-    action: {
-      playerId: "b",
-      type: "roll-dice",
-      payload: {
-        diceCount: 2,
-      },
+      type: "green-establishments",
+      isServer: true,
     },
   },
 ];

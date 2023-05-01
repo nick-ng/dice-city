@@ -39,7 +39,7 @@ const startingState: GameData["gameState"] = {
           landmarks: {
             radioTower: false,
             amusementPark: false,
-            shoppingMall: true,
+            shoppingMall: false,
             trainStation: true,
           },
         },
@@ -65,9 +65,9 @@ const startingState: GameData["gameState"] = {
     common: {
       activePlayerId: "84c45332-4911-4823-839e-996bad56ba61",
       turnPhase: "after-roll",
-      diceRolls: [1, 2],
+      diceRolls: [2, 2],
       processedEstablishments: [],
-      turnEvents: ["%84c45332-4911-4823-839e-996bad56ba61% rolled a 3 (1 + 2)"],
+      turnEvents: ["%84c45332-4911-4823-839e-996bad56ba61% rolled a 4 (2 + 2)"],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",

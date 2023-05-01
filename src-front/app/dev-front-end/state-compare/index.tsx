@@ -8,9 +8,12 @@ import { buildTests } from "~common/actions/test-data/build-test.js";
 import { buildTests2 } from "~common/actions/test-data/build-test-2.js";
 import { rollDiceTests } from "~common/actions/test-data/roll-dice-test.js";
 import { rollDiceTests2 } from "~common/actions/test-data/roll-dice-test-2.js";
+import { greenBakery0 } from "~common/actions/test-data/green-bakery-test-0.js";
 import { greenBakery } from "~common/actions/test-data/green-bakery-test.js";
 import { greenBakery2 } from "~common/actions/test-data/green-bakery-test-2.js";
 import { greenBakery3 } from "~common/actions/test-data/green-bakery-test-3.js";
+import { greenConvenienceStore } from "~common/actions/test-data/green-convenience-store-test.js";
+import { greenConvenienceStore2 } from "~common/actions/test-data/green-convenience-store-test-2.js";
 
 import StateDisplay from "./state-display.js";
 
@@ -19,9 +22,12 @@ const dataAndActions = [
   buildTests2,
   rollDiceTests,
   rollDiceTests2,
+  greenBakery0,
   greenBakery,
   greenBakery2,
   greenBakery3,
+  greenConvenienceStore,
+  greenConvenienceStore2,
 ]
   .flat()
   .map((stateAndAction, i) => ({

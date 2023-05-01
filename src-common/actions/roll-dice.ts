@@ -68,6 +68,7 @@ export const rollDiceAction = (
 
     common.turnPhase = "after-roll";
     common.diceRolls = rollDice(diceCount, gameData, 6);
+    common.processedEstablishments = [];
 
     if (diceCount === 1) {
       common.turnEvents = [
