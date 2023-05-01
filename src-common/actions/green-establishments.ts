@@ -35,14 +35,20 @@ export const greenEstablishmentsAction = (
         switch (establishmentKey) {
           case "bakery":
             if (establishment.activationNumbers.includes(diceTotal)) {
+              const { city } = activePlayerState;
+              const { establishments, landmarks } = city;
+              const haveShoppingMall = landmarks.shoppingMall;
               const establishmentCount =
-                activePlayerState.city.establishments[establishmentKey].length;
-              activePlayerState.money += establishmentCount;
+                establishments[establishmentKey].length;
+              const moneyPerEstablishment = haveShoppingMall ? 2 : 1;
+              const moneyReceived = moneyPerEstablishment * establishmentCount;
+              activePlayerState.money += moneyReceived;
+
               processedEstablishments.push(establishmentKey);
 
               turnEvents.push(
-                `%${activePlayerId}% collected ${establishmentCount} ${
-                  establishmentCount === 1 ? "coin" : "coins"
+                `%${activePlayerId}% collected ${moneyReceived} ${
+                  moneyReceived === 1 ? "coin" : "coins"
                 } from the bank through their ${
                   establishmentCount === 1 ? "bakery" : "bakeries"
                 }`

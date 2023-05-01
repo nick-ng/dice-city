@@ -10,6 +10,7 @@ import { rollDiceTests } from "~common/actions/test-data/roll-dice-test.js";
 import { rollDiceTests2 } from "~common/actions/test-data/roll-dice-test-2.js";
 import { greenBakery } from "~common/actions/test-data/green-bakery-test.js";
 import { greenBakery2 } from "~common/actions/test-data/green-bakery-test-2.js";
+import { greenBakery3 } from "~common/actions/test-data/green-bakery-test-3.js";
 
 import StateDisplay from "./state-display.js";
 
@@ -20,6 +21,7 @@ const dataAndActions = [
   rollDiceTests2,
   greenBakery,
   greenBakery2,
+  greenBakery3,
 ]
   .flat()
   .map((stateAndAction, i) => ({

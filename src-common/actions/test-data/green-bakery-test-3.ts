@@ -32,13 +32,13 @@ const startingState: GameData["gameState"] = {
           establishments: {
             wheatField: ["wheatField:a"],
             ranch: ["ranch:a"],
-            bakery: ["bakery:5"],
+            bakery: ["bakery:5", "bakery:3"],
             fruitAndVegetableMarket: ["fruitAndVegetableMarket:3"],
           },
           landmarks: {
             radioTower: false,
             amusementPark: false,
-            shoppingMall: false,
+            shoppingMall: true,
             trainStation: true,
           },
         },
@@ -50,7 +50,7 @@ const startingState: GameData["gameState"] = {
           establishments: {
             wheatField: ["wheatField:b", "wheatField:4"],
             ranch: ["ranch:b"],
-            bakery: ["bakery:0", "bakery:3"],
+            bakery: ["bakery:0"],
           },
           landmarks: {
             radioTower: true,
@@ -174,10 +174,11 @@ const startingData: GameData = {
   },
 };
 
-export const greenBakery: TestScenario[] = [
+export const greenBakery3: TestScenario[] = [
   {
     tags: ["green-establishments", "bakery", "success"],
-    display: "Green-establishments: Player A rolls a 3 and has 1 bakery",
+    display:
+      "Green-establishments: Player A rolls a 3 and has 2 bakeries and a shopping mall",
     startingData,
     action: {
       type: "green-establishments",
