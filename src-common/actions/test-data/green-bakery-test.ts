@@ -2,31 +2,31 @@ import type { GameData } from "~common/types/index.js";
 import type { TestScenario } from "./types.js";
 
 const gameDetails = {
-  hostId: "a",
+  hostId: "84c45332-4911-4823-839e-996bad56ba61",
   id: "49e5d821-0473-4185-917e-a48b803e8425",
   players: [
     {
-      id: "a",
+      id: "84c45332-4911-4823-839e-996bad56ba61",
       name: "Player A",
     },
     {
-      id: "b",
+      id: "7107307a-bbd8-4b4d-a676-76c261bbbc9e",
       name: "Player B",
     },
   ],
 };
 
-const gameSettings = Object.freeze({
+const gameSettings = {
   landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
   timeLimitSeconds: 999,
-  timeLimitType: "off",
-});
+  timeLimitType: "off" as const,
+};
 
 const startingState: GameData["gameState"] = {
   publicState: {
     players: {
-      a: {
-        playerId: "a",
+      "84c45332-4911-4823-839e-996bad56ba61": {
+        playerId: "84c45332-4911-4823-839e-996bad56ba61",
         money: 0,
         city: {
           establishments: {
@@ -43,8 +43,8 @@ const startingState: GameData["gameState"] = {
           },
         },
       },
-      b: {
-        playerId: "b",
+      "7107307a-bbd8-4b4d-a676-76c261bbbc9e": {
+        playerId: "7107307a-bbd8-4b4d-a676-76c261bbbc9e",
         money: 3,
         city: {
           establishments: {
@@ -62,11 +62,11 @@ const startingState: GameData["gameState"] = {
       },
     },
     common: {
-      activePlayerId: "a",
+      activePlayerId: "84c45332-4911-4823-839e-996bad56ba61",
       turnPhase: "after-roll",
       diceRolls: [1, 2],
       processedEstablishments: [],
-      turnEvents: ["Player A rolled a 3 (1 + 2)"],
+      turnEvents: ["%84c45332-4911-4823-839e-996bad56ba61% rolled a 3 (1 + 2)"],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",

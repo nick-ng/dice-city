@@ -21,7 +21,7 @@ export const greenEstablishmentsAction = (
       return;
     }
 
-    const { gameState, gameDetails } = draftGameData;
+    const { gameState } = draftGameData;
     const { publicState } = gameState;
     const { diceRolls, activePlayerId, processedEstablishments, turnEvents } =
       publicState.common;
@@ -40,13 +40,8 @@ export const greenEstablishmentsAction = (
               activePlayerState.money += establishmentCount;
               processedEstablishments.push(establishmentKey);
 
-              const playerDetail = gameDetails.players.find(
-                (player) => player.id === activePlayerId
-              );
-              const playerName = playerDetail ? playerDetail.name : "Someone";
-
               turnEvents.push(
-                `${playerName} collected ${establishmentCount} ${
+                `%${activePlayerId}% collected ${establishmentCount} ${
                   establishmentCount === 1 ? "coin" : "coins"
                 } from the bank through their ${
                   establishmentCount === 1 ? "bakery" : "bakeries"

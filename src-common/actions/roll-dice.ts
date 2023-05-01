@@ -37,7 +37,7 @@ export const rollDiceAction = (
       return;
     }
 
-    const { gameState, gameDetails } = draftGameData;
+    const { gameState } = draftGameData;
     const { publicState } = gameState;
     const { players, common } = publicState;
     const playerState = players[playerId];
@@ -69,16 +69,16 @@ export const rollDiceAction = (
     common.turnPhase = "after-roll";
     common.diceRolls = rollDice(diceCount, gameData, 6);
 
-    const playerDetail = gameDetails.players.find(
-      (player) => player.id === activePlayerId
-    );
-    const playerName = playerDetail ? playerDetail.name : "Someone";
     if (diceCount === 1) {
-      common.turnEvents = [`${playerName} rolled a ${common.diceRolls[0]}`];
+      common.turnEvents = [
+        `%${activePlayerId}% rolled a ${common.diceRolls[0]}`,
+      ];
     } else {
       const rollTotal = common.diceRolls.reduce((prev, curr) => prev + curr, 0);
       common.turnEvents = [
-        `${playerName} rolled a ${rollTotal} (${common.diceRolls.join(" + ")})`,
+        `%${activePlayerId}% rolled a ${rollTotal} (${common.diceRolls.join(
+          " + "
+        )})`,
       ];
     }
   });

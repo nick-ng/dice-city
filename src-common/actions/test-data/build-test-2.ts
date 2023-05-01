@@ -16,11 +16,11 @@ const gameDetails = {
   ],
 };
 
-const gameSettings = Object.freeze({
+const gameSettings = {
   landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
   timeLimitSeconds: 999,
-  timeLimitType: "off",
-});
+  timeLimitType: "off" as const,
+};
 
 const startingState: GameData["gameState"] = {
   publicState: {

@@ -2,12 +2,10 @@ import type { GameData } from "~common/types/index.js";
 
 import EstablishmentList from "~front/app/establishment-list/index.js";
 import City from "../../city/index.js";
-import { useEffect } from "react";
 
 interface StateDisplayProps {
   note?: string;
-  gameState: GameData["gameState"];
-  gameSettings: GameData["gameSettings"];
+  gameData: GameData;
 }
 
 const playerColors = [
@@ -17,14 +15,13 @@ const playerColors = [
   "bg-blue-100 dark:bg-blue-800",
 ];
 
-export default function StateDisplay({
-  gameState,
-  gameSettings,
-}: StateDisplayProps) {
+export default function StateDisplay({ gameData }: StateDisplayProps) {
+  const { gameState, gameSettings, gameDetails } = gameData;
   const { publicState } = gameState;
   const { common: commonState, players: playersState } = publicState;
   const { supply, diceRolls, processedEstablishments, turnEvents } =
     commonState;
+  const { players } = gameDetails;
 
   const establishmentsInSupplyCount = Object.values(supply).flat().length;
 
@@ -49,7 +46,11 @@ export default function StateDisplay({
         Turn Events: {turnEvents.length}
         <ol className="list-inside list-decimal">
           {turnEvents.map((turnEvent, i) => (
-            <li key={`${turnEvent}-${i}`}>{turnEvent}</li>
+            <li key={`${turnEvent}-${i}`}>
+              {players.reduce((prev, { id, name }) => {
+                return prev.replaceAll(`%${id}%`, name);
+              }, turnEvent)}
+            </li>
           ))}
         </ol>
       </div>
@@ -63,15 +64,20 @@ export default function StateDisplay({
         const landmarkCount = Object.values(playerState.city.landmarks).filter(
           (a) => a
         ).length;
+
         const establishmentCount = Object.values(
           playerState.city.establishments
         ).flat().length;
+
+        const playerDetails = players.find(
+          ({ id }) => id === playerState.playerId
+        );
         return (
           <details className={playerColors[i]} key={playerState.playerId}>
             <summary className="w-max">
-              Player {playerState.playerId}, Money: {playerState.money},
-              Landmark Count: {landmarkCount}, Establishment Count:{" "}
-              {establishmentCount}
+              {playerDetails?.name || `Player ${playerState.playerId}`}, Money:{" "}
+              {playerState.money}, Landmark Count: {landmarkCount},
+              Establishment Count: {establishmentCount}
             </summary>
             <City
               city={playerState.city}

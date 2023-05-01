@@ -13,12 +13,6 @@ import { greenBakery2 } from "~common/actions/test-data/green-bakery-test-2.js";
 
 import StateDisplay from "./state-display.js";
 
-const gameSettings: GameData["gameSettings"] = {
-  landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
-  timeLimitSeconds: 1000,
-  timeLimitType: "off",
-};
-
 const dataAndActions = [
   buildTests,
   buildTests2,
@@ -120,8 +114,7 @@ export default function StateCompare() {
         <div>
           <h2>Starting State: {display}</h2>
           <StateDisplay
-            gameState={startingData?.gameState}
-            gameSettings={gameSettings}
+            gameData={startingData}
             note={display ? `${display} before` : ""}
           />
         </div>
@@ -132,8 +125,7 @@ export default function StateCompare() {
         <div>
           <h2>Final State: {display}</h2>
           <StateDisplay
-            gameState={finalData?.gameState}
-            gameSettings={gameSettings}
+            gameData={finalData}
             note={display ? `${display} after` : ""}
           />
         </div>
