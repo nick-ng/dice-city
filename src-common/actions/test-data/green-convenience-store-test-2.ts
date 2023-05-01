@@ -178,7 +178,7 @@ export const greenConvenienceStore2: TestScenario[] = [
   {
     tags: ["green-establishments", "convenience-store", "success"],
     display:
-      "Green-establishments: Player A rolls a 3 and has 1 convenience store and has a shopping mall",
+      "Green-establishments: Player A rolls a 4 and has 1 convenience store and has a shopping mall",
     startingData,
     action: {
       type: "green-establishments",

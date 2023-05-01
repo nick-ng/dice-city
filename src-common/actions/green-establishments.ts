@@ -58,7 +58,7 @@ export const greenEstablishmentsAction = (
               turnEvents.push(
                 `%${activePlayerId}% collected ${moneyReceived} ${
                   moneyReceived === 1 ? "coin" : "coins"
-                } from the bank through their ${
+                } from the bank through their ${establishmentCount} ${
                   establishmentCount === 1 ? "bakery" : "bakeries"
                 }`
               );
@@ -74,8 +74,35 @@ export const greenEstablishmentsAction = (
               turnEvents.push(
                 `%${activePlayerId}% collected ${moneyReceived} ${
                   moneyReceived === 1 ? "coin" : "coins"
-                } from the bank through their convenience ${
+                } from the bank through their ${establishmentCount} convenience ${
                   establishmentCount === 1 ? "store" : "stores"
+                }`
+              );
+            }
+            break;
+          case "cheeseFactory":
+            if (establishment.activationNumbers.includes(diceTotal)) {
+              const cowsCount = Object.entries(establishments).reduce(
+                (prev, [key, establishmentIds]) => {
+                  const currentEstablishment = establishmentReference[key];
+                  if (currentEstablishment?.tag === "cow") {
+                    return prev + establishmentIds.length;
+                  }
+                  return prev;
+                },
+                0
+              );
+
+              const moneyPerEstablishment = 3 * cowsCount;
+              const moneyReceived = moneyPerEstablishment * establishmentCount;
+              activePlayerState.money += moneyReceived;
+
+              processedEstablishments.push(establishmentKey);
+              turnEvents.push(
+                `%${activePlayerId}% collected ${moneyReceived} ${
+                  moneyReceived === 1 ? "coin" : "coins"
+                } from the bank through their ${establishmentCount} cheese ${
+                  establishmentCount === 1 ? "factory" : "factories"
                 }`
               );
             }

@@ -31,10 +31,9 @@ const startingState: GameData["gameState"] = {
         city: {
           establishments: {
             wheatField: ["wheatField:a"],
-            ranch: ["ranch:a"],
-            bakery: ["bakery:5"],
+            ranch: ["ranch:a", "ranch:0", "ranch:3"],
             convenienceStore: ["convenienceStore:2"],
-            fruitAndVegetableMarket: ["fruitAndVegetableMarket:3"],
+            cheeseFactory: ["cheeseFactory:4", "cheeseFactory:2"],
           },
           landmarks: {
             radioTower: false,
@@ -65,9 +64,9 @@ const startingState: GameData["gameState"] = {
     common: {
       activePlayerId: "84c45332-4911-4823-839e-996bad56ba61",
       turnPhase: "after-roll",
-      diceRolls: [2, 2],
+      diceRolls: [5, 2],
       processedEstablishments: [],
-      turnEvents: ["%84c45332-4911-4823-839e-996bad56ba61% rolled a 4 (2 + 2)"],
+      turnEvents: ["%84c45332-4911-4823-839e-996bad56ba61% rolled a 7 (5 + 2)"],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",
@@ -85,8 +84,9 @@ const startingState: GameData["gameState"] = {
           "appleOrchard:4",
           "appleOrchard:3",
         ],
-        bakery: ["bakery:2", "bakery:1", "bakery:4"],
+        bakery: ["bakery:5", "bakery:2", "bakery:1", "bakery:4"],
         fruitAndVegetableMarket: [
+          "fruitAndVegetableMarket:3",
           "fruitAndVegetableMarket:2",
           "fruitAndVegetableMarket:0",
           "fruitAndVegetableMarket:1",
@@ -102,21 +102,12 @@ const startingState: GameData["gameState"] = {
           "furnitureFactory:5",
         ],
         cheeseFactory: [
-          "cheeseFactory:4",
-          "cheeseFactory:2",
           "cheeseFactory:1",
           "cheeseFactory:0",
           "cheeseFactory:3",
           "cheeseFactory:5",
         ],
-        ranch: [
-          "ranch:0",
-          "ranch:3",
-          "ranch:1",
-          "ranch:4",
-          "ranch:2",
-          "ranch:5",
-        ],
+        ranch: ["ranch:1", "ranch:4", "ranch:2", "ranch:5"],
         convenienceStore: [
           "convenienceStore:3",
           "convenienceStore:1",
@@ -174,11 +165,11 @@ const startingData: GameData = {
   },
 };
 
-export const greenConvenienceStore: TestScenario[] = [
+export const greenCheeseFactoryTests: TestScenario[] = [
   {
-    tags: ["green-establishments", "convenience-store", "success"],
+    tags: ["green-establishments", "cheese-factory", "success"],
     display:
-      "Green-establishments: Player A rolls a 4 and has 1 convenience store",
+      "Green-establishments: Player A rolls a 7 and has 2 cheese factories and 3 🐄",
     startingData,
     action: {
       type: "green-establishments",
