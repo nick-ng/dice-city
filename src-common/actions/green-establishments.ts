@@ -1,7 +1,27 @@
 import { produce } from "immer";
 
-import type { Action, GameData } from "~common/types/index.js";
+import type {
+  Action,
+  GameData,
+  EstablishmentList,
+} from "~common/types/index.js";
 import { establishmentReference } from "~common/constants/buildings.js";
+
+const countTagsInEstablishments = (
+  establishments: EstablishmentList,
+  tag: string
+): number => {
+  return Object.entries(establishments).reduce(
+    (prev, [key, establishmentIds]) => {
+      const establishmentDetails = establishmentReference[key];
+      if (establishmentDetails?.tag === tag) {
+        return prev + establishmentIds.length;
+      }
+      return prev;
+    },
+    0
+  );
+};
 
 export const greenEstablishmentsAction = (
   gameData: GameData,
@@ -82,15 +102,9 @@ export const greenEstablishmentsAction = (
             break;
           case "cheeseFactory":
             if (establishment.activationNumbers.includes(diceTotal)) {
-              const cowsCount = Object.entries(establishments).reduce(
-                (prev, [key, establishmentIds]) => {
-                  const currentEstablishment = establishmentReference[key];
-                  if (currentEstablishment?.tag === "cow") {
-                    return prev + establishmentIds.length;
-                  }
-                  return prev;
-                },
-                0
+              const cowsCount = countTagsInEstablishments(
+                establishments,
+                "cow"
               );
 
               const moneyPerEstablishment = 3 * cowsCount;
@@ -103,6 +117,45 @@ export const greenEstablishmentsAction = (
                   moneyReceived === 1 ? "coin" : "coins"
                 } from the bank through their ${establishmentCount} cheese ${
                   establishmentCount === 1 ? "factory" : "factories"
+                }`
+              );
+            }
+            break;
+          case "furnitureFactory":
+            if (establishment.activationNumbers.includes(diceTotal)) {
+              const cogCount = countTagsInEstablishments(establishments, "cog");
+
+              const moneyPerEstablishment = 3 * cogCount;
+              const moneyReceived = moneyPerEstablishment * establishmentCount;
+              activePlayerState.money += moneyReceived;
+
+              processedEstablishments.push(establishmentKey);
+              turnEvents.push(
+                `%${activePlayerId}% collected ${moneyReceived} ${
+                  moneyReceived === 1 ? "coin" : "coins"
+                } from the bank through their ${establishmentCount} furniture ${
+                  establishmentCount === 1 ? "factory" : "factories"
+                }`
+              );
+            }
+            break;
+          case "fruitAndVegetableMarket":
+            if (establishment.activationNumbers.includes(diceTotal)) {
+              const cogCount = countTagsInEstablishments(
+                establishments,
+                "wheat"
+              );
+
+              const moneyPerEstablishment = 2 * cogCount;
+              const moneyReceived = moneyPerEstablishment * establishmentCount;
+              activePlayerState.money += moneyReceived;
+
+              processedEstablishments.push(establishmentKey);
+              turnEvents.push(
+                `%${activePlayerId}% collected ${moneyReceived} ${
+                  moneyReceived === 1 ? "coin" : "coins"
+                } from the bank through their ${establishmentCount} fruit and vegetable ${
+                  establishmentCount === 1 ? "market" : "markets"
                 }`
               );
             }
