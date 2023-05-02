@@ -2,15 +2,15 @@ import type { GameData } from "~common/types/index.js";
 import type { TestScenario } from "./types.js";
 
 const gameDetails = {
-  hostId: "a",
-  id: "a",
+  hostId: "84c45332-4911-4823-839e-996bad56ba61",
+  id: "49e5d821-0473-4185-917e-a48b803e8425",
   players: [
     {
-      id: "a",
+      id: "84c45332-4911-4823-839e-996bad56ba61",
       name: "Player A",
     },
     {
-      id: "b",
+      id: "7107307a-bbd8-4b4d-a676-76c261bbbc9e",
       name: "Player B",
     },
   ],
@@ -25,30 +25,32 @@ const gameSettings = {
 const startingState: GameData["gameState"] = {
   publicState: {
     players: {
-      a: {
-        playerId: "a",
-        money: 9,
+      "84c45332-4911-4823-839e-996bad56ba61": {
+        playerId: "84c45332-4911-4823-839e-996bad56ba61",
+        money: 0,
         city: {
           establishments: {
             wheatField: ["wheatField:a"],
             ranch: ["ranch:a"],
+            bakery: ["bakery:5"],
             fruitAndVegetableMarket: ["fruitAndVegetableMarket:3"],
           },
           landmarks: {
             radioTower: false,
             amusementPark: false,
-            shoppingMall: true,
-            trainStation: false,
+            shoppingMall: false,
+            trainStation: true,
           },
         },
       },
-      b: {
-        playerId: "b",
+      "7107307a-bbd8-4b4d-a676-76c261bbbc9e": {
+        playerId: "7107307a-bbd8-4b4d-a676-76c261bbbc9e",
         money: 3,
         city: {
           establishments: {
             wheatField: ["wheatField:b", "wheatField:4"],
             ranch: ["ranch:b"],
+            bakery: ["bakery:0", "bakery:3"],
           },
           landmarks: {
             radioTower: true,
@@ -60,11 +62,11 @@ const startingState: GameData["gameState"] = {
       },
     },
     common: {
-      activePlayerId: "b",
-      turnPhase: "before-build",
-      diceRolls: [],
+      activePlayerId: "84c45332-4911-4823-839e-996bad56ba61",
+      turnPhase: "after-roll",
+      diceRolls: [1, 2],
       processedEstablishments: [],
-      turnEvents: [],
+      turnEvents: ["%84c45332-4911-4823-839e-996bad56ba61% rolled a 3 (1 + 2)"],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",
@@ -82,14 +84,7 @@ const startingState: GameData["gameState"] = {
           "appleOrchard:4",
           "appleOrchard:3",
         ],
-        bakery: [
-          "bakery:5",
-          "bakery:0",
-          "bakery:3",
-          "bakery:2",
-          "bakery:1",
-          "bakery:4",
-        ],
+        bakery: ["bakery:2", "bakery:1", "bakery:4"],
         fruitAndVegetableMarket: [
           "fruitAndVegetableMarket:2",
           "fruitAndVegetableMarket:0",
@@ -168,40 +163,25 @@ const startingData: GameData = {
   gameDetails,
   gameSettings,
   gameState: startingState,
-  lastActionId: "1",
+  lastActionId: "1682787615-0",
   playersSecrets: {
-    a: {
+    "84c45332-4911-4823-839e-996bad56ba61": {
       password: "abc",
     },
-    b: {
+    "7107307a-bbd8-4b4d-a676-76c261bbbc9e": {
       password: "bcd",
     },
   },
 };
 
-export const buildTests2: TestScenario[] = [
+export const greenBakery: TestScenario[] = [
   {
-    tags: ["build", "error"],
-    display: "Build: Player B with 3 money builds mine on their turn",
+    tags: ["green-establishments", "bakery", "success"],
+    display: "Green-establishments: Player A rolls a 3 and has 1 bakery",
     startingData,
     action: {
-      playerId: "b",
-      type: "build",
-      payload: {
-        buildingKey: "mine",
-      },
-    },
-  },
-  {
-    tags: ["build", "error"],
-    display: "Build: Player B with 3 money builds amusement park on their turn",
-    startingData,
-    action: {
-      playerId: "b",
-      type: "build",
-      payload: {
-        buildingKey: "amusementPark",
-      },
+      type: "green-establishments",
+      isServer: true,
     },
   },
 ];

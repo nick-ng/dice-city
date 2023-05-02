@@ -17,7 +17,7 @@ export default function LandmarkList({
 }: LandmarkListProps) {
   return (
     <div className="flex flex-row flex-wrap items-start">
-      {availableLandmarks
+      {[...availableLandmarks]
         .sort((a, b) => landmarkReference[a].cost - landmarkReference[b].cost)
         .map(
           (key) =>

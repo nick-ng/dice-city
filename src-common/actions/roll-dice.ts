@@ -1,7 +1,7 @@
 import { produce } from "immer";
 import seedrandom from "seedrandom";
 
-import type { Action, GameData, City } from "~common/types/index.js";
+import type { Action, GameData } from "~common/types/index.js";
 
 const rollDice = (count: 1 | 2, gameData: GameData, sides = 6): number[] => {
   const rng = seedrandom(`${gameData.gameDetails.id}-${gameData.lastActionId}`);
@@ -54,7 +54,6 @@ export const rollDiceAction = (
       return;
     }
 
-    console.log(activePlayerId, playerId);
     if (activePlayerId !== playerId) {
       error = "can only roll dice on your turn";
       return;
@@ -69,6 +68,20 @@ export const rollDiceAction = (
 
     common.turnPhase = "after-roll";
     common.diceRolls = rollDice(diceCount, gameData, 6);
+    common.processedEstablishments = [];
+
+    if (diceCount === 1) {
+      common.turnEvents = [
+        `%${activePlayerId}% rolled a ${common.diceRolls[0]}`,
+      ];
+    } else {
+      const rollTotal = common.diceRolls.reduce((prev, curr) => prev + curr, 0);
+      common.turnEvents = [
+        `%${activePlayerId}% rolled a ${rollTotal} (${common.diceRolls.join(
+          " + "
+        )})`,
+      ];
+    }
   });
 
   return {

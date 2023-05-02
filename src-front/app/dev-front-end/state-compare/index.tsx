@@ -8,16 +8,33 @@ import { buildTests } from "~common/actions/test-data/build-test.js";
 import { buildTests2 } from "~common/actions/test-data/build-test-2.js";
 import { rollDiceTests } from "~common/actions/test-data/roll-dice-test.js";
 import { rollDiceTests2 } from "~common/actions/test-data/roll-dice-test-2.js";
+import { greenBakery0 } from "~common/actions/test-data/green-bakery-test-0.js";
+import { greenBakery } from "~common/actions/test-data/green-bakery-test.js";
+import { greenBakery2 } from "~common/actions/test-data/green-bakery-test-2.js";
+import { greenBakery3 } from "~common/actions/test-data/green-bakery-test-3.js";
+import { greenConvenienceStore } from "~common/actions/test-data/green-convenience-store-test.js";
+import { greenConvenienceStore2 } from "~common/actions/test-data/green-convenience-store-test-2.js";
+import { greenCheeseFactoryTests } from "~common/actions/test-data/green-cheese-factory-test-1.js";
+import { greenFurnitureFactoryTests } from "~common/actions/test-data/green-furniture-factory-test-1.js";
+import { greenFruitAndVegetableTests } from "~common/actions/test-data/green-fruit-and-vegetable-market-test-1.js";
 
 import StateDisplay from "./state-display.js";
 
-const gameSettings: GameData["gameSettings"] = {
-  landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
-  timeLimitSeconds: 1000,
-  timeLimitType: "off",
-};
-
-const dataAndActions = [buildTests, buildTests2, rollDiceTests, rollDiceTests2]
+const dataAndActions = [
+  buildTests,
+  buildTests2,
+  rollDiceTests,
+  rollDiceTests2,
+  greenBakery0,
+  greenBakery,
+  greenBakery2,
+  greenBakery3,
+  greenConvenienceStore,
+  greenConvenienceStore2,
+  greenCheeseFactoryTests,
+  greenFurnitureFactoryTests,
+  greenFruitAndVegetableTests,
+]
   .flat()
   .map((stateAndAction, i) => ({
     ...stateAndAction,
@@ -111,8 +128,7 @@ export default function StateCompare() {
         <div>
           <h2>Starting State: {display}</h2>
           <StateDisplay
-            gameState={startingData?.gameState}
-            gameSettings={gameSettings}
+            gameData={startingData}
             note={display ? `${display} before` : ""}
           />
         </div>
@@ -123,8 +139,7 @@ export default function StateCompare() {
         <div>
           <h2>Final State: {display}</h2>
           <StateDisplay
-            gameState={finalData?.gameState}
-            gameSettings={gameSettings}
+            gameData={finalData}
             note={display ? `${display} after` : ""}
           />
         </div>
