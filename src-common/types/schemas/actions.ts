@@ -20,9 +20,9 @@ export const rollSchema = z.object({
   }),
 });
 
-export const greenEstablishmentsSchema = z.object({
+export const establishmentsSchema = z.object({
   playerId: z.optional(z.never()),
-  type: z.literal("green-establishments"),
+  type: z.enum(["green-establishments", "blue-establishments"]),
   isServer: z.literal(true),
   payload: z.optional(z.any()),
 });
@@ -30,5 +30,5 @@ export const greenEstablishmentsSchema = z.object({
 export const actionSchema = z.union([
   buildEstablishmentSchema,
   rollSchema,
-  greenEstablishmentsSchema,
+  establishmentsSchema,
 ]);

@@ -1,0 +1,101 @@
+import { produce } from "immer";
+
+import type {
+  Action,
+  GameData,
+  EstablishmentList,
+} from "~common/types/index.js";
+import { establishmentReference } from "~common/constants/buildings.js";
+
+const countTagsInEstablishments = (
+  establishments: EstablishmentList,
+  tag: string
+): number => {
+  return Object.entries(establishments).reduce(
+    (prev, [key, establishmentIds]) => {
+      const establishmentDetails = establishmentReference[key];
+      if (establishmentDetails?.tag === tag) {
+        return prev + establishmentIds.length;
+      }
+      return prev;
+    },
+    0
+  );
+};
+
+export const blueEstablishmentsAction = (
+  gameData: GameData,
+  action: Action
+): { gameData: GameData; error?: string } => {
+  let error = undefined;
+  const newGameData = produce(gameData, (draftGameData) => {
+    if (action.type !== "blue-establishments") {
+      error = "not blue-establishments";
+      return;
+    }
+
+    const { isServer } = action;
+
+    if (!isServer) {
+      error = "only server can disptach blue-establishments";
+      return;
+    }
+
+    const { gameState } = draftGameData;
+    const { publicState } = gameState;
+    const { diceRolls, processedEstablishments, turnEvents } =
+      publicState.common;
+
+    const diceTotal = diceRolls.reduce((prev, curr) => prev + curr, 0);
+
+    Object.entries(establishmentReference)
+      .filter(([_, establishment]) => establishment.colour === "blue")
+      .forEach(([establishmentKey, establishment]) => {
+        if (processedEstablishments.includes(establishmentKey)) {
+          return;
+        }
+
+        switch (establishmentKey) {
+          case "wheatField":
+            if (establishment.activationNumbers.includes(diceTotal)) {
+              const moneyPerEstablishment = 1;
+              Object.values(publicState.players).forEach((player) => {
+                const { city } = player;
+                const { establishments } = city;
+                const establishmentCount =
+                  establishments[establishmentKey]?.length || 0;
+
+                if (establishmentCount < 1) {
+                  return;
+                }
+
+                const moneyReceived =
+                  establishmentCount * moneyPerEstablishment;
+                player.money += moneyReceived;
+
+                turnEvents.push(
+                  `%${player.playerId}% collected ${moneyReceived} ${
+                    moneyReceived === 1 ? "coin" : "coins"
+                  } from the bank through their ${establishmentCount} wheat ${
+                    establishmentCount === 1 ? "field" : "fields"
+                  }`
+                );
+              });
+
+              processedEstablishments.push(establishmentKey);
+            }
+            break;
+          default:
+            console.info(
+              "couldn't handle blue establishment",
+              establishmentKey
+            );
+        }
+      });
+  });
+
+  return {
+    gameData: newGameData,
+    error,
+  };
+};
