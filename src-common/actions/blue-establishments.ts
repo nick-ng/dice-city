@@ -55,32 +55,25 @@ export const blueEstablishmentsAction = (
           return;
         }
 
+        let moneyPerEstablishment = 0;
+        let singularName = "";
+        let pluralName = "";
+
         switch (establishmentKey) {
           case "wheatField":
             if (establishment.activationNumbers.includes(diceTotal)) {
-              const moneyPerEstablishment = 1;
-              Object.values(publicState.players).forEach((player) => {
-                const { city } = player;
-                const { establishments } = city;
-                const establishmentCount =
-                  establishments[establishmentKey]?.length || 0;
+              moneyPerEstablishment = 1;
+              singularName = "wheat field";
+              pluralName = "wheat fields";
 
-                if (establishmentCount < 1) {
-                  return;
-                }
-
-                const moneyReceived =
-                  establishmentCount * moneyPerEstablishment;
-                player.money += moneyReceived;
-
-                turnEvents.push(
-                  `%${player.playerId}% collected ${moneyReceived} ${
-                    moneyReceived === 1 ? "coin" : "coins"
-                  } from the bank through their ${establishmentCount} wheat ${
-                    establishmentCount === 1 ? "field" : "fields"
-                  }`
-                );
-              });
+              processedEstablishments.push(establishmentKey);
+            }
+            break;
+          case "ranch":
+            if (establishment.activationNumbers.includes(diceTotal)) {
+              moneyPerEstablishment = 1;
+              singularName = "ranch";
+              pluralName = "ranches";
 
               processedEstablishments.push(establishmentKey);
             }
@@ -90,7 +83,32 @@ export const blueEstablishmentsAction = (
               "couldn't handle blue establishment",
               establishmentKey
             );
+            return;
         }
+
+        Object.values(publicState.players).forEach((player) => {
+          const { city } = player;
+          const { establishments } = city;
+          const establishmentCount =
+            establishments[establishmentKey]?.length || 0;
+
+          if (establishmentCount < 1) {
+            return;
+          }
+
+          const moneyReceived = establishmentCount * moneyPerEstablishment;
+          player.money += moneyReceived;
+
+          if (moneyReceived > 0) {
+            turnEvents.push(
+              `%${player.playerId}% collected ${moneyReceived} ${
+                moneyReceived === 1 ? "coin" : "coins"
+              } from the bank through their ${establishmentCount} ${
+                establishmentCount === 1 ? singularName : pluralName
+              }`
+            );
+          }
+        });
       });
   });
 
