@@ -1,27 +1,7 @@
 import { produce } from "immer";
 
-import type {
-  Action,
-  GameData,
-  EstablishmentList,
-} from "~common/types/index.js";
+import type { Action, GameData } from "~common/types/index.js";
 import { establishmentReference } from "~common/constants/buildings.js";
-
-const countTagsInEstablishments = (
-  establishments: EstablishmentList,
-  tag: string
-): number => {
-  return Object.entries(establishments).reduce(
-    (prev, [key, establishmentIds]) => {
-      const establishmentDetails = establishmentReference[key];
-      if (establishmentDetails?.tag === tag) {
-        return prev + establishmentIds.length;
-      }
-      return prev;
-    },
-    0
-  );
-};
 
 export const blueEstablishmentsAction = (
   gameData: GameData,
@@ -84,6 +64,10 @@ export const blueEstablishmentsAction = (
               establishmentKey
             );
             return;
+        }
+
+        if (moneyPerEstablishment === 0) {
+          return;
         }
 
         Object.values(publicState.players).forEach((player) => {
