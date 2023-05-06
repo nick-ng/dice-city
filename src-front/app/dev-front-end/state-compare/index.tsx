@@ -17,6 +17,7 @@ import { greenConvenienceStore2 } from "~common/actions/test-data/green-convenie
 import { greenCheeseFactoryTests } from "~common/actions/test-data/green-cheese-factory-test-1.js";
 import { greenFurnitureFactoryTests } from "~common/actions/test-data/green-furniture-factory-test-1.js";
 import { greenFruitAndVegetableTests } from "~common/actions/test-data/green-fruit-and-vegetable-market-test-1.js";
+import { blueTests } from "~common/actions/test-data/blue-tests-1.js";
 
 import StateDisplay from "./state-display.js";
 
@@ -34,11 +35,12 @@ const dataAndActions = [
   greenCheeseFactoryTests,
   greenFurnitureFactoryTests,
   greenFruitAndVegetableTests,
+  blueTests,
 ]
   .flat()
   .map((stateAndAction, i) => ({
     ...stateAndAction,
-    id: i,
+    id: i + 1,
   }));
 
 const applyAction = (
@@ -85,24 +87,38 @@ export default function StateCompare() {
         >
           Clear Tags
         </button>
-        {[...allTags].map((tag) => (
-          <label className="ml-1 mr-2" key={tag}>
-            <input
-              className="mr-1"
-              type="checkbox"
-              checked={chosenTags.includes(tag)}
-              onChange={() => {
-                setChosenTags((prevTags) => {
-                  if (prevTags.includes(tag)) {
-                    return prevTags.filter((a) => a !== tag);
-                  }
-                  return [...prevTags, tag];
-                });
-              }}
-            />
-            {tag}
-          </label>
-        ))}
+        {[...allTags]
+          .sort((a, b) => {
+            const aSpecial = ["success", "error"].includes(a);
+            const bSpecial = ["success", "error"].includes(b);
+            if (aSpecial === bSpecial) {
+              return a.localeCompare(b);
+            }
+
+            if (aSpecial) {
+              return -1;
+            }
+
+            return 1;
+          })
+          .map((tag) => (
+            <label className="ml-1 mr-2" key={tag}>
+              <input
+                className="mr-1"
+                type="checkbox"
+                checked={chosenTags.includes(tag)}
+                onChange={() => {
+                  setChosenTags((prevTags) => {
+                    if (prevTags.includes(tag)) {
+                      return prevTags.filter((a) => a !== tag);
+                    }
+                    return [...prevTags, tag];
+                  });
+                }}
+              />
+              {tag}
+            </label>
+          ))}
       </div>
       <select
         className="mx-1 border border-gray-300 bg-white dark:bg-gray-800 dark:text-white"
@@ -111,6 +127,7 @@ export default function StateCompare() {
           setChosenStateAndActionId(parseInt(e.target.value, 10));
         }}
       >
+        <option value={0}>Choose a scenario</option>
         {dataAndActions
           .filter(
             ({ tags }) =>
