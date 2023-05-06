@@ -58,6 +58,33 @@ export const blueEstablishmentsAction = (
               processedEstablishments.push(establishmentKey);
             }
             break;
+          case "forest":
+            if (establishment.activationNumbers.includes(diceTotal)) {
+              moneyPerEstablishment = 1;
+              singularName = "forest";
+              pluralName = "forests";
+
+              processedEstablishments.push(establishmentKey);
+            }
+            break;
+          case "mine":
+            if (establishment.activationNumbers.includes(diceTotal)) {
+              moneyPerEstablishment = 5;
+              singularName = "mine";
+              pluralName = "mines";
+
+              processedEstablishments.push(establishmentKey);
+            }
+            break;
+          case "appleOrchard":
+            if (establishment.activationNumbers.includes(diceTotal)) {
+              moneyPerEstablishment = 3;
+              singularName = "apple orchard";
+              pluralName = "apple orchards";
+
+              processedEstablishments.push(establishmentKey);
+            }
+            break;
           default:
             console.info(
               "couldn't handle blue establishment",
