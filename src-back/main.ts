@@ -7,6 +7,8 @@ import path from "path";
 import http from "http";
 import cors from "cors";
 
+import gameRouter from "./game/game-router.js";
+
 const app = express();
 const server = http.createServer(app);
 
@@ -36,6 +38,8 @@ if (process.env.NODE_ENV !== "production") {
 app.get("/server-stats", (_req, res) => {
   res.sendFile(path.resolve(process.cwd(), "other-html", "server-stats.html"));
 });
+
+app.use("/api/game", gameRouter);
 
 // redirect all other requests to index.html
 app.use((_req, res) => {

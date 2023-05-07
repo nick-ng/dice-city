@@ -88,6 +88,8 @@ export const gameDetailsDecoder = z.object({
   id: z.string(),
   players: z.array(playerSchema),
   hostId: z.string(),
+  shortId: z.optional(z.string()),
+  isPublic: z.optional(z.boolean()),
 });
 
 export const gameSettingsSchema = z.object({
