@@ -1,5 +1,7 @@
 import { Router } from "express";
 
+import type { NewGameResponse } from "~common/types/index.js";
+
 const router = Router();
 
 router.post("/", (req, res, next) => {
@@ -7,8 +9,8 @@ router.post("/", (req, res, next) => {
 
   // 20 Send game id
   res.json({
-    hello: "world",
-  });
+    gameId: "3",
+  } as NewGameResponse);
 });
 
 export default router;

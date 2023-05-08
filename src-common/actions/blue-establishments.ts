@@ -26,7 +26,10 @@ export const blueEstablishmentsAction = (
     const { diceRolls, processedEstablishments, turnEvents } =
       publicState.common;
 
-    const diceTotal = diceRolls.reduce((prev, curr) => prev + curr, 0);
+    let diceTotal = 0;
+    for (let n = 0; n < diceRolls.length; n++) {
+      diceTotal += diceRolls[n];
+    }
 
     Object.entries(establishmentReference)
       .filter(([_, establishment]) => establishment.colour === "blue")

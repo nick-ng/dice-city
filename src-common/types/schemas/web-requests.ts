@@ -1,5 +1,5 @@
 import z from "zod";
 
-export const newGameRequestSchema = z.object({
+export const newGameResponseSchema = z.object({
   gameId: z.string(),
 });
