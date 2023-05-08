@@ -27,8 +27,12 @@ export const establishmentsSchema = z.object({
   payload: z.optional(z.any()),
 });
 
-export const actionSchema = z.union([
+export const playerActionsSchema = z.union([
   buildEstablishmentSchema,
   rollSchema,
+]);
+
+export const actionSchema = z.union([
+  playerActionsSchema,
   establishmentsSchema,
 ]);
