@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { newGameResponseSchema } from "~common/types/schemas/web-requests.js";
+import { newGameResponseSchema } from "~common/types/schemas/message.js";
 
 export default function GameBrowser() {
   const navigate = useNavigate();

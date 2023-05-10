@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
-import type { GameData, PlayerAction } from "~common/types/index.js";
-import { gameDataSchema } from "~common/types/schemas/game.js";
+import type { PlayerGameData, PlayerAction } from "~common/types/index.js";
+import { webSocketServerToClientMessageSchema } from "~common/types/schemas/message.js";
 
 declare const API_ORIGIN: string;
 const WEBSOCKET_URL = (API_ORIGIN || location.origin).replace(/^http/i, "ws");
@@ -18,17 +18,21 @@ export const useGameSocket = (
     password: string;
   }
 ): {
-  gameData: GameData | null;
-  connectionStatus: number | string;
+  playerGameData: PlayerGameData | null;
+  connectionStatus: string;
+  latency: number;
   sendViaWebSocket(playerAction: PlayerAction): void;
 } => {
   const reOpenWebSocketRef = useRef(false);
   const webSocketRef = useRef<WebSocket | null>(null);
   const getNewWebSocketRef = useRef((_jsonString?: string) => {});
-  const [gameData, setGameData] = useState<GameData | null>(null);
-  const [connectionStatus, setConnectionStatus] = useState<number | string>(
-    "not-connected"
+  const [playerGameData, setPlayerGameData] = useState<PlayerGameData | null>(
+    null
   );
+  const [connectionStatus, setConnectionStatus] = useState<
+    "not-connected" | "connected" | "not-found"
+  >("not-connected");
+  const [latency, setLatency] = useState(0);
 
   const sendViaWebSocketRef = useRef((messageObject: PlayerAction) => {
     const messageJSONString = JSON.stringify(messageObject);
@@ -77,7 +81,11 @@ export const useGameSocket = (
         "message",
         (webSocketMessageEvent) => {
           const { data } = webSocketMessageEvent;
-          if (typeof data !== "string") {
+          const result = webSocketServerToClientMessageSchema.safeParse(
+            webSocketMessageEvent.data
+          );
+
+          if (!result.success) {
             console.error(
               new Date().toLocaleTimeString(),
               "Unexpected data from WebSocket",
@@ -86,45 +94,35 @@ export const useGameSocket = (
             return;
           }
 
-          if (data === "ping") {
-            webSocketRef.current?.send("pong");
-            return;
+          const message = result.data;
+
+          switch (message.type) {
+            case "not-found":
+              setPlayerGameData(null);
+              setConnectionStatus("not-found");
+              setLatency(0);
+              return;
+            case "ping":
+              webSocketRef.current?.send("pong");
+              break;
+            case "game-data":
+              const playerGameData = message.payload.playerGameData;
+              if (playerGameData.gameDetails.id === gameId) {
+                setPlayerGameData(playerGameData);
+                setConnectionStatus("connected");
+              }
+              break;
+            default:
           }
 
-          if (data === "not-found") {
-            setGameData(null);
-            setConnectionStatus("not-found");
-            return;
-          }
-
-          try {
-            const dataObject = JSON.parse(data);
-            switch (dataObject.type) {
-              case "game-data":
-                const gameData = gameDataSchema.parse(dataObject.payload);
-                if (gameData.gameDetails.id === gameId) {
-                  setGameData(gameData);
-                  setConnectionStatus((prevConnectionStatus) =>
-                    typeof prevConnectionStatus === "string"
-                      ? 0
-                      : prevConnectionStatus
-                  );
-                }
-                return;
-              case "latency":
-                setConnectionStatus(dataObject.payload.roundTripTime);
-            }
-          } catch (e) {
-            console.error(
-              new Date().toLocaleTimeString(),
-              "Other error from WebSocket",
-              e
-            );
+          if (message.payload?.latency) {
+            setLatency(message.payload?.latency);
           }
         }
       );
 
       webSocketRef.current.addEventListener("close", () => {
+        setConnectionStatus("not-connected");
         if (reOpenWebSocketRef.current) {
           console.info(
             new Date().toLocaleTimeString(),
@@ -154,8 +152,9 @@ export const useGameSocket = (
   }, [gameId, playerDetails.id, playerDetails.password]);
 
   return {
-    gameData,
+    playerGameData,
     connectionStatus,
+    latency,
     sendViaWebSocket: sendViaWebSocketRef.current,
   };
 };

@@ -1,67 +1,82 @@
+import { WebSocket as WebSocketType } from "ws";
+
+import type {
+  GameData,
+  PlayerGameData,
+  WebSocketServerToClientMessage,
+} from "~common/types/index.js";
+
+import {
+  gameDataSchema,
+  playerGameDataSchema,
+} from "~common/types/schemas/game.js";
+
+/**
+ * Handles websocket stuff for a game
+ */
 export default class Game {
-  // id: string;
-  // shortId: string;
-  // host: string;
-  // maxPlayers: number;
-  // players: Players;
-  // gameSettings: GameSettings;
-  // gameSecrets: GameSecrets;
-  // playerSecrets: PlayerSecrets;
-  // gameState: GameState;
-  // lastActionId: string;
-  // gameServer: string | null;
-  // resumeAction: ActionIncomingMessageObject | null;
+  gameData: GameData;
+  players: {
+    playerId: string;
+    socket: WebSocketType;
+    lastPing: number;
+    latency: number;
+    pingCounter: number;
+  }[];
 
-  constructor() {
-    // if (!initial.host) {
-    //   throw {
-    //     type: "error",
-    //     message:
-    //       "Game needs a host. Initiate with at least { host: hostPlayerId }",
-    //   };
-    // }
+  constructor(gameData?: GameData | null, hostId?: string) {
+    if (gameData) {
+      this.gameData = gameData;
+    } else {
+      throw new Error("Must have either gameData or hostId to make a game");
+    }
 
-    // const defaultGameState = {
-    // };
+    this.players = [];
 
-    // const defaultGameSecrets = {
-    // };
-
-    const temp = {};
-
-    // this.id = temp.id;
-    // this.shortId = temp.shortId;
-
-    // this.host = temp.host;
-    // this.maxPlayers = temp.maxPlayers;
+    // 20 register listeners etc.
   }
 
-  getGameData = () => {
-    const {
-      getGameData,
-      getGameDataForPlayer,
-      addPlayer,
-      gameAction,
-      ...gameData
-    } = this;
-    return gameData;
-  };
+  updateGameData(newGameDataUnknown: GameData) {
+    try {
+      const newGameData = gameDataSchema.parse(newGameDataUnknown);
+      this.gameData = newGameData;
 
-  getGameDataForPlayer = (playerId: string, playerPassword: string) => {};
+      for (let n = 0; n < this.players.length; n++) {
+        const player = this.players[n];
+        const playerGameData: PlayerGameData =
+          playerGameDataSchema.parse(newGameData);
 
-  isPlayer = (playerId: string, playerPassword: string): boolean => {
-    return false;
-  };
+        player.pingCounter += 1;
 
-  isHost = (playerId: string, playerPassword: string): boolean => {
-    return this.isPlayer(playerId, playerPassword);
-  };
+        if (player.pingCounter % 20 === 0) {
+          player.pingCounter = 0;
+          player.lastPing = Date.now();
+          player.socket.send(
+            JSON.stringify({
+              type: "ping",
+              payload: {
+                latency: player.latency,
+              },
+            } as WebSocketServerToClientMessage)
+          );
+        }
 
-  addPlayer = (
-    playerId: string,
-    playerName: string,
-    playerPassword: string
-  ) => {};
-
-  gameAction = (playerId: string, password: string, action: string) => {};
+        player.socket.send(
+          JSON.stringify({
+            type: "game-data",
+            payload: {
+              playerGameData,
+              latency: player.latency,
+            },
+          } as WebSocketServerToClientMessage)
+        );
+      }
+    } catch (e) {
+      console.error(
+        "error when updating game data",
+        newGameDataUnknown,
+        this.gameData.gameDetails.id
+      );
+    }
+  }
 }

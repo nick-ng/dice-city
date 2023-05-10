@@ -59,6 +59,7 @@ const publicStateSchema = z.object({
     supply: establishmentListSchema,
     activePlayerId: z.string(),
     turnPhase: z.enum([
+      "lobby",
       "before-roll",
       "after-roll",
       "before-build",
@@ -84,7 +85,7 @@ const secretStateSchema = z.object({
   }),
 });
 
-export const gameDetailsDecoder = z.object({
+export const gameDetailsSchema = z.object({
   id: z.string(),
   players: z.array(playerSchema),
   hostId: z.string(),
@@ -103,10 +104,21 @@ export const gameStateSchema = z.object({
   secretState: secretStateSchema,
 });
 
+export const playerGameStateSchema = z.object({
+  publicState: publicStateSchema,
+  secretState: secretStateSchema.omit({ common: true }),
+});
+
 export const gameDataSchema = z.object({
-  gameDetails: gameDetailsDecoder,
+  gameDetails: gameDetailsSchema,
   gameSettings: gameSettingsSchema,
   gameState: gameStateSchema,
   playersSecrets: z.record(z.string(), playerSecretsSchema),
   lastActionId: z.string(),
+});
+
+export const playerGameDataSchema = z.object({
+  gameDetails: gameDetailsSchema,
+  gameSettings: gameSettingsSchema,
+  gameState: playerGameStateSchema,
 });

@@ -10,9 +10,13 @@ import {
   deckSchema,
   gameStateSchema,
   gameDataSchema,
+  playerGameDataSchema,
 } from "./schemas/game.js";
 import { playerActionsSchema, actionSchema } from "./schemas/actions.js";
-import { newGameResponseSchema } from "./schemas/web-requests.js";
+import {
+  newGameResponseSchema,
+  webSocketServerToClientMessageSchema,
+} from "./schemas/message.js";
 
 export type Building = z.infer<typeof buildingSchema>;
 export type Establishment = z.infer<typeof establishmentSchema>;
@@ -30,8 +34,13 @@ export type City = z.infer<typeof citySchema>;
 
 export type GameState = z.infer<typeof gameStateSchema>;
 export type GameData = z.infer<typeof gameDataSchema>;
+export type PlayerGameData = z.infer<typeof playerGameDataSchema>;
 
 export type PlayerAction = z.infer<typeof playerActionsSchema>;
 export type Action = z.infer<typeof actionSchema>;
 
 export type NewGameResponse = z.infer<typeof newGameResponseSchema>;
+
+export type WebSocketServerToClientMessage = z.infer<
+  typeof webSocketServerToClientMessageSchema
+>;
