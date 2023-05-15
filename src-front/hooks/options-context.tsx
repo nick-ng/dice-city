@@ -1,4 +1,12 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import randomUUID from "~front/utils/random-uuid.js";
 
 const OPTIONS_STORE = "DICE_CITY_OPTIONS";
 
@@ -38,6 +46,26 @@ const OptionsContextProvider = ({ children }: { children: ReactNode }) => {
     ...defaultOptions,
     ...(savedOptions as Options),
   });
+
+  useEffect(() => {
+    if (!options.playerId || !options.playerPassword) {
+      setOptions((prevOptions) => {
+        const fullOptions = { ...prevOptions };
+
+        if (!fullOptions.playerId) {
+          fullOptions.playerId = randomUUID();
+        }
+
+        if (!fullOptions.playerPassword) {
+          fullOptions.playerPassword = randomUUID();
+        }
+
+        const { ping, ...saveOptions } = fullOptions;
+        localStorage.setItem(OPTIONS_STORE, JSON.stringify(saveOptions));
+        return fullOptions;
+      });
+    }
+  }, []);
 
   return (
     <OptionsContext.Provider

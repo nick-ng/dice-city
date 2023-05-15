@@ -14,7 +14,7 @@ import {
 /**
  * Handles websocket stuff for a game
  */
-export default class Game {
+export default class GameConductor {
   gameData: GameData;
   players: {
     playerId: string;
@@ -32,8 +32,6 @@ export default class Game {
     }
 
     this.players = [];
-
-    // 20 register listeners etc.
   }
 
   updateGameData(newGameDataUnknown: GameData) {

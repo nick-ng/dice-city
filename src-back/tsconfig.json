@@ -6,5 +6,9 @@
   },
   "references": [{ "path": "../src-common" }],
   "files": ["./main.ts"],
-  "include": ["./**/*"]
+  "include": ["./**/*"],
+  "watchOptions": {
+    "watchFile": "dynamicprioritypolling",
+    "watchDirectory": "dynamicprioritypolling"
+  }
 }

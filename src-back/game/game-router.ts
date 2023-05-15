@@ -2,14 +2,31 @@ import { Router } from "express";
 
 import type { NewGameResponse } from "~common/types/index.js";
 
+import { newGameRequestSchema } from "../../dist-common/types/schemas/message.js";
+import { createGameFromHostId } from "../../dist-common/other-stuff/game-stuff.js";
+
 const router = Router();
 
-router.post("/", (req, res, next) => {
-  // 10 Make a new game
+router.post("/", (req, res, _next) => {
+  const { body } = req;
 
-  // 20 Send game id
+  const result = newGameRequestSchema.safeParse(body);
+
+  if (!result.success) {
+    res.statusMessage = `bad request. ${JSON.stringify(result.error)}`;
+    res.status(400).end();
+    return;
+  }
+
+  console.log("body", body);
+  // 10 Make a new game
+  const newGame = createGameFromHostId(result.data.playerId);
+
+  // 20 Store game in redis
+
+  // 30 Send game id
   res.json({
-    gameId: "3",
+    gameId: newGame.gameDetails.id,
   } as NewGameResponse);
 });
 

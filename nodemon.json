@@ -3,7 +3,7 @@
     "ts": "ts-node"
   },
   "verbose": true,
-  "watch": ["src-back/", "src-common/"],
+  "watch": ["dist-back/", "dist-common/"],
   "ext": "js,ts,jsx,tsx,json",
   "delay": 200,
   "pollingInterval": 1000

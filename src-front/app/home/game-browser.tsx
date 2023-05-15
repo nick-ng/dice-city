@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { newGameResponseSchema } from "~common/types/schemas/message.js";
+import {
+  newGameRequestSchema,
+  newGameResponseSchema,
+} from "~common/types/schemas/message.js";
+import { useOptions } from "~front/hooks/options-context.js";
 
 export default function GameBrowser() {
+  const { options } = useOptions();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+
+  const { playerId } = options;
+  console.log("playerId", playerId);
 
   return (
     <div>
@@ -17,6 +25,11 @@ export default function GameBrowser() {
           try {
             const res = await fetch(`${__API_ORIGIN__}/api/game`, {
               method: "POST",
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(newGameRequestSchema.parse({ playerId })),
             });
 
             const { gameId } = newGameResponseSchema.parse(await res.json());

@@ -1,15 +1,29 @@
 import { useState, useEffect, useRef } from "react";
 
-import type { PlayerGameData, PlayerAction } from "~common/types/index.js";
+import type {
+  PlayerGameData,
+  PlayerAction,
+  WebSocketClientToServerMessage,
+} from "~common/types/index.js";
 import { webSocketServerToClientMessageSchema } from "~common/types/schemas/message.js";
 
-declare const API_ORIGIN: string;
-const WEBSOCKET_URL = (API_ORIGIN || location.origin).replace(/^http/i, "ws");
+declare const __API_ORIGIN__: string;
+const WEBSOCKET_URL = (__API_ORIGIN__ || location.origin).replace(
+  /^http/i,
+  "ws"
+);
 
 const isNewWebSocketNeeded = (webSocket: WebSocket | null): boolean =>
   !webSocket ||
   WebSocket.CLOSING === webSocket.readyState ||
   WebSocket.CLOSED === webSocket.readyState;
+
+const safeSend = (
+  websocket: WebSocket | null,
+  messageObject: WebSocketClientToServerMessage
+): void => {
+  websocket?.send(JSON.stringify(messageObject));
+};
 
 export const useGameSocket = (
   gameId: string,
@@ -25,7 +39,9 @@ export const useGameSocket = (
 } => {
   const reOpenWebSocketRef = useRef(false);
   const webSocketRef = useRef<WebSocket | null>(null);
-  const getNewWebSocketRef = useRef((_jsonString?: string) => {});
+  const getNewWebSocketRef = useRef(
+    (_messageObject?: WebSocketClientToServerMessage) => {}
+  );
   const [playerGameData, setPlayerGameData] = useState<PlayerGameData | null>(
     null
   );
@@ -35,17 +51,24 @@ export const useGameSocket = (
   const [latency, setLatency] = useState(0);
 
   const sendViaWebSocketRef = useRef((messageObject: PlayerAction) => {
-    const messageJSONString = JSON.stringify(messageObject);
+    const fullMessageObject: WebSocketClientToServerMessage = {
+      ...messageObject,
+      playerId: playerDetails.id,
+      playerPassword: playerDetails.password,
+    };
+
     if (isNewWebSocketNeeded(webSocketRef.current)) {
-      getNewWebSocketRef.current(messageJSONString);
+      getNewWebSocketRef.current(fullMessageObject);
     } else {
-      webSocketRef.current?.send(messageJSONString);
+      safeSend(webSocketRef.current, fullMessageObject);
     }
   });
 
   useEffect(() => {
     reOpenWebSocketRef.current = true;
-    getNewWebSocketRef.current = (messageJSONString?: string) => {
+    getNewWebSocketRef.current = (
+      messageObject?: WebSocketClientToServerMessage
+    ) => {
       if (!isNewWebSocketNeeded(webSocketRef.current)) {
         return;
       }
@@ -56,11 +79,11 @@ export const useGameSocket = (
       );
       webSocketRef.current = new WebSocket(WEBSOCKET_URL);
 
-      const onOpenWebSocketMessage = {
+      const onOpenWebSocketMessage: WebSocketClientToServerMessage = {
         playerId: playerDetails.id,
-        password: playerDetails.password,
-        gameId,
-        type: "listen",
+        playerPassword: playerDetails.password,
+        payload: { gameId },
+        type: "connect",
       };
 
       webSocketRef.current.addEventListener("open", () => {
@@ -68,11 +91,11 @@ export const useGameSocket = (
           new Date().toLocaleTimeString(),
           "WebSocket connection opened"
         );
-        webSocketRef.current?.send(JSON.stringify(onOpenWebSocketMessage));
+        safeSend(webSocketRef.current, onOpenWebSocketMessage);
 
-        if (messageJSONString) {
+        if (messageObject) {
           setTimeout(() => {
-            webSocketRef.current?.send(messageJSONString);
+            safeSend(webSocketRef.current, messageObject);
           }, 20);
         }
       });
@@ -82,14 +105,14 @@ export const useGameSocket = (
         (webSocketMessageEvent) => {
           const { data } = webSocketMessageEvent;
           const result = webSocketServerToClientMessageSchema.safeParse(
-            webSocketMessageEvent.data
+            JSON.parse(data)
           );
 
           if (!result.success) {
             console.error(
               new Date().toLocaleTimeString(),
               "Unexpected data from WebSocket",
-              data
+              JSON.stringify(result.error, null, "  ")
             );
             return;
           }
@@ -103,7 +126,11 @@ export const useGameSocket = (
               setLatency(0);
               return;
             case "ping":
-              webSocketRef.current?.send("pong");
+              safeSend(webSocketRef.current, {
+                type: "pong",
+                playerId: playerDetails.id,
+                playerPassword: playerDetails.password,
+              });
               break;
             case "game-data":
               const playerGameData = message.payload.playerGameData;
