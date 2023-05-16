@@ -4,7 +4,9 @@ export type RedisClient2 = ReturnType<typeof createClient> & {
   id?: string;
 };
 
-export const createClient2 = (name: string) => {
+const clients: { [name: string]: RedisClient2 } = {};
+
+export const createClient2 = (name: string): RedisClient2 => {
   const newClient = createClient({
     url: process.env.REDIS_URL || "redis://redis",
   }) as RedisClient2;
@@ -30,4 +32,12 @@ export const createClient2 = (name: string) => {
   });
 
   return newClient;
+};
+
+export const getClient = (name = "default") => {
+  if (!clients[name]) {
+    clients[name] = createClient2(name);
+  }
+
+  return clients[name];
 };
