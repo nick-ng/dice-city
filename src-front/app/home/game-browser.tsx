@@ -13,7 +13,6 @@ export default function GameBrowser() {
   const [error, setError] = useState("");
 
   const { playerId } = options;
-  console.log("playerId", playerId);
 
   return (
     <div>
@@ -34,7 +33,6 @@ export default function GameBrowser() {
 
             const { gameId } = newGameResponseSchema.parse(await res.json());
 
-            console.log("gameId", gameId);
             navigate(`/game/${gameId}`);
           } catch (e) {
             if (e instanceof Error) {

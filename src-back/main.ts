@@ -27,8 +27,7 @@ const websocketServer = new WebSocketServer({
 });
 
 websocketServer.on("connection", (websocketConnection) => {
-  let counter = 0;
-  websocketConnection.on("message", (buffer) => {
+  websocketConnection.on("message", async (buffer) => {
     let jsonObject = {};
 
     try {
@@ -44,33 +43,44 @@ websocketServer.on("connection", (websocketConnection) => {
       console.error("error!", JSON.stringify(result.error, null, "  "));
       console.log("original websocket buffer", buffer.toString());
     } else {
-      console.info("success", counter, result.data);
-      counter++;
-
-      if (counter % 5 === 0) {
-        counter = 0;
-        const outMessage: WebSocketServerToClientMessage = {
-          type: "ping",
-        };
-        websocketConnection.send(JSON.stringify(outMessage));
-      }
-
       const { type } = result.data;
 
       switch (type) {
         case "connect":
-          const { playerId, playerPassword, payload } = result.data;
+          const { playerId, payload } = result.data;
           const { gameId } = payload;
 
           const existingGameConductor = gameConductors.find(
-            (gameConductor) => gameConductor.gameData.gameDetails.id === gameId
+            (gameConductor) => gameConductor.gameId === gameId
           );
 
           if (existingGameConductor) {
-            // add player to game
+            existingGameConductor.addPlayer(playerId, websocketConnection);
           } else {
-            // get game from db
+            let blankGameConductor = gameConductors.find(
+              (gameConductor) => gameConductor.gameId === gameId
+            );
+
+            const needNewGameConductor = !blankGameConductor;
+
+            if (needNewGameConductor) {
+              blankGameConductor = new GameConductor();
+            }
+
+            let tempGameConductor = new GameConductor();
+            await tempGameConductor.loadGame(gameId);
+
+            if (tempGameConductor.gameData) {
+              tempGameConductor.addPlayer(playerId, websocketConnection);
+
+              if (needNewGameConductor) {
+                gameConductors.push(tempGameConductor);
+              }
+            }
           }
+          break;
+        default:
+          console.info("success", result.data);
       }
     }
   });

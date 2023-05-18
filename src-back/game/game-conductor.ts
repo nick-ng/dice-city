@@ -1,4 +1,5 @@
 import { WebSocket as WebSocketType } from "ws";
+import { randomUUID } from "node:crypto";
 
 import type {
   GameData,
@@ -9,14 +10,22 @@ import type {
 import {
   gameDataSchema,
   playerGameDataSchema,
-} from "~common/types/schemas/game.js";
+} from "../../dist-common/types/schemas/game.js";
+
+import {
+  getClient as getRedisClient,
+  getGameStateKey,
+  getGameActionKey,
+} from "../redis/index.js";
 
 /**
  * Handles websocket stuff for a game
  */
 export default class GameConductor {
-  gameData: GameData;
+  gameId: string | null;
+  gameData: GameData | null;
   players: {
+    uuid: string;
     playerId: string;
     socket: WebSocketType;
     lastPing: number;
@@ -24,14 +33,93 @@ export default class GameConductor {
     pingCounter: number;
   }[];
 
-  constructor(gameData?: GameData | null, hostId?: string) {
-    if (gameData) {
-      this.gameData = gameData;
-    } else {
-      throw new Error("Must have either gameData or hostId to make a game");
+  constructor() {
+    this.gameId = null;
+    this.gameData = null;
+    this.players = [];
+  }
+
+  async loadGame(gameId: string) {
+    if (gameId !== this.gameId) {
+      this.players = [];
     }
 
-    this.players = [];
+    const redis = getRedisClient();
+
+    const temp = await redis.xRevRange(getGameStateKey(gameId), "+", "-", {
+      COUNT: 1,
+    });
+
+    if (temp.length === 0) {
+      return false;
+    }
+
+    const { message } = temp[0];
+
+    try {
+      const result = gameDataSchema.safeParse(JSON.parse(message.data));
+
+      if (!result.success) {
+        return false;
+      }
+
+      this.gameId = gameId;
+      this.gameData = result.data;
+
+      return true;
+    } catch (e) {
+      console.error(`Error parsing game data string ${message.data}`);
+    }
+  }
+
+  addPlayer(playerId: string, socket: WebSocketType) {
+    const uuid = randomUUID();
+    this.players.push({
+      uuid,
+      playerId,
+      socket,
+      lastPing: 0,
+      latency: 0,
+      pingCounter: 0,
+    });
+
+    const result = playerGameDataSchema.safeParse(this.gameData);
+
+    if (result.success) {
+      socket.send(
+        JSON.stringify({
+          type: "game-data",
+          payload: {
+            playerGameData: result.data,
+          },
+        } as WebSocketServerToClientMessage)
+      );
+    } else {
+      console.error(
+        "error parsing game data",
+        this.gameId,
+        JSON.stringify(result.error)
+      );
+    }
+
+    console.debug(
+      "players",
+      this.players.map((p) => p.playerId)
+    );
+
+    socket.on("close", () => {
+      for (let n = 0; n < this.players.length; n++) {
+        if (this.players[n].uuid === uuid) {
+          this.players.splice(n, 1);
+          break;
+        }
+      }
+
+      console.debug(
+        "players",
+        this.players.map((p) => p.playerId)
+      );
+    });
   }
 
   updateGameData(newGameDataUnknown: GameData) {
@@ -73,7 +161,7 @@ export default class GameConductor {
       console.error(
         "error when updating game data",
         newGameDataUnknown,
-        this.gameData.gameDetails.id
+        this.gameData?.gameDetails.id
       );
     }
   }

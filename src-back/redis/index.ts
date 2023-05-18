@@ -41,3 +41,7 @@ export const getClient = (name = "default") => {
 
   return clients[name];
 };
+
+export const getGameStateKey = (gameId: string) => `game:${gameId}-state`;
+
+export const getGameActionKey = (gameId: string) => `game:${gameId}-action`;
