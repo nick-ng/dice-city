@@ -77,21 +77,16 @@ export const useGameSocket = (
         new Date().toLocaleTimeString(),
         "Getting a new WebSocket connection"
       );
-      webSocketRef.current = new WebSocket(WEBSOCKET_URL);
 
-      const onOpenWebSocketMessage: WebSocketClientToServerMessage = {
-        playerId: playerDetails.id,
-        playerPassword: playerDetails.password,
-        payload: { gameId },
-        type: "connect",
-      };
+      webSocketRef.current = new WebSocket(
+        `${WEBSOCKET_URL}/game/${gameId}?playerid=${playerDetails.id}`
+      );
 
       webSocketRef.current.addEventListener("open", () => {
         console.info(
           new Date().toLocaleTimeString(),
           "WebSocket connection opened"
         );
-        safeSend(webSocketRef.current, onOpenWebSocketMessage);
 
         if (messageObject) {
           setTimeout(() => {

@@ -11,6 +11,7 @@ import {
   gameDataSchema,
   playerGameDataSchema,
 } from "../../dist-common/types/schemas/game.js";
+import { webSocketClientToServerMessageSchema } from "../../dist-common/types/schemas/message.js";
 
 import {
   getClient as getRedisClient,
@@ -106,6 +107,31 @@ export default class GameConductor {
       "players",
       this.players.map((p) => p.playerId)
     );
+
+    socket.on("message", async (buffer) => {
+      let jsonObject = {};
+
+      try {
+        jsonObject = JSON.parse(buffer.toString());
+      } catch (e) {
+        if (e instanceof Error) {
+          console.error("error parsing incoming message", e);
+        }
+      }
+
+      const result = webSocketClientToServerMessageSchema.safeParse(jsonObject);
+      if (!result.success) {
+        console.error("error!", JSON.stringify(result.error, null, "  "));
+        console.log("original websocket buffer", buffer.toString());
+      } else {
+        const { type } = result.data;
+
+        switch (type) {
+          default:
+            console.info("success", result.data);
+        }
+      }
+    });
 
     socket.on("close", () => {
       for (let n = 0; n < this.players.length; n++) {

@@ -27,7 +27,7 @@ export default function GameScreen() {
           });
         }}
       >
-        Click
+        Roll Dice
       </button>
       <pre>{JSON.stringify(playerGameData, null, "  ")}</pre>
     </div>

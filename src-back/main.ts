@@ -3,8 +3,9 @@ dotenv.config();
 
 import express from "express";
 import compression from "compression";
-import path from "path";
-import http from "http";
+import path from "node:path";
+import http from "node:http";
+import { URL } from "node:url";
 import cors from "cors";
 
 import { WebSocketServer } from "ws";
@@ -22,68 +23,63 @@ const server = http.createServer(app);
 const gameConductors: GameConductor[] = [];
 
 const websocketServer = new WebSocketServer({
-  server,
+  noServer: true, // manually upgrade connections below
   maxPayload: 51200, // 50 KB
 });
 
-websocketServer.on("connection", (websocketConnection) => {
-  websocketConnection.on("message", async (buffer) => {
-    let jsonObject = {};
+server.on("upgrade", (request, socket, head) => {
+  if (!request.url) {
+    socket.destroy();
+    return;
+  }
 
-    try {
-      jsonObject = JSON.parse(buffer.toString());
-    } catch (e) {
-      if (e instanceof Error) {
-        console.error("error parsing incoming message", e);
-      }
-    }
+  const urlObject = new URL(request.url, "http://home");
+  const matches = urlObject.pathname.match(/\/game\/(?<gameId>[0-9a-z-]+)/i);
+  const searchParams = urlObject.searchParams;
+  const playerId = searchParams.get("playerid");
 
-    const result = webSocketClientToServerMessageSchema.safeParse(jsonObject);
-    if (!result.success) {
-      console.error("error!", JSON.stringify(result.error, null, "  "));
-      console.log("original websocket buffer", buffer.toString());
-    } else {
-      const { type } = result.data;
+  if (!matches?.groups?.gameId || !playerId) {
+    socket.destroy();
+    return;
+  }
 
-      switch (type) {
-        case "connect":
-          const { playerId, payload } = result.data;
-          const { gameId } = payload;
+  const gameId = matches.groups.gameId;
 
-          const existingGameConductor = gameConductors.find(
-            (gameConductor) => gameConductor.gameId === gameId
-          );
+  websocketServer.handleUpgrade(
+    request,
+    socket,
+    head,
+    async (websocketConnection) => {
+      const existingGameConductor = gameConductors.find(
+        (gameConductor) => gameConductor.gameId === gameId
+      );
 
-          if (existingGameConductor) {
-            existingGameConductor.addPlayer(playerId, websocketConnection);
-          } else {
-            let blankGameConductor = gameConductors.find(
-              (gameConductor) => gameConductor.gameId === gameId
-            );
+      if (existingGameConductor) {
+        existingGameConductor.addPlayer(playerId, websocketConnection);
+      } else {
+        let blankGameConductor = gameConductors.find(
+          (gameConductor) => gameConductor.gameId === gameId
+        );
 
-            const needNewGameConductor = !blankGameConductor;
+        const needNewGameConductor = !blankGameConductor;
 
-            if (needNewGameConductor) {
-              blankGameConductor = new GameConductor();
-            }
+        if (needNewGameConductor) {
+          blankGameConductor = new GameConductor();
+        }
 
-            let tempGameConductor = new GameConductor();
-            await tempGameConductor.loadGame(gameId);
+        let tempGameConductor = new GameConductor();
+        await tempGameConductor.loadGame(gameId);
 
-            if (tempGameConductor.gameData) {
-              tempGameConductor.addPlayer(playerId, websocketConnection);
+        if (tempGameConductor.gameData) {
+          tempGameConductor.addPlayer(playerId, websocketConnection);
 
-              if (needNewGameConductor) {
-                gameConductors.push(tempGameConductor);
-              }
-            }
+          if (needNewGameConductor) {
+            gameConductors.push(tempGameConductor);
           }
-          break;
-        default:
-          console.info("success", result.data);
+        }
       }
     }
-  });
+  );
 });
 
 const port = process.env.PORT || 8080;
