@@ -1,5 +1,5 @@
-import { WebSocket as WebSocketType } from "ws";
 import { randomUUID } from "node:crypto";
+import { WebSocket as WebSocketType } from "ws";
 
 import type {
   GameData,
@@ -10,8 +10,9 @@ import type {
 import {
   gameDataSchema,
   playerGameDataSchema,
-} from "../../src-common/types/schemas/game.js";
-import { webSocketClientToServerMessageSchema } from "../../src-common/types/schemas/message.js";
+} from "~common/types/schemas/game.js";
+import { webSocketClientToServerMessageSchema } from "~common/types/schemas/message.js";
+import { jsonSafeParse } from "~common/utils/index.js";
 
 import {
   getClient as getRedisClient,
@@ -57,20 +58,23 @@ export default class GameConductor {
 
     const { message } = temp[0];
 
-    try {
-      const result = gameDataSchema.safeParse(JSON.parse(message.data));
+    const res1 = jsonSafeParse(message.data);
 
-      if (!result.success) {
-        return false;
-      }
-
-      this.gameId = gameId;
-      this.gameData = result.data;
-
-      return true;
-    } catch (e) {
-      console.error(`Error parsing game data string ${message.data}`);
+    if (!res1.success) {
+      console.error(`Game data string isn't json: ${message.data}`);
+      return false;
     }
+
+    const res2 = gameDataSchema.safeParse(res1.json);
+
+    if (!res2.success) {
+      return false;
+    }
+
+    this.gameId = gameId;
+    this.gameData = res2.data;
+
+    return true;
   }
 
   addPlayer(playerId: string, socket: WebSocketType) {
@@ -109,27 +113,24 @@ export default class GameConductor {
     );
 
     socket.on("message", async (buffer) => {
-      let jsonObject = {};
+      const res1 = jsonSafeParse(buffer.toString());
 
-      try {
-        jsonObject = JSON.parse(buffer.toString());
-      } catch (e) {
-        if (e instanceof Error) {
-          console.error("error parsing incoming message", e);
-        }
+      if (!res1.success) {
+        console.error("incoming message isn't a json string", res1.error);
+        return;
       }
 
-      const result = webSocketClientToServerMessageSchema.safeParse(jsonObject);
-      if (!result.success) {
-        console.error("error!", JSON.stringify(result.error, null, "  "));
+      const res2 = webSocketClientToServerMessageSchema.safeParse(res1.json);
+      if (!res2.success) {
+        console.error("error!", JSON.stringify(res2.error, null, "  "));
         console.log("original websocket buffer", buffer.toString());
-      } else {
-        const { type } = result.data;
+        return;
+      }
+      const { type } = res2.data;
 
-        switch (type) {
-          default:
-            console.info("success", result.data);
-        }
+      switch (type) {
+        default:
+          console.info("success", res2.data);
       }
     });
 

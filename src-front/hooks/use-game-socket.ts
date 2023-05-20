@@ -65,6 +65,9 @@ export const useGameSocket = (
   });
 
   useEffect(() => {
+    document.cookie = `dicecityplayerid=${playerDetails.id}; SameSite=Lax;`;
+    document.cookie = `dicecityplayerpass=${playerDetails.password}; SameSite=Lax;`;
+
     reOpenWebSocketRef.current = true;
     getNewWebSocketRef.current = (
       messageObject?: WebSocketClientToServerMessage
@@ -78,9 +81,7 @@ export const useGameSocket = (
         "Getting a new WebSocket connection"
       );
 
-      webSocketRef.current = new WebSocket(
-        `${WEBSOCKET_URL}/game/${gameId}?playerid=${playerDetails.id}`
-      );
+      webSocketRef.current = new WebSocket(`${WEBSOCKET_URL}/game/${gameId}`);
 
       webSocketRef.current.addEventListener("open", () => {
         console.info(

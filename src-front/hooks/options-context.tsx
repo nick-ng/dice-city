@@ -6,6 +6,8 @@ import {
   useState,
 } from "react";
 
+import { jsonSafeParse } from "~common/utils/index.js";
+
 import randomUUID from "~front/utils/random-uuid.js";
 
 const OPTIONS_STORE = "DICE_CITY_OPTIONS";
@@ -33,13 +35,13 @@ const OptionsContext = createContext<{
 
 const OptionsContextProvider = ({ children }: { children: ReactNode }) => {
   const savedOptionsString = localStorage.getItem(OPTIONS_STORE);
+
   let savedOptions = {};
-  if (savedOptionsString) {
-    try {
-      savedOptions = JSON.parse(savedOptionsString);
-    } catch (e) {
-      console.error("Invalid saved options");
-    }
+
+  const res = jsonSafeParse(savedOptionsString);
+
+  if (res.success) {
+    savedOptions = res.json;
   }
 
   const [options, setOptions] = useState({

@@ -1,15 +1,17 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import express from "express";
-import compression from "compression";
 import path from "node:path";
 import http from "node:http";
 import { URL } from "node:url";
 import { randomUUID } from "node:crypto";
-import cors from "cors";
 
+import express from "express";
+import compression from "compression";
+import cors from "cors";
 import { WebSocketServer } from "ws";
+
+import { cookieParse } from "~common/utils/index.js";
 
 import { getClient } from "./redis/index.js";
 import GameConductor from "./game/game-conductor.js";
@@ -38,7 +40,7 @@ setInterval(() => {
           .join(", ")})`
     )
   );
-}, 7777);
+}, 5555);
 
 const websocketServer = new WebSocketServer({
   noServer: true, // manually upgrade connections below
@@ -62,8 +64,9 @@ server.on("upgrade", (request, socket, head) => {
 
   const urlObject = new URL(request.url, "http://home");
   const matches = urlObject.pathname.match(/\/game\/(?<gameId>[0-9a-z-]+)/i);
-  const searchParams = urlObject.searchParams;
-  const playerId = searchParams.get("playerid");
+  const cookies = cookieParse(request.headers.cookie);
+
+  const playerId = cookies?.dicecityplayerid;
 
   if (!matches?.groups?.gameId || !playerId) {
     console.log("bye", request.url);
@@ -114,6 +117,12 @@ server.on("upgrade", (request, socket, head) => {
         }
       }
 
+      console.debug(
+        new Date().toISOString(),
+        "gameConductors.length",
+        gameConductors.length
+      );
+
       locks[gameId] = false;
     }
   );
@@ -160,7 +169,7 @@ app.use((_req, res) => {
 // starting listening
 server.listen(app.get("port"), () => {
   console.info(
-    `${new Date().toLocaleTimeString()} Website server listening on ${app.get(
+    `${new Date().toISOString()} Website server listening on ${app.get(
       "port"
     )}.`
   );

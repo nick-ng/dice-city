@@ -17,7 +17,7 @@ export const createClient2 = (name: string): RedisClient2 => {
   const tic = Date.now();
 
   newClient.on("error", (err) => {
-    console.error(`${new Date().toLocaleTimeString()}: ${name} Error`, err);
+    console.error(`${new Date().toISOString()}: ${name} Error`, err);
     if (err.code === "ECONNREFUSED") {
       newClient.id = undefined;
     }
@@ -25,7 +25,7 @@ export const createClient2 = (name: string): RedisClient2 => {
   newClient.on("connect", async () => {
     newClient.id = (await newClient.clientId()).toString(10);
     console.info(
-      `${new Date().toLocaleTimeString()}: ${name} Connected. ID: ${
+      `${new Date().toISOString()}: ${name} Connected. ID: ${
         newClient.id
       }. Took ${Date.now() - tic} ms to connect.`
     );

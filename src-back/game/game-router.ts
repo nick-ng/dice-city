@@ -2,8 +2,8 @@ import { Router } from "express";
 
 import type { NewGameResponse } from "~common/types/index.js";
 
-import { newGameRequestSchema } from "../../src-common/types/schemas/message.js";
-import { createGameFromHostId } from "../../src-common/other-stuff/game-stuff.js";
+import { newGameRequestSchema } from "~common/types/schemas/message.js";
+import { createGameFromHostId } from "~common/other-stuff/game-stuff.js";
 
 import { getClient, getGameStateKey } from "../redis/index.js";
 
