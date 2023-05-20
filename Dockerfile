@@ -1,7 +1,7 @@
-FROM node:lts-alpine as dev
+FROM node:18-alpine as dev
 WORKDIR /usr/src/app
 
-FROM node:lts-alpine as prod
+FROM node:18-alpine as prod
 
 ENV NODE_ENV=production
 ENV PORT=8080

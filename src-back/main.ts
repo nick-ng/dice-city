@@ -6,28 +6,44 @@ import compression from "compression";
 import path from "node:path";
 import http from "node:http";
 import { URL } from "node:url";
+import { randomUUID } from "node:crypto";
 import cors from "cors";
 
 import { WebSocketServer } from "ws";
 
-import type { WebSocketServerToClientMessage } from "../dist-common/types/index.js";
-import { webSocketClientToServerMessageSchema } from "../dist-common/types/schemas/message.js";
-
-import { createGameFromHostId } from "../dist-common/other-stuff/game-stuff.js";
+import { getClient } from "./redis/index.js";
 import GameConductor from "./game/game-conductor.js";
 import gameRouter from "./game/game-router.js";
 
 const app = express();
 const server = http.createServer(app);
 
+getClient("default");
+
 const gameConductors: GameConductor[] = [];
+
+setInterval(() => {
+  console.log("gameConductors.length", randomUUID(), gameConductors.length);
+  console.log(
+    gameConductors.map((gc) => `${gc.gameId} (${gc.players.length})`)
+  );
+}, 7777);
 
 const websocketServer = new WebSocketServer({
   noServer: true, // manually upgrade connections below
   maxPayload: 51200, // 50 KB
 });
 
-server.on("upgrade", (request, socket, head) => {
+let lock: string | null = null;
+
+const sleep = (ms: number) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(null);
+    }, ms);
+  });
+
+server.on("upgrade", async (request, socket, head) => {
   if (!request.url) {
     socket.destroy();
     return;
@@ -38,7 +54,15 @@ server.on("upgrade", (request, socket, head) => {
   const searchParams = urlObject.searchParams;
   const playerId = searchParams.get("playerid");
 
+  while (lock) {
+    console.log("locked by", lock);
+    await sleep(10);
+  }
+
+  lock = playerId;
+
   if (!matches?.groups?.gameId || !playerId) {
+    console.log("bye", request.url);
     socket.destroy();
     return;
   }
@@ -55,6 +79,7 @@ server.on("upgrade", (request, socket, head) => {
       );
 
       if (existingGameConductor) {
+        lock = null;
         existingGameConductor.addPlayer(playerId, websocketConnection);
       } else {
         let blankGameConductor = gameConductors.find(
@@ -78,6 +103,7 @@ server.on("upgrade", (request, socket, head) => {
           }
         }
       }
+      lock = null;
     }
   );
 });

@@ -1,4 +1,4 @@
-import { buildSync } from "esbuild";
+import { context } from "esbuild";
 
 const options = {
   bundle: true,
@@ -8,14 +8,17 @@ const options = {
   target: ["node16"],
 };
 
-buildSync({
-  ...options,
-  entryPoints: ["./src-back/main.ts"],
-  outfile: "./dist-back/main.js",
-});
+await Promise.all([
+  context({
+    ...options,
+    entryPoints: ["./src-back/main.ts"],
+    outfile: "./dist-back/main.js",
+  }).then((ctx) => ctx.watch()),
+  context({
+    ...options,
+    entryPoints: ["./src-back/worker.ts"],
+    outfile: "./dist-back/worker.js",
+  }).then((ctx) => ctx.watch()),
+]);
 
-buildSync({
-  ...options,
-  entryPoints: ["./src-back/worker.ts"],
-  outfile: "./dist-back/worker.js",
-});
+console.log("watching...");

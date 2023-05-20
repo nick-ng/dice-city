@@ -10,8 +10,8 @@ import type {
 import {
   gameDataSchema,
   playerGameDataSchema,
-} from "../../dist-common/types/schemas/game.js";
-import { webSocketClientToServerMessageSchema } from "../../dist-common/types/schemas/message.js";
+} from "../../src-common/types/schemas/game.js";
+import { webSocketClientToServerMessageSchema } from "../../src-common/types/schemas/message.js";
 
 import {
   getClient as getRedisClient,
