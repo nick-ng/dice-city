@@ -36,7 +36,7 @@ const websocketServer = new WebSocketServer({
   maxPayload: 51200, // 50 KB
 });
 
-let lock: string | null = null;
+const locks: { [key: string]: boolean } = {};
 
 const sleep = (ms: number) =>
   new Promise((resolve) => {
@@ -45,7 +45,7 @@ const sleep = (ms: number) =>
     }, ms);
   });
 
-server.on("upgrade", async (request, socket, head) => {
+server.on("upgrade", (request, socket, head) => {
   if (!request.url) {
     socket.destroy();
     return;
@@ -55,13 +55,6 @@ server.on("upgrade", async (request, socket, head) => {
   const matches = urlObject.pathname.match(/\/game\/(?<gameId>[0-9a-z-]+)/i);
   const searchParams = urlObject.searchParams;
   const playerId = searchParams.get("playerid");
-
-  while (lock) {
-    console.info("locked by", lock);
-    await sleep(100);
-  }
-
-  lock = playerId;
 
   if (!matches?.groups?.gameId || !playerId) {
     console.log("bye", request.url);
@@ -76,12 +69,19 @@ server.on("upgrade", async (request, socket, head) => {
     socket,
     head,
     async (websocketConnection) => {
+      while (locks[gameId]) {
+        console.info(locks[gameId], "is locked");
+        await sleep(100);
+      }
+
+      locks[gameId] = true;
+
       const existingGameConductor = gameConductors.find(
         (gameConductor) => gameConductor.gameId === gameId
       );
 
       if (existingGameConductor) {
-        lock = null;
+        locks[gameId] = false;
         existingGameConductor.addPlayer(playerId, websocketConnection);
       } else {
         let blankGameConductor = gameConductors.find(
@@ -105,7 +105,8 @@ server.on("upgrade", async (request, socket, head) => {
           }
         }
       }
-      lock = null;
+
+      locks[gameId] = false;
     }
   );
 });
