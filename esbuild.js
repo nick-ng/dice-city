@@ -1,24 +1,10 @@
 import { context } from "esbuild";
 
-const options = {
-  bundle: true,
-  format: "esm",
-  platform: "node",
-  external: ["./node_modules/*"],
-  target: ["node16"],
-};
+import { mainOptions, workerOptions } from "./esbuild.prod.js";
 
 await Promise.all([
-  context({
-    ...options,
-    entryPoints: ["./src-back/main.ts"],
-    outfile: "./dist-back/main.js",
-  }).then((ctx) => ctx.watch()),
-  context({
-    ...options,
-    entryPoints: ["./src-back/worker.ts"],
-    outfile: "./dist-back/worker.js",
-  }).then((ctx) => ctx.watch()),
+  context(mainOptions).then((ctx) => ctx.watch()),
+  context(workerOptions).then((ctx) => ctx.watch()),
 ]);
 
 console.log("watching...");

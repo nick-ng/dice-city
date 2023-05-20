@@ -26,21 +26,28 @@ getClient("default");
 
 const gameConductors: GameConductor[] = [];
 
-setInterval(() => {
-  console.log(
-    "gameConductors.length",
-    INSTANCE_ID.slice(0, 5),
-    gameConductors.length
-  );
-  console.log(
-    gameConductors.map(
+if (process.env.NODE_ENV === "development") {
+  let prevLog = "";
+
+  setInterval(() => {
+    const newLog = `${INSTANCE_ID.slice(0, 8)} gameConductors.length: ${
+      gameConductors.length
+    }
+  ${gameConductors
+    .map(
       (gc) =>
-        `${gc.gameId} (${gc.players
-          .map((p) => p.playerId.slice(0 - 5))
+        `${gc.gameId?.slice(0, 8)} (${gc.players
+          .map((p) => p.playerId.slice(0, 8))
           .join(", ")})`
     )
-  );
-}, 5555);
+    .join("\n  ")}`;
+
+    if (newLog !== prevLog) {
+      prevLog = newLog;
+      console.debug(newLog);
+    }
+  }, 99);
+}
 
 const websocketServer = new WebSocketServer({
   noServer: true, // manually upgrade connections below
