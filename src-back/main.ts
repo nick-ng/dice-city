@@ -15,6 +15,8 @@ import { getClient } from "./redis/index.js";
 import GameConductor from "./game/game-conductor.js";
 import gameRouter from "./game/game-router.js";
 
+const INSTANCE_ID = randomUUID();
+
 const app = express();
 const server = http.createServer(app);
 
@@ -23,7 +25,7 @@ getClient("default");
 const gameConductors: GameConductor[] = [];
 
 setInterval(() => {
-  console.log("gameConductors.length", randomUUID(), gameConductors.length);
+  console.log("gameConductors.length", INSTANCE_ID, gameConductors.length);
   console.log(
     gameConductors.map((gc) => `${gc.gameId} (${gc.players.length})`)
   );
@@ -55,8 +57,8 @@ server.on("upgrade", async (request, socket, head) => {
   const playerId = searchParams.get("playerid");
 
   while (lock) {
-    console.log("locked by", lock);
-    await sleep(10);
+    console.info("locked by", lock);
+    await sleep(100);
   }
 
   lock = playerId;
@@ -106,6 +108,10 @@ server.on("upgrade", async (request, socket, head) => {
       lock = null;
     }
   );
+});
+
+websocketServer.on("error", (error) => {
+  console.error("WebSocket Error", error);
 });
 
 const port = process.env.PORT || 8080;
