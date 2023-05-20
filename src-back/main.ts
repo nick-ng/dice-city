@@ -25,9 +25,18 @@ getClient("default");
 const gameConductors: GameConductor[] = [];
 
 setInterval(() => {
-  console.log("gameConductors.length", INSTANCE_ID, gameConductors.length);
   console.log(
-    gameConductors.map((gc) => `${gc.gameId} (${gc.players.length})`)
+    "gameConductors.length",
+    INSTANCE_ID.slice(0, 5),
+    gameConductors.length
+  );
+  console.log(
+    gameConductors.map(
+      (gc) =>
+        `${gc.gameId} (${gc.players
+          .map((p) => p.playerId.slice(0 - 5))
+          .join(", ")})`
+    )
   );
 }, 7777);
 
@@ -85,23 +94,22 @@ server.on("upgrade", (request, socket, head) => {
         existingGameConductor.addPlayer(playerId, websocketConnection);
       } else {
         let blankGameConductor = gameConductors.find(
-          (gameConductor) => gameConductor.gameId === gameId
+          (gameConductor) => !gameConductor.gameId
         );
 
         const needNewGameConductor = !blankGameConductor;
 
-        if (needNewGameConductor) {
+        if (!blankGameConductor) {
           blankGameConductor = new GameConductor();
         }
 
-        let tempGameConductor = new GameConductor();
-        await tempGameConductor.loadGame(gameId);
+        await blankGameConductor.loadGame(gameId);
 
-        if (tempGameConductor.gameData) {
-          tempGameConductor.addPlayer(playerId, websocketConnection);
+        if (blankGameConductor.gameData) {
+          blankGameConductor.addPlayer(playerId, websocketConnection);
 
           if (needNewGameConductor) {
-            gameConductors.push(tempGameConductor);
+            gameConductors.push(blankGameConductor);
           }
         }
       }

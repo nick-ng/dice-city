@@ -145,6 +145,11 @@ export default class GameConductor {
         "players",
         this.players.map((p) => p.playerId)
       );
+
+      if (this.players.length === 0) {
+        this.gameId = null;
+        this.gameData = null;
+      }
     });
   }
 
