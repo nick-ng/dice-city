@@ -7,4 +7,4 @@ await Promise.all([
   context(workerOptions).then((ctx) => ctx.watch()),
 ]);
 
-console.log("watching...");
+console.log("Also run npm start and npm run dev-logs.\nwatching...");
