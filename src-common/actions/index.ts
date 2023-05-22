@@ -1,6 +1,8 @@
 import type { GameData, Action } from "../types/index.js";
-import { buildAction } from "./build.js";
+
+import { joinAction } from "./join.js";
 import { rollDiceAction } from "./roll-dice.js";
+import { buildAction } from "./build.js";
 import { blueEstablishmentsAction } from "./blue-establishments.js";
 import { greenEstablishmentsAction } from "./green-establishments.js";
 
@@ -12,10 +14,12 @@ export const performAction = (
   action: Action
 ): { gameData: GameData; error?: string } => {
   switch (action.type) {
-    case "build":
-      return buildAction(gameData, action);
+    case "join":
+      return joinAction(gameData, action);
     case "roll-dice":
       return rollDiceAction(gameData, action);
+    case "build":
+      return buildAction(gameData, action);
     case "green-establishments":
       return greenEstablishmentsAction(gameData, action);
     case "blue-establishments":

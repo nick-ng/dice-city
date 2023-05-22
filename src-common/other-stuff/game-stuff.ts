@@ -10,6 +10,7 @@ export const createGameFromHostId = (hostId: string): GameData => {
       landmarks: [],
       timeLimitSeconds: 999,
       timeLimitType: "off",
+      startingMoney: 3,
     },
     gameState: {
       publicState: {

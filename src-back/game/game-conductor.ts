@@ -79,14 +79,17 @@ export default class GameConductor {
 
   addPlayer(playerId: string, socket: WebSocketType) {
     const uuid = randomUUID();
-    this.players.push({
+
+    const player = {
       uuid,
       playerId,
       socket,
       lastPing: 0,
       latency: 0,
       pingCounter: 0,
-    });
+    };
+
+    this.players.push(player);
 
     const result = playerGameDataSchema.safeParse(this.gameData);
 
@@ -129,6 +132,11 @@ export default class GameConductor {
       const { type } = res2.data;
 
       switch (type) {
+        case "pong":
+          player.latency = Date.now() - player.lastPing;
+          break;
+        case "join":
+
         default:
           console.info("success", res2.data);
       }
