@@ -187,6 +187,7 @@ export const rollDiceTests: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "roll-dice",
       payload: {
         diceCount: 1,
@@ -200,6 +201,7 @@ export const rollDiceTests: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "roll-dice",
       payload: {
         diceCount: 2,
@@ -212,6 +214,20 @@ export const rollDiceTests: TestScenario[] = [
     startingData,
     action: {
       playerId: "b",
+      playerPassword: "bcd",
+      type: "roll-dice",
+      payload: {
+        diceCount: 1,
+      },
+    },
+  },
+  {
+    tags: ["roll-dice", "error"],
+    display: "Roll-dice: Player A rolls 1 die with the wrong password",
+    startingData,
+    action: {
+      playerId: "a",
+      playerPassword: "abd",
       type: "roll-dice",
       payload: {
         diceCount: 1,

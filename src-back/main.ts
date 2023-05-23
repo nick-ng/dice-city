@@ -176,8 +176,8 @@ app.use((_req, res) => {
 // starting listening
 server.listen(app.get("port"), () => {
   console.info(
-    `${new Date().toISOString()} Website server listening on ${app.get(
-      "port"
-    )}.`
+    new Date().toISOString(),
+    "Web server listening on",
+    app.get("port")
   );
 });

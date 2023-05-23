@@ -6,13 +6,32 @@ import { buildAction } from "./build.js";
 import { blueEstablishmentsAction } from "./blue-establishments.js";
 import { greenEstablishmentsAction } from "./green-establishments.js";
 
-/**
- * If performAction gets called, the game has already verified the player's identity
- */
 export const performAction = (
   gameData: GameData,
   action: Action
 ): { gameData: GameData; error?: string } => {
+  if (!action.isServer && action.type !== "join") {
+    if (!gameData.gameDetails.players.find((p) => p.id === action.playerId)) {
+      return {
+        gameData,
+        error: "you aren't in this game",
+      };
+    }
+
+    const serverPlayerPassword =
+      gameData.playersSecrets[action.playerId]?.password;
+
+    if (
+      !serverPlayerPassword ||
+      action.playerPassword !== serverPlayerPassword
+    ) {
+      return {
+        gameData,
+        error: "wrong password",
+      };
+    }
+  }
+
   switch (action.type) {
     case "join":
       return joinAction(gameData, action);

@@ -15,8 +15,8 @@ export const joinAction = (
 
   let error = undefined;
   const newGameData = produce(gameData, (draftGameData) => {
-    const { payload, playerId } = action;
-    const { playerName, playerPassword } = payload;
+    const { payload, playerId, playerPassword } = action;
+    const { playerName } = payload;
 
     if (!playerId || !playerName || !playerPassword) {
       error = "missing player info";

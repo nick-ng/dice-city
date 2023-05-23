@@ -136,6 +136,11 @@ export default class GameConductor {
           player.latency = Date.now() - player.lastPing;
           break;
         case "join":
+          // todo(nick): move this to worker
+          const redis = getRedisClient();
+
+          const { payload } = res2.data;
+          const {} = payload;
 
         default:
           console.info("success", res2.data);

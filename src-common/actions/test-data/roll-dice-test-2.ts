@@ -188,6 +188,7 @@ export const rollDiceTests2: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "roll-dice",
       payload: {
         diceCount: 1,
@@ -201,6 +202,7 @@ export const rollDiceTests2: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "roll-dice",
       payload: {
         diceCount: 2,
@@ -213,6 +215,7 @@ export const rollDiceTests2: TestScenario[] = [
     startingData,
     action: {
       playerId: "b",
+      playerPassword: "bcd",
       type: "roll-dice",
       payload: {
         diceCount: 2,

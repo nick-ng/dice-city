@@ -187,6 +187,7 @@ export const buildTests2: TestScenario[] = [
     startingData,
     action: {
       playerId: "b",
+      playerPassword: "bcd",
       type: "build",
       payload: {
         buildingKey: "mine",
@@ -199,6 +200,7 @@ export const buildTests2: TestScenario[] = [
     startingData,
     action: {
       playerId: "b",
+      playerPassword: "bcd",
       type: "build",
       payload: {
         buildingKey: "amusementPark",
