@@ -2,42 +2,45 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import http from "node:http";
+import { randomUUID } from "node:crypto";
 import express from "express";
 
 import { performAction } from "~common/actions/index.js";
 
-import { getClient, getXReadClient } from "./redis/index.js";
+import { getClient, getXReadClient, getGameWorkerKey } from "./redis/index.js";
 
-const app = express();
-const server = http.createServer(app);
+const INSTANCE_ID = randomUUID();
 
-app.set("port", 8080);
-
-app.use(express.json());
-
-app.get("/stats", (_req, res) => {
-  console.log("/stats");
-
-  res.json({
-    games: 0,
+const sleep = (ms: number) =>
+  new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
   });
-});
 
-app.post("/start-game/:id", (req, res) => {
-  const { body, params } = req;
+const games: string[] = [];
 
-  console.log("params", params);
-  console.log("body", body);
+const report = async () => {
+  const redis = getClient();
 
-  res.sendStatus(200);
-});
+  for (;;) {
+    console.log("games", games);
+    await sleep(6000);
+  }
+};
 
-server.listen(app.get("port"), () => {
-  console.info(
-    new Date().toISOString(),
-    "Worker listening on",
-    app.get("port"),
-    process.env.NODE_ENV,
-    process.env.TS_NODE_PROJECT
-  );
-});
+const main = async () => {
+  for (;;) {
+    await sleep(100);
+  }
+};
+
+main();
+
+console.info(
+  new Date().toISOString(),
+  "Worker",
+  INSTANCE_ID,
+  process.env.NODE_ENV,
+  process.env.TS_NODE_PROJECT
+);

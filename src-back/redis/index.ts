@@ -27,6 +27,8 @@ export const getGameStateKey = (gameId: string) => `game:${gameId}-state`;
 
 export const getGameActionKey = (gameId: string) => `game:${gameId}-action`;
 
+export const getGameWorkerKey = (gameId: string) => `game:${gameId}-worker`;
+
 export const getClient = (name = "default"): RedisClient2 => {
   if (clients[name]) {
     return clients[name];

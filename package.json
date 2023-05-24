@@ -12,7 +12,7 @@
     "dev-front": "vite --host",
     "dev-worker": "NODE_ENV=development TS_NODE_PROJECT='./src-back/tsconfig.json' nodemon -L ./src-back/worker.ts",
     "start": "vite --host",
-    "dev-logs": "docker compose logs -f",
+    "logs": "docker compose logs -f",
     "stop": "docker compose down --remove-orphans",
     "serve": "node ./dist-back/main.js",
     "worker": "node ./dist-back/worker.js",
