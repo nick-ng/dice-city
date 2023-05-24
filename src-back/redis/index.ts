@@ -23,6 +23,8 @@ const listeners: {
 
 let isListening = false;
 
+export const getListeners = () => listeners;
+
 export const getGameStateKey = (gameId: string) => `game:${gameId}-state`;
 
 export const getGameActionKey = (gameId: string) => `game:${gameId}-action`;
@@ -149,7 +151,7 @@ export const addXRead = ({
   messageCallback,
 }: {
   streamKey: string;
-  lastId: string;
+  lastId?: string;
   messageCallback: (data: messageCallbackParams) => void | Promise<void>;
 }): string => {
   const uuid = randomUUID();
@@ -157,7 +159,7 @@ export const addXRead = ({
   listeners.push({
     uuid,
     streamKey,
-    lastId,
+    lastId: lastId || "$",
     messageCallback,
   });
 
@@ -174,4 +176,6 @@ export const removeXRead = (uuid: string): void => {
   const i = listeners.findIndex((listener) => listener.uuid === uuid);
 
   listeners.splice(i, 1);
+
+  listen();
 };

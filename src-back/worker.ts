@@ -7,7 +7,13 @@ import express from "express";
 
 import { performAction } from "~common/actions/index.js";
 
-import { getClient, getXReadClient, getGameWorkerKey } from "./redis/index.js";
+import {
+  addXRead,
+  getClient,
+  getListeners,
+  getXReadClient,
+  getGameWorkerKey,
+} from "./redis/index.js";
 
 const INSTANCE_ID = randomUUID();
 
@@ -20,11 +26,22 @@ const sleep = (ms: number) =>
 
 const games: string[] = [];
 
-const report = async () => {
-  const redis = getClient();
+const gameListenerUUID = addXRead({
+  streamKey: "games",
+  messageCallback: async (data) => {
+    console.log("data", data);
+  },
+});
 
+const report = async () => {
   for (;;) {
-    console.log("games", games);
+    const allListeners = getListeners();
+    console.log(
+      "games",
+      allListeners
+        .filter((a) => a.streamKey !== "games")
+        .map((a) => a.streamKey.replace("game:", "").replace("-action", ""))
+    );
     await sleep(6000);
   }
 };

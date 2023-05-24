@@ -1,22 +1,42 @@
+import z from "zod";
+z.Schema;
+
 export const jsonSafeParse = (str?: string | null) => {
   if (!str) {
     return {
-      error: new Error("jsonSafeParse: string is empty"),
-      success: false,
+      error: "jsonSafeParse: string is empty",
+      success: false as const,
     };
   }
 
   try {
     return {
       json: JSON.parse(str),
-      success: true,
+      success: true as const,
     };
   } catch (e) {
+    console.error("error parsing json", e);
     return {
-      error: e,
-      success: false,
+      error: `jsonSafeParse: couldn't parse ${str}`,
+      success: false as const,
     };
   }
+};
+
+export const jsonSafeParseS = <T>(schema: z.Schema<T>, str?: string | null) => {
+  const resJ = jsonSafeParse(str);
+
+  if (!resJ.success) {
+    return resJ;
+  }
+
+  const res = schema.safeParse(resJ.json);
+
+  if (!res.success) {
+    return res;
+  }
+
+  return res;
 };
 
 export const cookieParse = (cookieString?: string) => {

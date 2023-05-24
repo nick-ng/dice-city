@@ -12,12 +12,13 @@ import {
   playerGameDataSchema,
 } from "~common/types/schemas/game.js";
 import { webSocketClientToServerMessageSchema } from "~common/types/schemas/message.js";
-import { jsonSafeParse } from "~common/utils/index.js";
+import { jsonSafeParse, jsonSafeParseS } from "~common/utils/index.js";
 
 import {
   getClient as getRedisClient,
   getGameStateKey,
   getGameActionKey,
+  getGameWorkerKey,
 } from "../redis/index.js";
 
 /**
@@ -58,21 +59,19 @@ export default class GameConductor {
 
     const { message } = temp[0];
 
-    const res1 = jsonSafeParse(message.data);
+    const res = jsonSafeParseS(gameDataSchema, message.data);
 
-    if (!res1.success) {
-      console.error(`Game data string isn't json: ${message.data}`);
-      return false;
-    }
-
-    const res2 = gameDataSchema.safeParse(res1.json);
-
-    if (!res2.success) {
+    if (!res.success) {
+      console.error(`couldn't parse game data ${message.data}`);
       return false;
     }
 
     this.gameId = gameId;
-    this.gameData = res2.data;
+    this.gameData = res.data;
+
+    redis.xAdd("games", "*", {
+      data: JSON.stringify({ gameId: this.gameId }),
+    });
 
     return true;
   }
@@ -116,20 +115,16 @@ export default class GameConductor {
     );
 
     socket.on("message", async (buffer) => {
-      const res1 = jsonSafeParse(buffer.toString());
-
-      if (!res1.success) {
-        console.error("incoming message isn't a json string", res1.error);
-        return;
-      }
-
-      const res2 = webSocketClientToServerMessageSchema.safeParse(res1.json);
-      if (!res2.success) {
-        console.error("error!", JSON.stringify(res2.error, null, "  "));
+      const res = jsonSafeParseS(
+        webSocketClientToServerMessageSchema,
+        buffer.toString()
+      );
+      if (!res.success) {
+        console.error("error!", JSON.stringify(res.error, null, "  "));
         console.log("original websocket buffer", buffer.toString());
         return;
       }
-      const { type } = res2.data;
+      const { type } = res.data;
 
       switch (type) {
         case "pong":
@@ -139,11 +134,11 @@ export default class GameConductor {
           // todo(nick): move this to worker
           const redis = getRedisClient();
 
-          const { payload } = res2.data;
+          const { payload } = res.data;
           const {} = payload;
 
         default:
-          console.info("success", res2.data);
+          console.info("success", res.data);
       }
     });
 
