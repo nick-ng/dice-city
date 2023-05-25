@@ -10,7 +10,7 @@
     "test": "nodemon --legacy-watch --config nodemon.tests.json --exec npm run test-ci",
     "dev-back": "NODE_ENV=development TS_NODE_PROJECT='./src-back/tsconfig.json' nodemon -L ./dist-back/main.js",
     "dev-front": "vite --host",
-    "dev-worker": "NODE_ENV=development TS_NODE_PROJECT='./src-back/tsconfig.json' nodemon -L ./src-back/worker.ts",
+    "dev-worker": "NODE_ENV=development TS_NODE_PROJECT='./src-back/tsconfig.json' nodemon -L ./dist-back/worker.js",
     "start": "vite --host",
     "logs": "docker compose logs -f",
     "stop": "docker compose down --remove-orphans",

@@ -60,6 +60,8 @@ export const getClient = (name = "default"): RedisClient2 => {
     );
   });
 
+  clients[name] = newClient;
+
   return newClient;
 };
 

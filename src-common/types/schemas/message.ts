@@ -60,3 +60,8 @@ export const webSocketClientToServerMessageSchema = z.intersection(
     playerPassword: z.string(),
   })
 );
+
+export const startGameStreamObjectSchema = z.object({
+  gameId: z.string(),
+  workerId: z.string(),
+});

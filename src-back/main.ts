@@ -22,7 +22,7 @@ const INSTANCE_ID = randomUUID();
 const app = express();
 const server = http.createServer(app);
 
-getClient("default");
+getClient();
 
 const gameConductors: GameConductor[] = [];
 

@@ -17,6 +17,7 @@ import {
   newGameResponseSchema,
   webSocketServerToClientMessageSchema,
   webSocketClientToServerMessageSchema,
+  startGameStreamObjectSchema,
 } from "./schemas/message.js";
 
 export type Building = z.infer<typeof buildingSchema>;
@@ -49,3 +50,5 @@ export type WebSocketServerToClientMessage = z.infer<
 export type WebSocketClientToServerMessage = z.infer<
   typeof webSocketClientToServerMessageSchema
 >;
+
+export type StartGameStreamObject = z.infer<typeof startGameStreamObjectSchema>;

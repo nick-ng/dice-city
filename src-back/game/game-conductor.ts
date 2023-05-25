@@ -5,6 +5,7 @@ import type {
   GameData,
   PlayerGameData,
   WebSocketServerToClientMessage,
+  StartGameStreamObject,
 } from "~common/types/index.js";
 
 import {
@@ -19,6 +20,7 @@ import {
   getGameStateKey,
   getGameActionKey,
   getGameWorkerKey,
+  getClient,
 } from "../redis/index.js";
 
 /**
@@ -69,8 +71,31 @@ export default class GameConductor {
     this.gameId = gameId;
     this.gameData = res.data;
 
+    const workers = [];
+    for await (const key of redis.scanIterator({
+      MATCH: "worker:*",
+    })) {
+      const tempGameCount = await redis.get(key);
+      workers.push({
+        id: key,
+        gameCount: tempGameCount ? parseInt(tempGameCount, 10) : 0,
+      });
+    }
+
+    if (workers.length === 0) {
+      console.error(`no workers!?`);
+      return false;
+    }
+
+    workers.sort((a, b) => a.gameCount - b.gameCount);
+
+    const startGameMessage: StartGameStreamObject = {
+      gameId: this.gameId,
+      workerId: workers[0].id,
+    };
+
     redis.xAdd("games", "*", {
-      data: JSON.stringify({ gameId: this.gameId }),
+      data: JSON.stringify(startGameMessage),
     });
 
     return true;
@@ -130,15 +155,19 @@ export default class GameConductor {
         case "pong":
           player.latency = Date.now() - player.lastPing;
           break;
-        case "join":
-          // todo(nick): move this to worker
-          const redis = getRedisClient();
-
-          const { payload } = res.data;
-          const {} = payload;
-
         default:
+          const redis = getClient();
           console.info("success", res.data);
+          if (!this.gameId) {
+            console.error(
+              "got weboskcet message but no game id",
+              buffer.toString()
+            );
+            break;
+          }
+          redis.xAdd(getGameActionKey(this.gameId), "*", {
+            data: JSON.stringify(res.data),
+          });
       }
     });
 
