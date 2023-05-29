@@ -16,7 +16,6 @@ services:
       dockerfile: Dockerfile
       target: prod
     restart: always
-    scale: 1
     command: node ./dist-back/worker.js
   redis:
     restart: always

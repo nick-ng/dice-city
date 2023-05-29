@@ -10,13 +10,15 @@ export const buildAction = (
   gameData: GameData,
   action: Action
 ): { gameData: GameData; error?: string } => {
+  if (action.type !== "build") {
+    return {
+      gameData,
+      error: "not build",
+    };
+  }
+
   let error = undefined;
   const newGameData = produce(gameData, (draftGameData) => {
-    if (action.type !== "build") {
-      error = "not build";
-      return;
-    }
-
     const { payload, playerId } = action;
     const { buildingKey } = payload;
     const establishment = establishmentReference[buildingKey];

@@ -20,6 +20,7 @@ const gameSettings = {
   landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
   timeLimitSeconds: 999,
   timeLimitType: "off" as const,
+  startingMoney: 3,
 };
 
 const startingState: GameData["gameState"] = {
@@ -187,6 +188,7 @@ export const buildTests: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "build",
       payload: {
         buildingKey: "cheeseFactory",
@@ -199,6 +201,7 @@ export const buildTests: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "build",
       payload: {
         buildingKey: "trainStation",
@@ -212,6 +215,7 @@ export const buildTests: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "build",
       payload: {
         buildingKey: "shoppingMall",
@@ -224,6 +228,7 @@ export const buildTests: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "build",
       payload: {
         buildingKey: "stadium",
@@ -237,6 +242,7 @@ export const buildTests: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "build",
       payload: {
         buildingKey: "businessCentre",
@@ -249,6 +255,7 @@ export const buildTests: TestScenario[] = [
     startingData,
     action: {
       playerId: "b",
+      playerPassword: "bcd",
       type: "build",
       payload: {
         buildingKey: "ranch",

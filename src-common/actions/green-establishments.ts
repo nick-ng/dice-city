@@ -11,16 +11,19 @@ const countTagsInEstablishments = (
   establishments: EstablishmentList,
   tag: string
 ): number => {
-  return Object.entries(establishments).reduce(
-    (prev, [key, establishmentIds]) => {
-      const establishmentDetails = establishmentReference[key];
-      if (establishmentDetails?.tag === tag) {
-        return prev + establishmentIds.length;
-      }
-      return prev;
-    },
-    0
-  );
+  let tagCount = 0;
+  const establishmentsEntries = Object.entries(establishments);
+
+  for (let n = 0; n < establishmentsEntries.length; n++) {
+    const key = establishmentsEntries[n][0];
+    const establishmentDetails = establishmentReference[key];
+    if (establishmentDetails?.tag === tag) {
+      const establishmentCounts = establishmentsEntries[n][1].length;
+      tagCount += establishmentCounts;
+    }
+  }
+
+  return tagCount;
 };
 
 export const greenEstablishmentsAction = (
@@ -47,7 +50,10 @@ export const greenEstablishmentsAction = (
       publicState.common;
     const activePlayerState = publicState.players[activePlayerId];
 
-    const diceTotal = diceRolls.reduce((prev, curr) => prev + curr, 0);
+    let diceTotal = 0;
+    for (let n = 0; n < diceRolls.length; n++) {
+      diceTotal += diceRolls[n];
+    }
 
     const { city } = activePlayerState;
     const { establishments, landmarks } = city;

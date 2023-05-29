@@ -10,6 +10,7 @@ import Loading from "./loading/index.js";
 import TopBar from "./top-bar/index.js";
 const Home = lazy(() => import("./home/index.js"));
 const DevFrontEnd = lazy(() => import("./dev-front-end/index.js"));
+const GameScreen = lazy(() => import("./game-screen/index.js"));
 
 const toggleDarkMode = (darkMode: Options["darkMode"]) => {
   if (
@@ -53,6 +54,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dev/*" element={<DevFrontEnd />} />
+          <Route path="/game/:id" element={<GameScreen />} />
         </Routes>
       </Container>
     </Suspense>

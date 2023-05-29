@@ -5,6 +5,10 @@
     "module": "NodeNext"
   },
   "references": [{ "path": "../src-common" }],
-  "files": ["./main.ts"],
-  "include": ["./**/*"]
+  "files": ["./main.ts", "./worker.ts"],
+  "include": ["./**/*"],
+  "watchOptions": {
+    "watchFile": "dynamicprioritypolling",
+    "watchDirectory": "dynamicprioritypolling"
+  }
 }

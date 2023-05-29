@@ -1,21 +1,30 @@
-import { buildSync } from "esbuild";
+import { context } from "esbuild";
 
-const options = {
-  bundle: true,
-  format: "esm",
-  platform: "node",
-  external: ["./node_modules/*"],
-  target: ["node16"],
-};
+import { mainOptions, workerOptions } from "./esbuild.prod.js";
 
-buildSync({
-  ...options,
-  entryPoints: ["./src-back/main.ts"],
-  outfile: "./dist-back/main.js",
-});
+const makePlugins = (environment) => [
+  {
+    name: `${environment}-rebuild-watch`,
+    setup: (build) => {
+      build.onEnd((result) => {
+        const { errors, warnings } = result;
+        let temp = [
+          errors.length > 0 && errors,
+          warnings.length > 0 && warnings,
+        ].filter((a) => a);
+        console.info(new Date().toISOString(), environment, "rebuilt", ...temp);
+      });
+    },
+  },
+];
 
-buildSync({
-  ...options,
-  entryPoints: ["./src-back/worker.ts"],
-  outfile: "./dist-back/worker.js",
-});
+await Promise.all([
+  context({ ...mainOptions, plugins: makePlugins("main") }).then((ctx) =>
+    ctx.watch({})
+  ),
+  context({ ...workerOptions, plugins: makePlugins("worker") }).then((ctx) =>
+    ctx.watch()
+  ),
+]);
+
+console.info("Also run npm start and npm run dev-logs.\nwatching...");

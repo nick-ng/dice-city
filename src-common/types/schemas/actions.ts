@@ -1,18 +1,14 @@
 import z from "zod";
 
-const playerId = z.string();
-
-export const buildEstablishmentSchema = z.object({
-  playerId,
-  type: z.literal("build"),
+export const joinSchema = z.object({
+  type: z.literal("join"),
   isServer: z.optional(z.literal(false)),
   payload: z.object({
-    buildingKey: z.string(),
+    playerName: z.string(),
   }),
 });
 
 export const rollSchema = z.object({
-  playerId,
   type: z.literal("roll-dice"),
   isServer: z.optional(z.literal(false)),
   payload: z.object({
@@ -27,8 +23,23 @@ export const establishmentsSchema = z.object({
   payload: z.optional(z.any()),
 });
 
+export const buildEstablishmentSchema = z.object({
+  type: z.literal("build"),
+  isServer: z.optional(z.literal(false)),
+  payload: z.object({
+    buildingKey: z.string(),
+  }),
+});
+
+export const playerActionsSchema = z.intersection(
+  z.union([joinSchema, rollSchema, buildEstablishmentSchema]),
+  z.object({
+    playerId: z.string(),
+    playerPassword: z.string(),
+  })
+);
+
 export const actionSchema = z.union([
-  buildEstablishmentSchema,
-  rollSchema,
+  playerActionsSchema,
   establishmentsSchema,
 ]);

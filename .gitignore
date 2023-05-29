@@ -1,6 +1,8 @@
 dist-*
 volumes/
 
+README.md.tmp
+
 # Logs
 logs
 *.log

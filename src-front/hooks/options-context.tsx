@@ -1,4 +1,14 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import { jsonSafeParse } from "~common/utils/index.js";
+
+import randomUUID from "~front/utils/random-uuid.js";
 
 const OPTIONS_STORE = "DICE_CITY_OPTIONS";
 
@@ -25,19 +35,39 @@ const OptionsContext = createContext<{
 
 const OptionsContextProvider = ({ children }: { children: ReactNode }) => {
   const savedOptionsString = localStorage.getItem(OPTIONS_STORE);
+
   let savedOptions = {};
-  if (savedOptionsString) {
-    try {
-      savedOptions = JSON.parse(savedOptionsString);
-    } catch (e) {
-      console.error("Invalid saved options");
-    }
+
+  const res = jsonSafeParse(savedOptionsString);
+
+  if (res.success) {
+    savedOptions = res.json;
   }
 
   const [options, setOptions] = useState({
     ...defaultOptions,
     ...(savedOptions as Options),
   });
+
+  useEffect(() => {
+    if (!options.playerId || !options.playerPassword) {
+      setOptions((prevOptions) => {
+        const fullOptions = { ...prevOptions };
+
+        if (!fullOptions.playerId) {
+          fullOptions.playerId = randomUUID();
+        }
+
+        if (!fullOptions.playerPassword) {
+          fullOptions.playerPassword = randomUUID();
+        }
+
+        const { ping, ...saveOptions } = fullOptions;
+        localStorage.setItem(OPTIONS_STORE, JSON.stringify(saveOptions));
+        return fullOptions;
+      });
+    }
+  }, []);
 
   return (
     <OptionsContext.Provider

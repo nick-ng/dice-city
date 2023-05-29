@@ -1,0 +1,255 @@
+import { randomUUID } from "node:crypto";
+import { WebSocket as WebSocketType } from "ws";
+
+import type {
+  GameData,
+  PlayerGameData,
+  WebSocketServerToClientMessage,
+  StartGameStreamObject,
+} from "~common/types/index.js";
+
+import {
+  gameDataSchema,
+  playerGameDataSchema,
+} from "~common/types/schemas/game.js";
+import { webSocketClientToServerMessageSchema } from "~common/types/schemas/message.js";
+import { jsonSafeParseS } from "~common/utils/index.js";
+
+import {
+  getClient as getRedisClient,
+  getGameStateKey,
+  getGameActionKey,
+  getGameWorkerKey,
+  getClient,
+  addXRead,
+} from "../redis/index.js";
+
+/**
+ * Handles websocket stuff for a game
+ */
+export default class GameConductor {
+  gameId: string | null;
+  gameData: GameData | null;
+  players: {
+    uuid: string;
+    playerId: string;
+    socket: WebSocketType;
+    lastPing: number;
+    latency: number;
+    pingCounter: number;
+  }[];
+
+  constructor() {
+    this.gameId = null;
+    this.gameData = null;
+    this.players = [];
+  }
+
+  async loadGame(gameId: string) {
+    if (gameId !== this.gameId) {
+      this.players = [];
+    }
+
+    const redis = getRedisClient();
+
+    const temp = await redis.xRevRange(getGameStateKey(gameId), "+", "-", {
+      COUNT: 1,
+    });
+
+    if (temp.length === 0) {
+      return false;
+    }
+
+    const { message } = temp[0];
+
+    const res = jsonSafeParseS(gameDataSchema, message.data);
+
+    if (!res.success) {
+      console.error(`couldn't parse game data ${message.data}`);
+      return false;
+    }
+
+    this.gameId = gameId;
+    this.gameData = res.data;
+
+    const workers = [];
+    for await (const key of redis.scanIterator({
+      MATCH: "worker:*",
+    })) {
+      const tempGameCount = await redis.get(key);
+      workers.push({
+        id: key,
+        gameCount: tempGameCount ? parseInt(tempGameCount, 10) : 0,
+      });
+    }
+
+    if (workers.length === 0) {
+      console.error(`no workers!?`);
+      return false;
+    }
+
+    workers.sort((a, b) => a.gameCount - b.gameCount);
+
+    const startGameMessage: StartGameStreamObject = {
+      gameId: this.gameId,
+      workerId: workers[0].id,
+    };
+
+    redis.xAdd("games", "*", {
+      data: JSON.stringify(startGameMessage),
+    });
+
+    addXRead({
+      streamKey: getGameStateKey(this.gameId),
+      lastId: "0",
+      messageCallback: (redisStreamData) => {
+        const res = jsonSafeParseS(
+          gameDataSchema,
+          redisStreamData.message.data
+        );
+        console.log("parsed game state", res);
+
+        if (!res.success) {
+          return;
+        }
+
+        this.updateGameData(res.data);
+      },
+    });
+
+    return true;
+  }
+
+  addPlayer(playerId: string, socket: WebSocketType) {
+    const uuid = randomUUID();
+
+    const player = {
+      uuid,
+      playerId,
+      socket,
+      lastPing: 0,
+      latency: 0,
+      pingCounter: 0,
+    };
+
+    this.players.push(player);
+
+    const result = playerGameDataSchema.safeParse(this.gameData);
+
+    if (result.success) {
+      socket.send(
+        JSON.stringify({
+          type: "game-data",
+          payload: {
+            playerGameData: result.data,
+          },
+        } as WebSocketServerToClientMessage)
+      );
+    } else {
+      console.error(
+        "error parsing game data",
+        this.gameId,
+        JSON.stringify(result.error)
+      );
+    }
+
+    console.debug(
+      "players",
+      this.players.map((p) => p.playerId)
+    );
+
+    socket.on("message", async (buffer) => {
+      const res = jsonSafeParseS(
+        webSocketClientToServerMessageSchema,
+        buffer.toString()
+      );
+      if (!res.success) {
+        console.error("error!", JSON.stringify(res.error, null, "  "));
+        console.log("original websocket buffer", buffer.toString());
+        return;
+      }
+      const { type } = res.data;
+
+      switch (type) {
+        case "pong":
+          player.latency = Date.now() - player.lastPing;
+          break;
+        default:
+          const redis = getClient();
+          console.info("success", res.data);
+          if (!this.gameId) {
+            console.error(
+              "got weboskcet message but no game id",
+              buffer.toString()
+            );
+            break;
+          }
+          redis.xAdd(getGameActionKey(this.gameId), "*", {
+            data: JSON.stringify(res.data),
+          });
+      }
+    });
+
+    socket.on("close", () => {
+      for (let n = 0; n < this.players.length; n++) {
+        if (this.players[n].uuid === uuid) {
+          this.players.splice(n, 1);
+          break;
+        }
+      }
+
+      console.debug(
+        "players",
+        this.players.map((p) => p.playerId)
+      );
+
+      if (this.players.length === 0) {
+        this.gameId = null;
+        this.gameData = null;
+      }
+    });
+  }
+
+  updateGameData(newGameData: GameData) {
+    try {
+      this.gameData = newGameData;
+
+      for (let n = 0; n < this.players.length; n++) {
+        const player = this.players[n];
+        const playerGameData: PlayerGameData =
+          playerGameDataSchema.parse(newGameData);
+
+        player.pingCounter += 1;
+
+        if (player.pingCounter % 20 === 0) {
+          player.pingCounter = 0;
+          player.lastPing = Date.now();
+          player.socket.send(
+            JSON.stringify({
+              type: "ping",
+              payload: {
+                latency: player.latency,
+              },
+            } as WebSocketServerToClientMessage)
+          );
+        }
+
+        player.socket.send(
+          JSON.stringify({
+            type: "game-data",
+            payload: {
+              playerGameData,
+              latency: player.latency,
+            },
+          } as WebSocketServerToClientMessage)
+        );
+      }
+    } catch (e) {
+      console.error(
+        "error when updating game data",
+        newGameData,
+        this.gameData?.gameDetails.id
+      );
+    }
+  }
+}

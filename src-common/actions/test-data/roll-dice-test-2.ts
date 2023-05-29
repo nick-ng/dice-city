@@ -20,6 +20,7 @@ const gameSettings = {
   landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
   timeLimitSeconds: 999,
   timeLimitType: "off" as const,
+  startingMoney: 3,
 };
 
 const startingState: GameData["gameState"] = {
@@ -187,6 +188,7 @@ export const rollDiceTests2: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "roll-dice",
       payload: {
         diceCount: 1,
@@ -200,6 +202,7 @@ export const rollDiceTests2: TestScenario[] = [
     startingData,
     action: {
       playerId: "a",
+      playerPassword: "abc",
       type: "roll-dice",
       payload: {
         diceCount: 2,
@@ -212,6 +215,7 @@ export const rollDiceTests2: TestScenario[] = [
     startingData,
     action: {
       playerId: "b",
+      playerPassword: "bcd",
       type: "roll-dice",
       payload: {
         diceCount: 2,

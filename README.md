@@ -7,11 +7,13 @@ Forked from [this commit](https://github.com/nick-ng/robot-race/tree/4e2171de5a3
 ## Development
 
 1. `npm install`
-2. `npm start` - This starts 4 docker containers
+2. `npm start` - This starts 4 docker containers and Vite
    - `dice-city-server`: handles http requests
    - `dice-city-worker`: handles game logic
    - `dice-city-front-end`: rebuilds front-end during development
    - `redis`: a Redis instance
+3. In second window run `./dev.sh`
+4. (Optional) In a third window run `npm run dev-logs` or click on the container in Docker Desktop
 
 ## Forking (on different GitHub account)
 
@@ -40,4 +42,6 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 ## ToDos
 
-Check this [GitHub Project](https://github.com/users/nick-ng/projects/1) for details.
+### Specific ToDos
+
+- src-back/worker.ts:86:    // @todo: remove this listener when the game is finished or some time has passed

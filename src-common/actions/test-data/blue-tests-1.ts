@@ -20,6 +20,7 @@ const gameSettings = {
   landmarks: ["radioTower", "amusementPark", "shoppingMall", "trainStation"],
   timeLimitSeconds: 999,
   timeLimitType: "off" as const,
+  startingMoney: 3,
 };
 
 const publicPlayersState: GameData["gameState"]["publicState"]["players"] = {
