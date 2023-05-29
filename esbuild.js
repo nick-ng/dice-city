@@ -27,4 +27,4 @@ await Promise.all([
   ),
 ]);
 
-console.log("Also run npm start and npm run dev-logs.\nwatching...");
+console.info("Also run npm start and npm run dev-logs.\nwatching...");

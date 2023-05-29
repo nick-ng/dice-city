@@ -6,8 +6,11 @@ import { randomUUID } from "node:crypto";
 import express from "express";
 
 import { startGameStreamObjectSchema } from "~common/types/schemas/message.js";
+import { actionSchema } from "~common/types/schemas/actions.js";
 import { performAction } from "~common/actions/index.js";
 import { jsonSafeParseS } from "~common/utils/index.js";
+
+import type { GameData } from "~common/types/index.js";
 
 import {
   addXRead,
@@ -29,11 +32,12 @@ const sleep = (ms: number) =>
     }, ms);
   });
 
-const games: string[] = [];
+const games: { [gameId: string]: GameData } = {};
 
 const gameListenerUUID = addXRead({
   streamKey: "games",
   messageCallback: async ({ message }) => {
+    console.log("games stream", message);
     const res = jsonSafeParseS(startGameStreamObjectSchema, message.data);
 
     if (!res.success) {
@@ -67,15 +71,47 @@ const gameListenerUUID = addXRead({
       return;
     }
 
-    let gameData = gameRes.data;
+    const { lastActionId } = gameRes.data;
+    const actionKey = getGameActionKey(gameId);
 
-    const { lastActionId } = gameData;
+    const allListeners = getListeners();
+
+    if (allListeners.map((a) => a.streamKey).includes(actionKey)) {
+      console.log("already listening to", actionKey);
+      return;
+    }
+
+    games[gameId] = gameRes.data;
 
     addXRead({
       streamKey: getGameActionKey(gameId),
       lastId: lastActionId,
-      messageCallback: async (data) => {
-        console.log("action-received", gameData.gameDetails.id, data);
+      messageCallback: async (redisStreamData) => {
+        console.log(
+          "action-received",
+          games[gameId].gameDetails.id,
+          redisStreamData
+        );
+        const res = jsonSafeParseS(actionSchema, redisStreamData.message.data);
+        console.log("parsed action", res);
+
+        if (!res.success) {
+          console.log("couldn'nt parse message", res.error);
+          return;
+        }
+
+        const { gameData, error } = performAction(games[gameId], res.data);
+
+        if (error) {
+          console.log("error when performing action", error);
+          return;
+        }
+
+        games[gameId] = gameData;
+
+        getClient().xAdd(getGameStateKey(gameId), "*", {
+          data: JSON.stringify(gameData),
+        });
       },
     });
   },

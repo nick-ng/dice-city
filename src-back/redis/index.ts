@@ -90,8 +90,11 @@ const listen = async () => {
 
   for (;;) {
     if (listeners.length === 0) {
+      isListening = false;
       return;
     }
+
+    isListening = true;
     // listen
     const streams: { [key: string]: { streamKey: string; lastId: string } } =
       listeners.reduce((prev, curr) => {
@@ -112,7 +115,7 @@ const listen = async () => {
           id: streams[streamKey]?.lastId || "$",
         };
       }),
-      { BLOCK: 10000, COUNT: 100 }
+      { BLOCK: 10000, COUNT: 1 }
     );
 
     if (res && res.length > 0) {
@@ -167,9 +170,9 @@ export const addXRead = ({
 
   if (isListening) {
     unblockReadClient();
+  } else {
+    listen();
   }
-
-  listen();
 
   return uuid;
 };

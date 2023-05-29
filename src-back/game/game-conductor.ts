@@ -13,7 +13,7 @@ import {
   playerGameDataSchema,
 } from "~common/types/schemas/game.js";
 import { webSocketClientToServerMessageSchema } from "~common/types/schemas/message.js";
-import { jsonSafeParse, jsonSafeParseS } from "~common/utils/index.js";
+import { jsonSafeParseS } from "~common/utils/index.js";
 
 import {
   getClient as getRedisClient,
@@ -21,6 +21,7 @@ import {
   getGameActionKey,
   getGameWorkerKey,
   getClient,
+  addXRead,
 } from "../redis/index.js";
 
 /**
@@ -96,6 +97,24 @@ export default class GameConductor {
 
     redis.xAdd("games", "*", {
       data: JSON.stringify(startGameMessage),
+    });
+
+    addXRead({
+      streamKey: getGameStateKey(this.gameId),
+      lastId: "0",
+      messageCallback: (redisStreamData) => {
+        const res = jsonSafeParseS(
+          gameDataSchema,
+          redisStreamData.message.data
+        );
+        console.log("parsed game state", res);
+
+        if (!res.success) {
+          return;
+        }
+
+        this.updateGameData(res.data);
+      },
     });
 
     return true;
@@ -191,9 +210,8 @@ export default class GameConductor {
     });
   }
 
-  updateGameData(newGameDataUnknown: GameData) {
+  updateGameData(newGameData: GameData) {
     try {
-      const newGameData = gameDataSchema.parse(newGameDataUnknown);
       this.gameData = newGameData;
 
       for (let n = 0; n < this.players.length; n++) {
@@ -229,7 +247,7 @@ export default class GameConductor {
     } catch (e) {
       console.error(
         "error when updating game data",
-        newGameDataUnknown,
+        newGameData,
         this.gameData?.gameDetails.id
       );
     }
