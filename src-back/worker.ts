@@ -83,6 +83,7 @@ const gameListenerUUID = addXRead({
 
     games[gameId] = gameRes.data;
 
+    // @todo: remove this listener when the game is finished or some time has passed
     addXRead({
       streamKey: getGameActionKey(gameId),
       lastId: lastActionId,

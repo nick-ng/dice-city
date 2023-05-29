@@ -42,4 +42,7 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 ## ToDos
 
-Check this [GitHub Project](https://github.com/users/nick-ng/projects/1) for details.
+### Specific ToDos
+
+- src-back/worker.ts:86: // @todo: remove this listener when the game is finished or some time has passed
+- src-common/actions/index.ts:35: // @todo: test
