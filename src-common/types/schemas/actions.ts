@@ -8,6 +8,12 @@ export const joinSchema = z.object({
   }),
 });
 
+export const startSchema = z.object({
+  type: z.literal("start"),
+  isServer: z.optional(z.literal(false)),
+  payload: z.optional(z.object({})),
+});
+
 export const rollSchema = z.object({
   type: z.literal("roll-dice"),
   isServer: z.optional(z.literal(false)),
@@ -32,7 +38,7 @@ export const buildEstablishmentSchema = z.object({
 });
 
 export const playerActionsSchema = z.intersection(
-  z.union([joinSchema, rollSchema, buildEstablishmentSchema]),
+  z.union([joinSchema, startSchema, rollSchema, buildEstablishmentSchema]),
   z.object({
     playerId: z.string(),
     playerPassword: z.string(),

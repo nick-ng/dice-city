@@ -44,4 +44,5 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 ### Specific ToDos
 
-- src-back/worker.ts:86:    // @todo: remove this listener when the game is finished or some time has passed
+- src-back/worker.ts:86:    // @todo(nick-ng): remove this listener when the game is finished or some time has passed
+- src-back/worker.ts:148:// @todo(nick-ng): check for "orphaned" games when starting up.

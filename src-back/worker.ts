@@ -83,7 +83,7 @@ const gameListenerUUID = addXRead({
 
     games[gameId] = gameRes.data;
 
-    // @todo: remove this listener when the game is finished or some time has passed
+    // @todo(nick-ng): remove this listener when the game is finished or some time has passed
     addXRead({
       streamKey: getGameActionKey(gameId),
       lastId: lastActionId,
@@ -145,6 +145,7 @@ const report = async () => {
 
 report();
 
+// @todo(nick-ng): check for "orphaned" games when starting up.
 const main = async () => {
   for (;;) {
     await sleep(100);
