@@ -21,6 +21,7 @@ export const createGameFromHostId = (hostId: string): GameData => {
           supply: {},
           turnEvents: [],
           turnPhase: "lobby",
+          turnOrder: [],
         },
         players: {},
       },
