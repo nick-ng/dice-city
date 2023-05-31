@@ -46,6 +46,7 @@ export const startAction = (
 
     common.turnPhase = "before-roll";
     common.turnOrder = shuffle(players.map((p) => p.id));
+    common.activePlayerId = common.turnOrder[0];
   });
 
   return {
