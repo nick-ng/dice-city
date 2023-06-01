@@ -44,6 +44,11 @@ export const startAction = (
       return;
     }
 
+    if (players.length < 2) {
+      error = "playing by yourself is a bit too lonely.";
+      return;
+    }
+
     common.turnPhase = "before-roll";
     common.turnOrder = shuffle(players.map((p) => p.id));
     common.activePlayerId = common.turnOrder[0];

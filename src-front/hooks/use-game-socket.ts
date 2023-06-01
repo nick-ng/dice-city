@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 
 import type {
   PlayerGameData,
@@ -35,7 +35,9 @@ export const useGameSocket = (
   playerGameData: PlayerGameData | null;
   connectionStatus: string;
   latency: number;
-  sendViaWebSocket(playerAction: PlayerAction): void;
+  sendViaWebSocket(
+    playerAction: Omit<PlayerAction, "playerId" | "playerPassword">
+  ): void;
 } => {
   const reOpenWebSocketRef = useRef(false);
   const webSocketRef = useRef<WebSocket | null>(null);
@@ -50,19 +52,22 @@ export const useGameSocket = (
   >("not-connected");
   const [latency, setLatency] = useState(0);
 
-  const sendViaWebSocketRef = useRef((messageObject: PlayerAction) => {
-    const fullMessageObject: WebSocketClientToServerMessage = {
-      ...messageObject,
-      playerId: playerDetails.id,
-      playerPassword: playerDetails.password,
-    };
+  const sendViaWebSocket = useCallback(
+    (messageObject: PlayerAction): void => {
+      const fullMessageObject: WebSocketClientToServerMessage = {
+        ...messageObject,
+        playerId: playerDetails.id,
+        playerPassword: playerDetails.password,
+      };
 
-    if (isNewWebSocketNeeded(webSocketRef.current)) {
-      getNewWebSocketRef.current(fullMessageObject);
-    } else {
-      safeSend(webSocketRef.current, fullMessageObject);
-    }
-  });
+      if (isNewWebSocketNeeded(webSocketRef.current)) {
+        getNewWebSocketRef.current(fullMessageObject);
+      } else {
+        safeSend(webSocketRef.current, fullMessageObject);
+      }
+    },
+    [getNewWebSocketRef.current, playerDetails.id]
+  );
 
   useEffect(() => {
     document.cookie = `dicecityplayerid=${playerDetails.id}; SameSite=Lax;`;
@@ -178,6 +183,6 @@ export const useGameSocket = (
     playerGameData,
     connectionStatus,
     latency,
-    sendViaWebSocket: sendViaWebSocketRef.current,
+    sendViaWebSocket,
   };
 };

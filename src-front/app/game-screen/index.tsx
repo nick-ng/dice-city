@@ -26,8 +26,7 @@ export default function GameScreen() {
           if (playerName && playerPassword && playerId) {
             sendViaWebSocket({
               type: "join",
-              payload: { playerName, playerPassword },
-              playerId: playerId,
+              payload: { playerName },
             });
           }
         }}
@@ -36,11 +35,23 @@ export default function GameScreen() {
       </button>
       <button
         className="button-default"
+        disabled={!playerName || !playerPassword || !playerId}
+        onClick={() => {
+          if (playerName && playerPassword && playerId) {
+            sendViaWebSocket({
+              type: "start",
+            });
+          }
+        }}
+      >
+        Start
+      </button>
+      <button
+        className="button-default"
         onClick={() => {
           sendViaWebSocket({
             type: "roll-dice",
             payload: { diceCount: 1 },
-            playerId: playerId || "",
           });
         }}
       >
