@@ -14,6 +14,8 @@ export default function GameScreen() {
     password: playerPassword || "",
   });
 
+  // @todo(nick-ng): make actual game screen
+  // @todo(nick-ng): check action on front-end and display error message or send through websocket if there is no error
   return (
     <div>
       <h2>Game Screen</h2>

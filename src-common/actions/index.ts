@@ -33,13 +33,51 @@ export const performAction = (
     }
   }
 
+  // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
+  // @todo(nick-ng): check if a player has all 4 landmarks after building
   switch (action.type) {
     case "join":
       return joinAction(gameData, action);
     case "start":
       return startAction(gameData, action);
     case "roll-dice":
-      return rollDiceAction(gameData, action);
+      let tempResult: { gameData: GameData; error?: string } = rollDiceAction(
+        gameData,
+        action
+      );
+
+      if (tempResult.error) {
+        return tempResult;
+      }
+
+      // @todo(nick-ng): red establishments go here
+
+      tempResult = greenEstablishmentsAction(tempResult.gameData, {
+        type: "green-establishments",
+        isServer: true,
+      });
+
+      if (tempResult.error) {
+        console.error(
+          "error when auto green-establishments:",
+          tempResult.error
+        );
+        return tempResult;
+      }
+
+      tempResult = blueEstablishmentsAction(tempResult.gameData, {
+        type: "blue-establishments",
+        isServer: true,
+      });
+
+      // @todo(nick-ng): purple establishments go here
+
+      if (tempResult.error) {
+        console.error("error when auto blue-establishments:", tempResult.error);
+        return tempResult;
+      }
+
+      return tempResult;
     case "build":
       return buildAction(gameData, action);
     case "green-establishments":

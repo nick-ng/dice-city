@@ -20,6 +20,7 @@ import {
   getGameActionKey,
   getGameWorkerKey,
   getGameStateKey,
+  getGameId,
 } from "./redis/index.js";
 import { gameDataSchema } from "~common/types/schemas/game.js";
 
@@ -125,15 +126,9 @@ const report = async () => {
 
     const gameIds = allListeners
       .filter((a) => a.streamKey !== "games")
-      .map((a) => a.streamKey.replace("game:", "").replace("-action", ""));
+      .map((a) => getGameId(a.streamKey));
 
-    console.log(
-      new Date().toISOString(),
-      "games",
-      allListeners
-        .filter((a) => a.streamKey !== "games")
-        .map((a) => a.streamKey.replace("game:", "").replace("-action", ""))
-    );
+    console.log(new Date().toISOString(), "games", gameIds);
 
     redis.set(`worker:${INSTANCE_ID}`, gameIds.length, {
       EX: 10,

@@ -179,7 +179,7 @@ export default class GameConductor {
           console.info("success", res.data);
           if (!this.gameId) {
             console.error(
-              "got weboskcet message but no game id",
+              "got websocket message but no game id",
               buffer.toString()
             );
             break;

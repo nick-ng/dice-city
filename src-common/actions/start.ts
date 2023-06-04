@@ -3,7 +3,9 @@ import { produce } from "immer";
 import type { Action, GameData } from "~common/types/index.js";
 
 import { shuffle } from "~common/utils/shuffle.js";
+import { getDeck } from "~common/constants/buildings.js";
 import { verifyPassword } from "./verify-password.js";
+import { getSupply } from "./supply.js";
 
 export const startAction = (
   gameData: GameData,
@@ -34,8 +36,9 @@ export const startAction = (
 
   let error = undefined;
   const newGameData = produce(gameData, (draftGameData) => {
-    const { gameState, gameDetails } = draftGameData;
-    const { common } = gameState.publicState;
+    const { gameState, gameDetails, gameSettings } = draftGameData;
+    const { publicState, secretState } = gameState;
+    const { common } = publicState;
     const { turnPhase } = common;
     const { players } = gameDetails;
 
@@ -52,6 +55,19 @@ export const startAction = (
     common.turnPhase = "before-roll";
     common.turnOrder = shuffle(players.map((p) => p.id));
     common.activePlayerId = common.turnOrder[0];
+    const deck = getDeck("base");
+    const temp = getSupply({}, deck);
+    common.supply = temp.supply;
+    secretState.common.deck = temp.deck;
+
+    for (let i = 0; i < players.length; i++) {
+      const { id } = players[i];
+      publicState.players[id].money = gameSettings.startingMoney;
+      publicState.players[id].city.establishments = {
+        wheatField: [`wheatField:${id}`],
+        ranch: [`ranch:${id}`],
+      };
+    }
   });
 
   return {

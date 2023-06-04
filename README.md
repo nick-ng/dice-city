@@ -44,5 +44,11 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 ### Specific ToDos
 
-- src-back/worker.ts:86:    // @todo(nick-ng): remove this listener when the game is finished or some time has passed
-- src-back/worker.ts:148:// @todo(nick-ng): check for "orphaned" games when starting up.
+- src-back/worker.ts:87: // @todo(nick-ng): remove this listener when the game is finished or some time has passed
+- src-back/worker.ts:143:// @todo(nick-ng): check for "orphaned" games when starting up.
+- src-common/actions/index.ts:36: // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
+- src-common/actions/index.ts:37: // @todo(nick-ng): check if a player has all 4 landmarks after building
+- src-common/actions/index.ts:53: // @todo(nick-ng): red establishments go here
+- src-common/actions/index.ts:73: // @todo(nick-ng): purple establishments go here
+- src-front/app/game-screen/index.tsx:17: // @todo(nick-ng): make actual game screen
+- src-front/app/game-screen/index.tsx:18: // @todo(nick-ng): check action on front-end and display error message or send through websocket if there is no error
