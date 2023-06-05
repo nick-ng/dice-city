@@ -57,6 +57,7 @@ export const playerSecretsSchema = z.object({
 const publicStateSchema = z.object({
   common: z.object({
     supply: establishmentListSchema,
+    turnOrder: z.array(z.string()),
     activePlayerId: z.string(),
     turnPhase: z.enum([
       "lobby",

@@ -40,6 +40,8 @@ export const webSocketServerToClientMessageSchema = z.union([
 
 export const webSocketClientToServerPingMessageSchema = z.object({
   type: z.literal("pong"),
+  playerId: z.string(),
+  playerPassword: z.string(),
 });
 
 export const webSocketClientToServerConnectMessageSchema = z.object({
@@ -47,19 +49,15 @@ export const webSocketClientToServerConnectMessageSchema = z.object({
   payload: z.object({
     gameId: z.string(),
   }),
+  playerId: z.string(),
+  playerPassword: z.string(),
 });
 
-export const webSocketClientToServerMessageSchema = z.intersection(
-  z.union([
-    webSocketClientToServerPingMessageSchema,
-    webSocketClientToServerConnectMessageSchema,
-    playerActionsSchema,
-  ]),
-  z.object({
-    playerId: z.string(),
-    playerPassword: z.string(),
-  })
-);
+export const webSocketClientToServerMessageSchema = z.union([
+  webSocketClientToServerPingMessageSchema,
+  webSocketClientToServerConnectMessageSchema,
+  playerActionsSchema,
+]);
 
 export const startGameStreamObjectSchema = z.object({
   gameId: z.string(),

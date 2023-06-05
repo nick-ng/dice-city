@@ -6,6 +6,7 @@ import {
   landmarkReference,
 } from "../constants/buildings.js";
 
+// @todo(nick-ng): build nothing action.
 export const buildAction = (
   gameData: GameData,
   action: Action

@@ -14,9 +14,13 @@ export default function GameScreen() {
     password: playerPassword || "",
   });
 
+  // @todo(nick-ng): make actual game screen
+  // @todo(nick-ng): check action on front-end and display error message or send through websocket if there is no error
   return (
     <div>
       <h2>Game Screen</h2>
+      {playerGameData?.gameState.publicState.common.activePlayerId ===
+        playerId && <h3>It's your turn.</h3>}
       {!playerName && <p>Enter your name in the top right corner.</p>}
       {(!playerPassword || !playerId) && <p>Something has gone wrong.</p>}
       <button
@@ -26,8 +30,7 @@ export default function GameScreen() {
           if (playerName && playerPassword && playerId) {
             sendViaWebSocket({
               type: "join",
-              payload: { playerName, playerPassword },
-              playerId: playerId,
+              payload: { playerName },
             });
           }
         }}
@@ -36,11 +39,23 @@ export default function GameScreen() {
       </button>
       <button
         className="button-default"
+        disabled={!playerName || !playerPassword || !playerId}
+        onClick={() => {
+          if (playerName && playerPassword && playerId) {
+            sendViaWebSocket({
+              type: "start",
+            });
+          }
+        }}
+      >
+        Start
+      </button>
+      <button
+        className="button-default"
         onClick={() => {
           sendViaWebSocket({
             type: "roll-dice",
             payload: { diceCount: 1 },
-            playerId: playerId || "",
           });
         }}
       >

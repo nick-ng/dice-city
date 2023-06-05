@@ -22,6 +22,7 @@
     "check-build": "rm -rf ./dist-* && tsc --build ./src-back/tsconfig.json && vite build",
     "prepare": "husky install",
     "remove-husky": "npm uninstall husky && git config --unset core.hooksPath",
+    "todo": "git grep -n \"@todo\" -- ':!todo.sh' ':!package.json' ':!README.md' | sed 's/^/- /m'",
     "vite": "vite"
   },
   "repository": {

@@ -25,11 +25,18 @@ let isListening = false;
 
 export const getListeners = () => listeners;
 
-export const getGameStateKey = (gameId: string) => `game:${gameId}-state`;
+export const getGameStateKey = (gameId: string) => `game:${gameId}:state`;
 
-export const getGameActionKey = (gameId: string) => `game:${gameId}-action`;
+export const getGameActionKey = (gameId: string) => `game:${gameId}:action`;
 
-export const getGameWorkerKey = (gameId: string) => `game:${gameId}-worker`;
+export const getGameWorkerKey = (gameId: string) => `game:${gameId}:worker`;
+
+export const getGameId = (redisKey: string) =>
+  redisKey
+    .replace("game:", "")
+    .replace(":state", "")
+    .replace(":action", "")
+    .replace(":worker", "");
 
 export const getClient = (name = "default"): RedisClient2 => {
   if (clients[name]) {

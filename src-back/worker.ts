@@ -20,6 +20,7 @@ import {
   getGameActionKey,
   getGameWorkerKey,
   getGameStateKey,
+  getGameId,
 } from "./redis/index.js";
 import { gameDataSchema } from "~common/types/schemas/game.js";
 
@@ -83,7 +84,7 @@ const gameListenerUUID = addXRead({
 
     games[gameId] = gameRes.data;
 
-    // @todo: remove this listener when the game is finished or some time has passed
+    // @todo(nick-ng): remove this listener when the game is finished or some time has passed
     addXRead({
       streamKey: getGameActionKey(gameId),
       lastId: lastActionId,
@@ -125,15 +126,9 @@ const report = async () => {
 
     const gameIds = allListeners
       .filter((a) => a.streamKey !== "games")
-      .map((a) => a.streamKey.replace("game:", "").replace("-action", ""));
+      .map((a) => getGameId(a.streamKey));
 
-    console.log(
-      new Date().toISOString(),
-      "games",
-      allListeners
-        .filter((a) => a.streamKey !== "games")
-        .map((a) => a.streamKey.replace("game:", "").replace("-action", ""))
-    );
+    console.log(new Date().toISOString(), "games", gameIds);
 
     redis.set(`worker:${INSTANCE_ID}`, gameIds.length, {
       EX: 10,
@@ -145,6 +140,7 @@ const report = async () => {
 
 report();
 
+// @todo(nick-ng): check for "orphaned" games when starting up.
 const main = async () => {
   for (;;) {
     await sleep(100);

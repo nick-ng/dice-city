@@ -68,6 +68,7 @@ const startingState: GameData["gameState"] = {
       diceRolls: [1, 2],
       processedEstablishments: [],
       turnEvents: ["Player A rolled a 3 (1 + 2)"],
+      turnOrder: [],
       supply: {
         familyRestaurant: [
           "familyRestaurant:5",
