@@ -1,3 +1,5 @@
+import { produce } from "immer";
+
 import type { GameData, Action } from "../types/index.js";
 
 import { joinAction } from "./join.js";
@@ -35,16 +37,16 @@ export const performAction = (
 
   // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
   // @todo(nick-ng): check if a player has all 4 landmarks after building
+
+  let tempResult: { gameData: GameData; error?: string } = { gameData };
+
   switch (action.type) {
     case "join":
       return joinAction(gameData, action);
     case "start":
       return startAction(gameData, action);
     case "roll-dice":
-      let tempResult: { gameData: GameData; error?: string } = rollDiceAction(
-        gameData,
-        action
-      );
+      tempResult = rollDiceAction(gameData, action);
 
       if (tempResult.error) {
         return tempResult;
@@ -52,6 +54,7 @@ export const performAction = (
 
       // @todo(nick-ng): red establishments go here
 
+      // @todo(nick-ng): do server actions need an action object?
       tempResult = greenEstablishmentsAction(tempResult.gameData, {
         type: "green-establishments",
         isServer: true,
@@ -70,16 +73,41 @@ export const performAction = (
         isServer: true,
       });
 
-      // @todo(nick-ng): purple establishments go here
-
       if (tempResult.error) {
         console.error("error when auto blue-establishments:", tempResult.error);
         return tempResult;
       }
 
+      // @todo(nick-ng): purple establishments go here
+
+      // @todo(nick-ng): remove once you can handle purple establishments
+      tempResult.gameData = produce(tempResult.gameData, (draftGameData) => {
+        draftGameData.gameState.publicState.common.turnPhase = "before-build";
+      });
+
       return tempResult;
     case "build":
-      return buildAction(gameData, action);
+      tempResult = buildAction(gameData, action);
+
+      if (!tempResult.error) {
+        // @todo(nick-ng): put in the build action?
+        const turnOrder =
+          tempResult.gameData.gameState.publicState.common.turnOrder;
+        const activePlayerId =
+          tempResult.gameData.gameState.publicState.common.activePlayerId;
+        const currentPlayerIndex = turnOrder.findIndex(
+          (p) => p === activePlayerId
+        );
+        const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
+
+        tempResult.gameData = produce(tempResult.gameData, (draftGameData) => {
+          draftGameData.gameState.publicState.common.activePlayerId =
+            turnOrder[nextPlayerIndex];
+          draftGameData.gameState.publicState.common.turnPhase = "before-roll";
+        });
+      }
+
+      return tempResult;
     case "green-establishments":
       return greenEstablishmentsAction(gameData, action);
     case "blue-establishments":

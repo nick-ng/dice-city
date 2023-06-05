@@ -19,6 +19,8 @@ export default function GameScreen() {
   return (
     <div>
       <h2>Game Screen</h2>
+      {playerGameData?.gameState.publicState.common.activePlayerId ===
+        playerId && <h3>It's your turn.</h3>}
       {!playerName && <p>Enter your name in the top right corner.</p>}
       {(!playerPassword || !playerId) && <p>Something has gone wrong.</p>}
       <button
