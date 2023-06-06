@@ -38,6 +38,7 @@ export const performAction = (
   // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
   // @todo(nick-ng): check if a player has all 4 landmarks after building
   // @todo(nick-ng): remove produce from all actions. front-end can use immer if necessary
+  // @todo(nick-ng): handle mutating gameData
 
   let tempResult: { gameData: GameData; error?: string } = { gameData };
 

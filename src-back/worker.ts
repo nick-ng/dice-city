@@ -102,6 +102,7 @@ const gameListenerUUID = addXRead({
           return;
         }
 
+        // @todo(nick-ng): account for mutated game state
         const { gameData, error } = performAction(games[gameId], res.data);
 
         if (error) {

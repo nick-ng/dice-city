@@ -1,8 +1,11 @@
 import type { GameData, PlayerAction } from "~common/types/index.js";
 
 import { joinAction } from "~common/actions/join.js";
+import { startAction } from "~common/actions/start.js";
 import { getName } from "~front/utils/name-generator.js";
 import { useOptions } from "~front/hooks/options-context.js";
+
+import ToolTip from "~front/app/tool-tip/index.js";
 
 interface LobbyProps {
   gameData: GameData;
@@ -17,13 +20,18 @@ export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
   const showNames = isPublic ? options.showNamesPublic : options.showNames;
 
   const joinMessage: PlayerAction = {
+    ...options,
     type: "join",
-    playerId: options.playerId,
     payload: { playerName: options.playerName },
-    playerPassword: options.playerPassword,
+  };
+
+  const startMessage: PlayerAction = {
+    ...options,
+    type: "start",
   };
 
   const joinError = joinAction(gameData, joinMessage, true).error;
+  const startError = startAction(gameData, startMessage, true).error;
 
   return (
     <div>
@@ -40,7 +48,7 @@ export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
           );
         })}
       </ul>
-      <div className="group relative inline-block">
+      <ToolTip message={joinError}>
         <button
           className="button-default w-24"
           onClick={() => {
@@ -54,15 +62,23 @@ export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
             ? "Joined ✅"
             : "Join Game"}
         </button>
-        {joinError && (
-          <div className="pointer-events-none absolute w-max border border-gray-600 bg-white p-2 px-4 opacity-0 group-hover:opacity-100 dark:border-gray-300 dark:bg-gray-800 dark:text-white">
-            {joinError}
-          </div>
+      </ToolTip>
+      {hostId === options.playerId &&
+        players.map((p) => p.id).includes(options.playerId) && (
+          <ToolTip message={startError}>
+            <button
+              className="button-default w-28"
+              onClick={() => {
+                if (!startError) {
+                  sendViaWebSocket(startMessage);
+                }
+              }}
+              disabled={!!startError}
+            >
+              Start Game
+            </button>
+          </ToolTip>
         )}
-      </div>
-      {hostId === options.playerId && (
-        <button className="button-default w-28">Start Game</button>
-      )}
     </div>
   );
 }
