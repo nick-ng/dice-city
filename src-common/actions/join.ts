@@ -1,10 +1,9 @@
-import { produce } from "immer";
-
 import type { Action, GameData } from "~common/types/index.js";
 
 export const joinAction = (
   gameData: GameData,
-  action: Action
+  action: Action,
+  skipUpdate = false
 ): { gameData: GameData; error?: string } => {
   if (action.type !== "join") {
     return {
@@ -13,46 +12,62 @@ export const joinAction = (
     };
   }
 
-  let error = undefined;
-  const newGameData = produce(gameData, (draftGameData) => {
-    const { payload, playerId, playerPassword } = action;
-    const { playerName } = payload;
+  const { payload, playerId, playerPassword } = action;
+  const { playerName } = payload;
 
-    if (!playerId || !playerName || !playerPassword) {
-      error = "missing player info";
-      return;
-    }
-
-    const { gameState, playersSecrets, gameDetails } = draftGameData;
-    const { publicState } = gameState;
-    const { common } = publicState;
-
-    if (common.turnPhase !== "lobby") {
-      error = "can only join a game that is in the lobby phase";
-      return;
-    }
-
-    if (gameDetails.players.find((p) => p.id === playerId)) {
-      error = "you are already in this game";
-      return;
-    }
-
-    gameDetails.players.push({
-      id: playerId,
-      name: playerName,
-    });
-
-    playersSecrets[playerId] = { password: playerPassword };
-
-    publicState.players[playerId] = {
-      playerId,
-      city: {
-        landmarks: {},
-        establishments: {},
-      },
-      money: 0,
+  if (!playerName) {
+    return {
+      gameData,
+      error: "You need to enter a name in the top left corner",
     };
+  }
+
+  if (!playerId || !playerPassword) {
+    return {
+      gameData,
+      error: "missing player info",
+    };
+  }
+
+  const { gameState, playersSecrets, gameDetails } = gameData;
+  const { publicState } = gameState;
+  const { common } = publicState;
+
+  if (common.turnPhase !== "lobby") {
+    return {
+      gameData,
+      error: "can only join a game that is in the lobby phase",
+    };
+  }
+
+  if (gameDetails.players.find((p) => p.id === playerId)) {
+    return {
+      gameData,
+      error: "You are already in this game",
+    };
+  }
+
+  if (skipUpdate) {
+    return {
+      gameData,
+    };
+  }
+
+  gameDetails.players.push({
+    id: playerId,
+    name: playerName,
   });
 
-  return { gameData: newGameData, error };
+  playersSecrets[playerId] = { password: playerPassword };
+
+  publicState.players[playerId] = {
+    playerId,
+    city: {
+      landmarks: {},
+      establishments: {},
+    },
+    money: 0,
+  };
+
+  return { gameData };
 };

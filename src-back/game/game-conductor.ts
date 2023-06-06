@@ -3,17 +3,14 @@ import { WebSocket as WebSocketType } from "ws";
 
 import type {
   GameData,
-  PlayerGameData,
   WebSocketServerToClientMessage,
   StartGameStreamObject,
 } from "~common/types/index.js";
 
-import {
-  gameDataSchema,
-  playerGameDataSchema,
-} from "~common/types/schemas/game.js";
+import { gameDataSchema } from "~common/types/schemas/game.js";
 import { webSocketClientToServerMessageSchema } from "~common/types/schemas/message.js";
 import { jsonSafeParseS } from "~common/utils/index.js";
+import { getPlayerGameData } from "~common/other-stuff/game-stuff.js";
 
 import {
   getClient as getRedisClient,
@@ -132,26 +129,20 @@ export default class GameConductor {
       pingCounter: 0,
     };
 
-    this.players.push(player);
-
-    const result = playerGameDataSchema.safeParse(this.gameData);
-
-    if (result.success) {
-      socket.send(
-        JSON.stringify({
-          type: "game-data",
-          payload: {
-            playerGameData: result.data,
-          },
-        } as WebSocketServerToClientMessage)
-      );
-    } else {
-      console.error(
-        "error parsing game data",
-        this.gameId,
-        JSON.stringify(result.error)
-      );
+    if (!this.gameData) {
+      console.error("no game data", this.gameId);
+      return;
     }
+
+    this.players.push(player);
+    socket.send(
+      JSON.stringify({
+        type: "game-data",
+        payload: {
+          playerGameData: getPlayerGameData(this.gameData),
+        },
+      } as WebSocketServerToClientMessage)
+    );
 
     console.debug(
       "players",
@@ -216,8 +207,6 @@ export default class GameConductor {
 
       for (let n = 0; n < this.players.length; n++) {
         const player = this.players[n];
-        const playerGameData: PlayerGameData =
-          playerGameDataSchema.parse(newGameData);
 
         player.pingCounter += 1;
 
@@ -238,7 +227,7 @@ export default class GameConductor {
           JSON.stringify({
             type: "game-data",
             payload: {
-              playerGameData,
+              playerGameData: getPlayerGameData(newGameData),
               latency: player.latency,
             },
           } as WebSocketServerToClientMessage)

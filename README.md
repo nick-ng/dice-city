@@ -48,10 +48,11 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/build.ts:9:// @todo(nick-ng): build nothing action.
 - src-common/actions/index.ts:38: // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
 - src-common/actions/index.ts:39: // @todo(nick-ng): check if a player has all 4 landmarks after building
-- src-common/actions/index.ts:55: // @todo(nick-ng): red establishments go here
-- src-common/actions/index.ts:57: // @todo(nick-ng): do server actions need an action object?
-- src-common/actions/index.ts:81: // @todo(nick-ng): purple establishments go here
-- src-common/actions/index.ts:83: // @todo(nick-ng): remove once you can handle purple establishments
-- src-common/actions/index.ts:93: // @todo(nick-ng): put in the build action?
-- src-front/app/game-screen/index.tsx:17: // @todo(nick-ng): make actual game screen
-- src-front/app/game-screen/index.tsx:18: // @todo(nick-ng): check action on front-end and display error message or send through websocket if there is no error
+- src-common/actions/index.ts:40: // @todo(nick-ng): remove produce from all actions. front-end can use immer if necessary
+- src-common/actions/index.ts:56: // @todo(nick-ng): red establishments go here
+- src-common/actions/index.ts:58: // @todo(nick-ng): do server actions need an action object?
+- src-common/actions/index.ts:82: // @todo(nick-ng): purple establishments go here
+- src-common/actions/index.ts:84: // @todo(nick-ng): remove once you can handle purple establishments
+- src-common/actions/index.ts:94: // @todo(nick-ng): put in the build action?
+- src-front/app/game-screen/index.tsx:35: // @todo(nick-ng): make actual game screen
+- src-front/app/game-screen/index.tsx:36: // @todo(nick-ng): check action on front-end and display error message or send through websocket if there is no error

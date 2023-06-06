@@ -1,7 +1,7 @@
 import z from "zod";
 
 import { playerActionsSchema } from "./actions.js";
-import { playerGameDataSchema } from "./game.js";
+import { gameDataSchema } from "./game.js";
 
 export const newGameRequestSchema = z.object({
   playerId: z.string(),
@@ -18,7 +18,7 @@ export const webSocketServerToClientNotFoundMessageSchema = z.object({
 export const webSocketServerToClientGameDataMessageSchema = z.object({
   type: z.literal("game-data"),
   payload: z.object({
-    playerGameData: playerGameDataSchema,
+    playerGameData: gameDataSchema,
     latency: z.optional(z.number()),
   }),
 });

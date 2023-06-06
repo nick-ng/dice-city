@@ -35,3 +35,20 @@ export const createGameFromHostId = (hostId: string): GameData => {
     playersSecrets: {},
   };
 };
+
+export const getPlayerGameData = (gameData: GameData): GameData => {
+  return {
+    gameDetails: gameData.gameDetails,
+    gameSettings: gameData.gameSettings,
+    gameState: {
+      publicState: gameData.gameState.publicState,
+      secretState: {
+        common: {
+          deck: [],
+        },
+      },
+    },
+    lastActionId: "",
+    playersSecrets: {},
+  };
+};

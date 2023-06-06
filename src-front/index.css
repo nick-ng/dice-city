@@ -18,7 +18,7 @@
   }
 
   summary {
-    @apply w-min cursor-pointer select-none underline;
+    @apply cursor-pointer select-none underline;
   }
 
   h1 {

@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from "react";
 
 import type {
-  PlayerGameData,
+  GameData,
   PlayerAction,
   WebSocketClientToServerMessage,
 } from "~common/types/index.js";
@@ -32,21 +32,17 @@ export const useGameSocket = (
     password: string;
   }
 ): {
-  playerGameData: PlayerGameData | null;
+  playerGameData: GameData | null;
   connectionStatus: string;
   latency: number;
-  sendViaWebSocket(
-    playerAction: Omit<PlayerAction, "playerId" | "playerPassword">
-  ): void;
+  sendViaWebSocket(playerAction: PlayerAction): void;
 } => {
   const reOpenWebSocketRef = useRef(false);
   const webSocketRef = useRef<WebSocket | null>(null);
   const getNewWebSocketRef = useRef(
     (_messageObject?: WebSocketClientToServerMessage) => {}
   );
-  const [playerGameData, setPlayerGameData] = useState<PlayerGameData | null>(
-    null
-  );
+  const [playerGameData, setPlayerGameData] = useState<GameData | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<
     "not-connected" | "connected" | "not-found"
   >("not-connected");
@@ -54,16 +50,10 @@ export const useGameSocket = (
 
   const sendViaWebSocket = useCallback(
     (messageObject: PlayerAction): void => {
-      const fullMessageObject: WebSocketClientToServerMessage = {
-        ...messageObject,
-        playerId: playerDetails.id,
-        playerPassword: playerDetails.password,
-      };
-
       if (isNewWebSocketNeeded(webSocketRef.current)) {
-        getNewWebSocketRef.current(fullMessageObject);
+        getNewWebSocketRef.current(messageObject);
       } else {
-        safeSend(webSocketRef.current, fullMessageObject);
+        safeSend(webSocketRef.current, messageObject);
       }
     },
     [getNewWebSocketRef.current, playerDetails.id]
