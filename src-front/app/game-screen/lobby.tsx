@@ -41,9 +41,11 @@ export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
         {players.map((player) => {
           return (
             <li key={player.id}>
-              {showNames || player.id === options.playerId
-                ? player.name || getName(player.id)
-                : getName(player.id)}
+              {getName(
+                player.id,
+                player.name,
+                showNames || player.id === options.playerId
+              )}
             </li>
           );
         })}

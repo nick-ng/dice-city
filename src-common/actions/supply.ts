@@ -1,5 +1,3 @@
-import { produce } from "immer";
-
 import type { Deck, Supply } from "~common/types/index.js";
 
 const addCardToSupply = (supply: Supply, cardId: string): void => {
@@ -16,15 +14,18 @@ export const totalSupply = (
   currentSupply: Supply,
   remainingDeck: Deck
 ): { supply: Supply; deck: Deck } => {
-  return produce({ supply: currentSupply, deck: remainingDeck }, (s) => {
-    while (s.deck.length > 0) {
-      const cardId = s.deck.shift();
-      if (!cardId) {
-        return;
-      }
-      addCardToSupply(s.supply, cardId);
+  while (remainingDeck.length > 0) {
+    const cardId = remainingDeck.shift();
+    if (!cardId) {
+      break;
     }
-  });
+    addCardToSupply(currentSupply, cardId);
+  }
+
+  return {
+    supply: currentSupply,
+    deck: remainingDeck,
+  };
 };
 
 export const getSupply = (

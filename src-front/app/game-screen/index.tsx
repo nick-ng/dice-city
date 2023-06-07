@@ -6,12 +6,13 @@ import { useGameSocket } from "~front/hooks/use-game-socket.js";
 import Loading from "~front/app/loading/index.js";
 
 import Lobby from "./lobby.js";
+import Game from "./game.js";
 
 export default function GameScreen() {
   const params = useParams() as { id: string };
   const { options } = useOptions();
 
-  const { playerId, playerPassword, playerName } = options;
+  const { playerId, playerPassword } = options;
 
   const { playerGameData, sendViaWebSocket } = useGameSocket(params.id, {
     id: playerId,
@@ -30,62 +31,15 @@ export default function GameScreen() {
   const { gameState } = playerGameData;
   const { publicState } = gameState;
   const { common } = publicState;
-  const { activePlayerId, turnPhase } = common;
+  const { turnPhase } = common;
 
-  // @todo(nick-ng): make actual game screen
-  // @todo(nick-ng): check action on front-end and display error message or send through websocket if there is no error
   return (
     <div>
       {turnPhase === "lobby" && (
         <Lobby gameData={playerGameData} sendViaWebSocket={sendViaWebSocket} />
       )}
       {turnPhase !== "lobby" && (
-        <>
-          <h2>Game Screen</h2>
-          {activePlayerId === playerId && <h3>It's your turn.</h3>}
-          {!playerName && <p>Enter your name in the top right corner.</p>}
-          {(!playerPassword || !playerId) && <p>Something has gone wrong.</p>}
-          <button
-            className="button-default"
-            disabled={!playerName || !playerPassword || !playerId}
-            onClick={() => {
-              if (playerName && playerPassword && playerId) {
-                sendViaWebSocket({
-                  ...options,
-                  type: "join",
-                  payload: { playerName },
-                });
-              }
-            }}
-          >
-            Join Game
-          </button>
-          <button
-            className="button-default"
-            disabled={!playerName || !playerPassword || !playerId}
-            onClick={() => {
-              if (playerName && playerPassword && playerId) {
-                sendViaWebSocket({
-                  ...options,
-                  type: "start",
-                });
-              }
-            }}
-          >
-            Start
-          </button>
-          <button
-            className="button-default"
-            onClick={() => {
-              sendViaWebSocket({
-                type: "roll-dice",
-                payload: { diceCount: 1 },
-              });
-            }}
-          >
-            Roll Dice
-          </button>
-        </>
+        <Game gameData={playerGameData} sendViaWebSocket={sendViaWebSocket} />
       )}
       <details>
         <summary>Dev Stuff</summary>

@@ -74,6 +74,10 @@ export const startAction = (
       wheatField: [`wheatField:${id}`],
       ranch: [`ranch:${id}`],
     };
+    for (let j = 0; j < gameSettings.landmarks.length; j++) {
+      const landmark = gameSettings.landmarks[j];
+      publicState.players[id].city.landmarks[landmark] = false;
+    }
   }
 
   return {

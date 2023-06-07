@@ -3,13 +3,19 @@ import seedrandom from "seedrandom";
 import { allNouns } from "./nouns.js";
 import { allAdjectives } from "./adjectives.js";
 
-export const getName = (seed: string, adjectiveCount = 2) => {
+const adjectiveCount = 2;
+
+export const getName = (seed: string, name = "", showName = false) => {
+  if (name && showName) {
+    return name;
+  }
+
   const rng = seedrandom(seed);
 
   const nounIndex = Math.floor(allNouns.length * rng());
   const noun = allNouns[nounIndex];
 
-  const adjectives: typeof allAdjectives[number][] = [];
+  const adjectives: (typeof allAdjectives)[number][] = [];
 
   for (let n = 0; n < adjectiveCount; n++) {
     const remainingAdjectives = allAdjectives.filter((adjective) => {

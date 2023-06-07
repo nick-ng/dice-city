@@ -7,7 +7,12 @@ export const createGameFromHostId = (hostId: string): GameData => {
   return {
     gameDetails: { hostId, id: gameId, players: [], isPublic: false },
     gameSettings: {
-      landmarks: [],
+      landmarks: [
+        "radioTower",
+        "amusementPark",
+        "shoppingMall",
+        "trainStation",
+      ],
       timeLimitSeconds: 999,
       timeLimitType: "off",
       startingMoney: 3,

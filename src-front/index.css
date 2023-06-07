@@ -29,6 +29,10 @@
     @apply text-xl;
   }
 
+  h3 {
+    @apply text-lg;
+  }
+
   button:disabled {
     @apply cursor-not-allowed opacity-70;
   }

@@ -43,18 +43,16 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 ### ToDo Comments
 
-- src-back/worker.ts:87: // @todo(nick-ng): remove this listener when the game is finished or some time has passed
-- src-back/worker.ts:105: // @todo(nick-ng): account for mutated game state
-- src-back/worker.ts:144:// @todo(nick-ng): check for "orphaned" games when starting up.
-- src-common/actions/build.ts:9:// @todo(nick-ng): build nothing action.
-- src-common/actions/index.ts:38: // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
-- src-common/actions/index.ts:39: // @todo(nick-ng): check if a player has all 4 landmarks after building
-- src-common/actions/index.ts:40: // @todo(nick-ng): remove produce from all actions. front-end can use immer if necessary
-- src-common/actions/index.ts:41: // @todo(nick-ng): handle mutating gameData
-- src-common/actions/index.ts:57: // @todo(nick-ng): red establishments go here
-- src-common/actions/index.ts:59: // @todo(nick-ng): do server actions need an action object?
-- src-common/actions/index.ts:83: // @todo(nick-ng): purple establishments go here
-- src-common/actions/index.ts:85: // @todo(nick-ng): remove once you can handle purple establishments
+- src-back/worker.ts:84: // @todo(nick-ng): remove this listener when the game is finished or some time has passed
+- src-back/worker.ts:96: // @todo(nick-ng): account for mutated game state
+- src-back/worker.ts:135:// @todo(nick-ng): check for "orphaned" games when starting up.
+- src-common/actions/index.ts:36: // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
+- src-common/actions/index.ts:37: // @todo(nick-ng): check if a player has all 4 landmarks after building
+- src-common/actions/index.ts:38: // @todo(nick-ng): handle mutating gameData
+- src-common/actions/index.ts:54: // @todo(nick-ng): red establishments go here
+- src-common/actions/index.ts:56: // @todo(nick-ng): do server actions need an action object?
+- src-common/actions/index.ts:80: // @todo(nick-ng): purple establishments go here
+- src-common/actions/index.ts:82: // @todo(nick-ng): remove once you can handle purple establishments
 - src-common/actions/index.ts:95: // @todo(nick-ng): put in the build action?
-- src-front/app/game-screen/index.tsx:35: // @todo(nick-ng): make actual game screen
-- src-front/app/game-screen/index.tsx:36: // @todo(nick-ng): check action on front-end and display error message or send through websocket if there is no error
+- src-front/app/game-screen/game.tsx:41: // @todo(nick-ng): show opponents cities below and clicking on the opponent in the players list takes you to their city
+- src-front/app/game-screen/game.tsx:42: // @todo(nick-ng): players list shows money (and landmark count?)

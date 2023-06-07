@@ -104,7 +104,6 @@ export default class GameConductor {
           gameDataSchema,
           redisStreamData.message.data
         );
-        console.log("parsed game state", res);
 
         if (!res.success) {
           return;
@@ -156,7 +155,7 @@ export default class GameConductor {
       );
       if (!res.success) {
         console.error("error!", JSON.stringify(res.error, null, "  "));
-        console.log("original websocket buffer", buffer.toString());
+        console.error("original websocket buffer", buffer.toString());
         return;
       }
       const { type } = res.data;

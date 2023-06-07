@@ -3,13 +3,17 @@ import { useEffect, useState } from "react";
 import type {
   Supply as SupplyType,
   City as CityType,
+  GameData,
 } from "~common/types/index.js";
+import type { Options } from "~front/hooks/options-context.js";
 
 import {
   idToBuilding,
-  establishmentReference,
   landmarkReference,
 } from "~common/constants/buildings.js";
+import { buildAction } from "~common/actions/build.js";
+
+import ToolTip from "~front/app/tool-tip/index.js";
 import BuildingContainer from "../building/building-container.js";
 import Building from "../building/index.js";
 import EstablishmentList from "../establishment-list/index.js";
@@ -17,15 +21,17 @@ import EstablishmentList from "../establishment-list/index.js";
 export interface BuildProps {
   supply: SupplyType;
   city: CityType;
-  onBuildEstablishment: (establishmentKey: string) => void | Promise<void>;
-  onBuildLandmark: (landmarkKey: string) => void | Promise<void>;
+  onBuild: (buildingKey: string) => void | Promise<void>;
+  gameData?: GameData;
+  options?: Options;
 }
 
 export default function Build({
   supply,
   city,
-  onBuildEstablishment,
-  onBuildLandmark,
+  onBuild,
+  gameData,
+  options,
 }: BuildProps) {
   const [chosenBuildingString, setChosenBuildingString] = useState("");
 
@@ -41,37 +47,64 @@ export default function Build({
     city,
   ]);
 
+  let buildError = "";
+
+  if (!chosenBuilding) {
+    buildError = "Choose a building first.";
+  } else if (gameData && options) {
+    buildError =
+      buildAction(
+        gameData,
+        {
+          ...options,
+          type: "build",
+          payload: {
+            buildingKey: chosenBuilding?.key,
+          },
+        },
+        true
+      ).error || "";
+  }
+
   return (
     <div className="flex flex-row items-start justify-start">
-      <div className="sticky top-0 inline-block">
+      <div className="sticky top-0 z-10 inline-block w-min">
         <p className="text-center text-sm md:text-base">Chosen Building</p>
+        <ToolTip message={buildError}>
+          <button
+            className="button-default w-min p-0.5 pb-1"
+            disabled={!chosenBuilding || !!buildError}
+            onClick={() => {
+              if (!chosenBuilding || !!buildError) {
+                return;
+              }
+
+              onBuild(chosenBuildingString);
+            }}
+          >
+            {chosenBuilding ? (
+              <Building building={chosenBuilding} />
+            ) : (
+              <BuildingContainer className="flex flex-row justify-center align-middle text-3xl">
+                ❔
+              </BuildingContainer>
+            )}
+
+            <span className="px-0.5">
+              {chosenBuilding
+                ? `Build ${chosenBuilding.display}`
+                : "Choose a Building"}
+            </span>
+          </button>
+        </ToolTip>
         <button
-          className="button-default w-min p-0.5 pb-1"
-          disabled={!chosenBuilding}
+          className="button-default mt-2 w-full p-0.5 py-1"
           onClick={() => {
-            if (
-              Object.keys(establishmentReference).includes(chosenBuildingString)
-            ) {
-              onBuildEstablishment(chosenBuildingString);
-            } else {
-              onBuildLandmark(chosenBuildingString);
-            }
+            onBuild("");
           }}
         >
-          {chosenBuilding ? (
-            <Building building={chosenBuilding} />
-          ) : (
-            <BuildingContainer className="flex flex-row justify-center align-middle text-3xl">
-              ❔
-            </BuildingContainer>
-          )}
-
-          <span className="px-0.5">
-            {chosenBuilding
-              ? `Build ${chosenBuilding.display}`
-              : "Choose a Building"}
-          </span>
-        </button>
+          Skip Building
+        </button>{" "}
       </div>
       <div>
         <p className="text-sm md:text-base">Available Buildings</p>

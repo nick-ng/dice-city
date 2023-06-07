@@ -77,11 +77,8 @@ export default function DevBuildInterface() {
         key={elementKey}
         supply={supply}
         city={city}
-        onBuildEstablishment={(e) => {
-          console.info("onBuildEstablishment", e);
-        }}
-        onBuildLandmark={(e) => {
-          console.info("onBuildLandmark", e);
+        onBuild={(e) => {
+          console.info("onBuild", e);
         }}
       />
     </div>

@@ -1,5 +1,3 @@
-import { produce } from "immer";
-
 import type { GameData, Action } from "../types/index.js";
 
 import { joinAction } from "./join.js";
@@ -37,7 +35,6 @@ export const performAction = (
 
   // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
   // @todo(nick-ng): check if a player has all 4 landmarks after building
-  // @todo(nick-ng): remove produce from all actions. front-end can use immer if necessary
   // @todo(nick-ng): handle mutating gameData
 
   let tempResult: { gameData: GameData; error?: string } = { gameData };
@@ -83,9 +80,12 @@ export const performAction = (
       // @todo(nick-ng): purple establishments go here
 
       // @todo(nick-ng): remove once you can handle purple establishments
-      tempResult.gameData = produce(tempResult.gameData, (draftGameData) => {
-        draftGameData.gameState.publicState.common.turnPhase = "before-build";
-      });
+      tempResult.gameData.gameState.publicState.common.turnPhase =
+        "before-build";
+
+      if (tempResult.error) {
+        return tempResult;
+      }
 
       return tempResult;
     case "build":
@@ -102,11 +102,13 @@ export const performAction = (
         );
         const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
 
-        tempResult.gameData = produce(tempResult.gameData, (draftGameData) => {
-          draftGameData.gameState.publicState.common.activePlayerId =
-            turnOrder[nextPlayerIndex];
-          draftGameData.gameState.publicState.common.turnPhase = "before-roll";
-        });
+        tempResult.gameData.gameState.publicState.common.activePlayerId =
+          turnOrder[nextPlayerIndex];
+        tempResult.gameData.gameState.publicState.common.turnPhase =
+          "before-roll";
+        tempResult.gameData.gameState.publicState.common.turnEvents = [
+          `It is %${turnOrder[nextPlayerIndex]}%'s turn`,
+        ];
       }
 
       return tempResult;
