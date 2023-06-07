@@ -55,9 +55,7 @@ export default function StateDisplay({ gameData }: StateDisplayProps) {
         </ol>
       </div>
       <details>
-        <summary className="w-max">
-          Supply: {establishmentsInSupplyCount}
-        </summary>
+        <summary>Supply: {establishmentsInSupplyCount}</summary>
         <EstablishmentList establishments={supply} />
       </details>
       {Object.values(playersState).map((playerState, i) => {
@@ -74,7 +72,7 @@ export default function StateDisplay({ gameData }: StateDisplayProps) {
         );
         return (
           <details className={playerColors[i]} key={playerState.playerId}>
-            <summary className="w-max">
+            <summary>
               {playerDetails?.name || `Player ${playerState.playerId}`}, Money:{" "}
               {playerState.money}, Landmark Count: {landmarkCount},
               Establishment Count: {establishmentCount}

@@ -10,7 +10,6 @@ import {
   deckSchema,
   gameStateSchema,
   gameDataSchema,
-  playerGameDataSchema,
 } from "./schemas/game.js";
 import { playerActionsSchema, actionSchema } from "./schemas/actions.js";
 import {
@@ -36,7 +35,6 @@ export type City = z.infer<typeof citySchema>;
 
 export type GameState = z.infer<typeof gameStateSchema>;
 export type GameData = z.infer<typeof gameDataSchema>;
-export type PlayerGameData = z.infer<typeof playerGameDataSchema>;
 
 export type PlayerAction = z.infer<typeof playerActionsSchema>;
 export type Action = z.infer<typeof actionSchema>;

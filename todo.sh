@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sed -i -e '/### Specific ToDos/q' README.md
+sed -i -e '/### ToDo Comments/q' README.md
 
 echo '' >> README.md
 

@@ -38,7 +38,6 @@ const games: { [gameId: string]: GameData } = {};
 const gameListenerUUID = addXRead({
   streamKey: "games",
   messageCallback: async ({ message }) => {
-    console.log("games stream", message);
     const res = jsonSafeParseS(startGameStreamObjectSchema, message.data);
 
     if (!res.success) {
@@ -52,8 +51,6 @@ const gameListenerUUID = addXRead({
       console.log("test", res.data);
       return;
     }
-
-    console.log("start game", gameId);
 
     const redis = getClient();
 
@@ -89,25 +86,22 @@ const gameListenerUUID = addXRead({
       streamKey: getGameActionKey(gameId),
       lastId: lastActionId,
       messageCallback: async (redisStreamData) => {
-        console.log(
-          "action-received",
-          games[gameId].gameDetails.id,
-          redisStreamData
-        );
         const res = jsonSafeParseS(actionSchema, redisStreamData.message.data);
-        console.log("parsed action", res);
 
         if (!res.success) {
-          console.log("couldn'nt parse message", res.error);
+          console.error("couldn't parse message", res.error);
           return;
         }
 
+        // @todo(nick-ng): account for mutated game state
         const { gameData, error } = performAction(games[gameId], res.data);
 
         if (error) {
-          console.log("error when performing action", error);
+          console.error("error when performing action", error);
           return;
         }
+
+        gameData.lastActionId = redisStreamData.id;
 
         games[gameId] = gameData;
 
@@ -127,8 +121,6 @@ const report = async () => {
     const gameIds = allListeners
       .filter((a) => a.streamKey !== "games")
       .map((a) => getGameId(a.streamKey));
-
-    console.log(new Date().toISOString(), "games", gameIds);
 
     redis.set(`worker:${INSTANCE_ID}`, gameIds.length, {
       EX: 10,

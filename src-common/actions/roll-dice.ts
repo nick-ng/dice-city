@@ -1,4 +1,3 @@
-import { produce } from "immer";
 import seedrandom from "seedrandom";
 
 import type { Action, GameData } from "~common/types/index.js";
@@ -20,72 +19,84 @@ const rollDice = (count: 1 | 2, gameData: GameData, sides = 6): number[] => {
 
 export const rollDiceAction = (
   gameData: GameData,
-  action: Action
+  action: Action,
+  skipUpdate = false
 ): { gameData: GameData; error?: string } => {
   let error = undefined;
-  const newGameData = produce(gameData, (draftGameData) => {
-    if (action.type !== "roll-dice") {
-      error = "not roll-dice";
-      return;
-    }
 
-    const { payload, playerId } = action;
-    const { diceCount } = payload;
+  if (action.type !== "roll-dice") {
+    return { gameData, error: "not roll-dice" };
+  }
 
-    if (diceCount < 1 || diceCount > 2) {
-      error = "invalid diceCount";
-      return;
-    }
+  const { payload, playerId } = action;
+  const { diceCount } = payload;
 
-    const { gameState } = draftGameData;
-    const { publicState } = gameState;
-    const { players, common } = publicState;
-    const playerState = players[playerId];
+  if (diceCount < 1 || diceCount > 2) {
+    return {
+      gameData,
+      error: "invalid diceCount",
+    };
+  }
 
-    if (!playerState) {
-      error = "invalid playerId";
-      return;
-    }
+  const { gameState } = gameData;
+  const { publicState } = gameState;
+  const { players, common } = publicState;
+  const playerState = players[playerId];
 
-    const { activePlayerId, turnPhase } = common;
+  if (!playerState) {
+    return {
+      gameData,
+      error: "invalid playerId",
+    };
+  }
 
-    if (turnPhase !== "before-roll") {
-      error = "can only roll dice in roll dice phase";
-      return;
-    }
+  const { activePlayerId, turnPhase } = common;
 
-    if (activePlayerId !== playerId) {
-      error = "can only roll dice on your turn";
-      return;
-    }
+  if (turnPhase !== "before-roll") {
+    return {
+      gameData,
+      error: "You can only roll dice in roll dice phase.",
+    };
+  }
 
-    const { city } = playerState;
-    const { landmarks } = city;
-    if (diceCount !== 1 && !landmarks.trainStation) {
-      error = "can only roll 1 dice without a train station";
-      return;
-    }
+  if (activePlayerId !== playerId) {
+    return {
+      gameData,
+      error: "You can only roll dice on your turn.",
+    };
+  }
 
-    common.turnPhase = "after-roll";
-    common.diceRolls = rollDice(diceCount, gameData, 6);
-    common.processedEstablishments = [];
+  const { city } = playerState;
+  const { landmarks } = city;
+  if (diceCount !== 1 && !landmarks.trainStation) {
+    return {
+      gameData,
+      error: "You can only roll 1 dice if you don't have a train station.",
+    };
+  }
 
-    if (diceCount === 1) {
-      common.turnEvents = [
-        `%${activePlayerId}% rolled a ${common.diceRolls[0]}`,
-      ];
-    } else {
-      const rollTotal = common.diceRolls.reduce((prev, curr) => prev + curr, 0);
-      common.turnEvents = [
-        `%${activePlayerId}% rolled a ${rollTotal} (${common.diceRolls.join(
-          " + "
-        )})`,
-      ];
-    }
-  });
+  if (skipUpdate) {
+    return { gameData };
+  }
+
+  common.turnPhase = "after-roll";
+  common.diceRolls = rollDice(diceCount, gameData, 6);
+  common.processedEstablishments = [];
+
+  if (diceCount === 1) {
+    common.turnEvents.push(
+      `%${activePlayerId}% rolled a ${common.diceRolls[0]}`
+    );
+  } else {
+    const rollTotal = common.diceRolls.reduce((prev, curr) => prev + curr, 0);
+    common.turnEvents.push(
+      `%${activePlayerId}% rolled a ${rollTotal} (${common.diceRolls.join(
+        " + "
+      )})`
+    );
+  }
 
   return {
-    gameData: newGameData,
-    error,
+    gameData,
   };
 };

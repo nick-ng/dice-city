@@ -18,7 +18,7 @@
   }
 
   summary {
-    @apply w-min cursor-pointer select-none underline;
+    @apply cursor-pointer select-none underline;
   }
 
   h1 {
@@ -27,6 +27,10 @@
 
   h2 {
     @apply text-xl;
+  }
+
+  h3 {
+    @apply text-lg;
   }
 
   button:disabled {

@@ -1,15 +1,13 @@
-import { produce } from "immer";
-
-import type { Action, GameData, City } from "~common/types/index.js";
+import type { Action, GameData } from "~common/types/index.js";
 import {
   establishmentReference,
   landmarkReference,
 } from "../constants/buildings.js";
 
-// @todo(nick-ng): build nothing action.
 export const buildAction = (
   gameData: GameData,
-  action: Action
+  action: Action,
+  skipUpdate = false
 ): { gameData: GameData; error?: string } => {
   if (action.type !== "build") {
     return {
@@ -18,107 +16,125 @@ export const buildAction = (
     };
   }
 
-  let error = undefined;
-  const newGameData = produce(gameData, (draftGameData) => {
-    const { payload, playerId } = action;
-    const { buildingKey } = payload;
-    const establishment = establishmentReference[buildingKey];
-    const landmark = landmarkReference[buildingKey];
+  const { payload, playerId } = action;
+  const { buildingKey } = payload;
 
-    if (!establishment && !landmark) {
-      error = "invalid buildingKey";
-      return;
+  const { gameState, gameSettings } = gameData;
+  const { publicState } = gameState;
+  const { players, common } = publicState;
+  const playerState = players[playerId];
+
+  if (!playerState) {
+    return {
+      gameData,
+      error: "invalid playerId",
+    };
+  }
+
+  const { supply, activePlayerId, turnPhase } = common;
+
+  if (turnPhase !== "before-build") {
+    return {
+      gameData,
+      error: "You can only build in build phase.",
+    };
+  }
+
+  if (activePlayerId !== playerId) {
+    return {
+      gameData,
+      error: "You can only build on your turn.",
+    };
+  }
+
+  if (!buildingKey) {
+    return { gameData };
+  }
+
+  const establishment = establishmentReference[buildingKey];
+  const landmark = landmarkReference[buildingKey];
+
+  if (!establishment && !landmark) {
+    return {
+      gameData,
+      error: "invalid buildingKey",
+    };
+  }
+
+  const { city } = playerState;
+  if (establishment) {
+    if (playerState.money < establishment.cost) {
+      return {
+        gameData,
+        error: `You don't have enough money to build a ${establishment.display}`,
+      };
     }
 
-    const { gameState, gameSettings } = draftGameData;
-    const { publicState } = gameState;
-    const { players, common } = publicState;
-    const playerState = players[playerId];
-    if (!playerState) {
-      error = "invalid playerId";
-      return;
+    if (establishment.tag === "major" && city.establishments[buildingKey]) {
+      return {
+        gameData,
+        error: "cannot have more than one of each %%major% building",
+      };
     }
 
-    const { supply, activePlayerId, turnPhase } = common;
-
-    if (turnPhase !== "before-build") {
-      error = "can only build in build phase";
-      return;
+    if (supply[buildingKey].length === 0) {
+      return {
+        gameData,
+        error: "no more establishments in supply",
+      };
     }
 
-    if (activePlayerId !== playerId) {
-      error = "can only build on your turn";
-      return;
+    if (skipUpdate) {
+      return { gameData };
     }
 
-    const { city } = playerState;
-    if (establishment) {
-      if (playerState.money < establishment.cost) {
-        error = "not enough money";
-        return;
-      }
+    const tempEstablishmentId = supply[buildingKey].pop();
 
-      if (establishment.tag === "major" && city.establishments[buildingKey]) {
-        error = "cannot have more than one of each %%major% building";
-        return;
-      }
-
-      const tempEstablishmentId = supply[buildingKey].pop();
-      if (!tempEstablishmentId) {
-        error = "no more establishments in supply";
-        return;
-      }
-
-      if (!city.establishments[buildingKey]) {
-        city.establishments[buildingKey] = [];
-      }
-      city.establishments[buildingKey].push(tempEstablishmentId);
-      playerState.money = playerState.money - establishment.cost;
-      common.turnPhase = "after-build";
-    } else if (landmark) {
-      if (playerState.money < landmark.cost) {
-        error = "not enough money";
-        return;
-      }
-
-      const { landmarks } = gameSettings;
-
-      if (!landmarks.includes(buildingKey)) {
-        error = "landmark not available";
-        return;
-      }
-
-      if (city.landmarks[buildingKey]) {
-        error = "landmark already built";
-        return;
-      }
-
-      city.landmarks[buildingKey] = true;
-    }
-  });
-
-  return {
-    gameData: newGameData,
-    error,
-  };
-};
-
-export const addLandmarkToCity = (
-  city: City,
-  availableLandmarks: string[],
-  landmarkKey: string
-): { city: City; error?: string } => {
-  return produce({ city, error: "" }, (draft) => {
-    if (!availableLandmarks.includes(landmarkKey)) {
-      draft.error = `${landmarkKey} is not available`;
-      return;
+    if (!tempEstablishmentId) {
+      return {
+        gameData,
+        error: "something went wrong",
+      };
     }
 
-    if (draft.city.landmarks[landmarkKey]) {
-      draft.error = `you already have a ${landmarkKey}`;
-      return;
+    if (!city.establishments[buildingKey]) {
+      city.establishments[buildingKey] = [];
     }
 
-    draft.city.landmarks[landmarkKey] = true;
-  });
+    city.establishments[buildingKey].push(tempEstablishmentId);
+    playerState.money = playerState.money - establishment.cost;
+    common.turnPhase = "after-build";
+  } else if (landmark) {
+    if (playerState.money < landmark.cost) {
+      return {
+        gameData,
+        error: "not enough money",
+      };
+    }
+
+    const { landmarks } = gameSettings;
+
+    if (!landmarks.includes(buildingKey)) {
+      return {
+        gameData,
+        error: "landmark not available",
+      };
+    }
+
+    if (city.landmarks[buildingKey]) {
+      return {
+        gameData,
+        error: "landmark already built",
+      };
+    }
+
+    if (skipUpdate) {
+      return { gameData };
+    }
+
+    city.landmarks[buildingKey] = true;
+    playerState.money = playerState.money - landmark.cost;
+  }
+
+  return { gameData };
 };

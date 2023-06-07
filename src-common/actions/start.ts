@@ -1,5 +1,3 @@
-import { produce } from "immer";
-
 import type { Action, GameData } from "~common/types/index.js";
 
 import { shuffle } from "~common/utils/shuffle.js";
@@ -9,7 +7,8 @@ import { getSupply } from "./supply.js";
 
 export const startAction = (
   gameData: GameData,
-  action: Action
+  action: Action,
+  skipUpdate = false
 ): { gameData: GameData; error?: string } => {
   if (action.type !== "start") {
     return {
@@ -20,58 +19,68 @@ export const startAction = (
 
   const { isHost, validPassword } = verifyPassword(gameData, action);
 
-  if (!validPassword) {
+  if (!skipUpdate && !validPassword) {
     return {
       gameData,
-      error: "invalid password",
+      error: "Invalid password",
     };
   }
 
   if (!isHost) {
     return {
       gameData,
-      error: "only the host can start the game",
+      error: "Only the host can start the game",
     };
   }
 
-  let error = undefined;
-  const newGameData = produce(gameData, (draftGameData) => {
-    const { gameState, gameDetails, gameSettings } = draftGameData;
-    const { publicState, secretState } = gameState;
-    const { common } = publicState;
-    const { turnPhase } = common;
-    const { players } = gameDetails;
+  const { gameState, gameDetails, gameSettings } = gameData;
+  const { publicState, secretState } = gameState;
+  const { common } = publicState;
+  const { turnPhase } = common;
+  const { players } = gameDetails;
 
-    if (turnPhase !== "lobby") {
-      error = "game has already started";
-      return;
+  if (turnPhase !== "lobby") {
+    return {
+      gameData,
+      error: "The game has already started",
+    };
+  }
+
+  if (players.length < 2) {
+    return {
+      gameData,
+      error: "Playing by yourself would be too lonely.",
+    };
+  }
+
+  if (skipUpdate) {
+    return {
+      gameData,
+    };
+  }
+
+  common.turnPhase = "before-roll";
+  common.turnOrder = shuffle(players.map((p) => p.id));
+  common.activePlayerId = common.turnOrder[0];
+  const deck = getDeck("base");
+  const temp = getSupply({}, deck);
+  common.supply = temp.supply;
+  secretState.common.deck = temp.deck;
+
+  for (let i = 0; i < players.length; i++) {
+    const { id } = players[i];
+    publicState.players[id].money = gameSettings.startingMoney;
+    publicState.players[id].city.establishments = {
+      wheatField: [`wheatField:${id}`],
+      ranch: [`ranch:${id}`],
+    };
+    for (let j = 0; j < gameSettings.landmarks.length; j++) {
+      const landmark = gameSettings.landmarks[j];
+      publicState.players[id].city.landmarks[landmark] = false;
     }
-
-    if (players.length < 2) {
-      error = "playing by yourself is a bit too lonely.";
-      return;
-    }
-
-    common.turnPhase = "before-roll";
-    common.turnOrder = shuffle(players.map((p) => p.id));
-    common.activePlayerId = common.turnOrder[0];
-    const deck = getDeck("base");
-    const temp = getSupply({}, deck);
-    common.supply = temp.supply;
-    secretState.common.deck = temp.deck;
-
-    for (let i = 0; i < players.length; i++) {
-      const { id } = players[i];
-      publicState.players[id].money = gameSettings.startingMoney;
-      publicState.players[id].city.establishments = {
-        wheatField: [`wheatField:${id}`],
-        ranch: [`ranch:${id}`],
-      };
-    }
-  });
+  }
 
   return {
-    gameData: newGameData,
-    error,
+    gameData,
   };
 };

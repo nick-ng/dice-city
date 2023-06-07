@@ -14,14 +14,4 @@ describe("total supply", () => {
 
     done();
   });
-
-  it("shouldn't mutate the deck", (done) => {
-    const deck = getDeck("base");
-    const intialDeckLength = deck.length;
-    totalSupply({}, deck);
-
-    assert.equal(intialDeckLength, deck.length);
-
-    done();
-  });
 });

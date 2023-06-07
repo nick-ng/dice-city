@@ -118,9 +118,3 @@ export const gameDataSchema = z.object({
   playersSecrets: z.record(z.string(), playerSecretsSchema),
   lastActionId: z.string(),
 });
-
-export const playerGameDataSchema = z.object({
-  gameDetails: gameDetailsSchema,
-  gameSettings: gameSettingsSchema,
-  gameState: playerGameStateSchema,
-});

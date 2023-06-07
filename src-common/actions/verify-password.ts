@@ -20,8 +20,8 @@ export const verifyPassword = (
   return {
     isHost: playerId === gameDetails.hostId,
     validPassword: !!(
-      playersSecrets[playerId].password &&
-      playersSecrets[playerId].password === playerPassword
+      playersSecrets[playerId]?.password &&
+      playersSecrets[playerId]?.password === playerPassword
     ),
   };
 };

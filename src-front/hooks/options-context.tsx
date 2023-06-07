@@ -15,14 +15,20 @@ const OPTIONS_STORE = "DICE_CITY_OPTIONS";
 export interface Options {
   ping?: number;
   preferredVoice?: string;
-  playerName?: string;
-  playerId?: string;
-  playerPassword?: string;
+  playerName: string;
+  playerId: string;
+  playerPassword: string;
   darkMode?: "light" | "dark" | "system";
+  showNames?: boolean;
+  showNamesPublic?: boolean;
 }
 
 export const defaultOptions: Options = {
+  playerName: "",
+  playerId: "",
+  playerPassword: "",
   darkMode: "system",
+  showNames: true,
 };
 
 const OptionsContext = createContext<{

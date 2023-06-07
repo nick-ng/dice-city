@@ -13,7 +13,7 @@ export default function NameChanger() {
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   const [editName, setEditName] = useState(!playerName);
-  const [tempName, setTempName] = useState(playerName || "");
+  const [tempName, setTempName] = useState(playerName);
 
   useEffect(() => {
     if (!playerName) {
@@ -54,7 +54,7 @@ export default function NameChanger() {
         </form>
       ) : (
         <>
-          <span className="mr-2">{playerName || ""}</span>
+          <span className="mr-2">{playerName}</span>
           <button
             className="rounded border border-gray-600 px-2 py-0 dark:border-gray-300"
             onClick={() => {

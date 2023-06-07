@@ -7,7 +7,12 @@ export const createGameFromHostId = (hostId: string): GameData => {
   return {
     gameDetails: { hostId, id: gameId, players: [], isPublic: false },
     gameSettings: {
-      landmarks: [],
+      landmarks: [
+        "radioTower",
+        "amusementPark",
+        "shoppingMall",
+        "trainStation",
+      ],
       timeLimitSeconds: 999,
       timeLimitType: "off",
       startingMoney: 3,
@@ -25,6 +30,23 @@ export const createGameFromHostId = (hostId: string): GameData => {
         },
         players: {},
       },
+      secretState: {
+        common: {
+          deck: [],
+        },
+      },
+    },
+    lastActionId: "",
+    playersSecrets: {},
+  };
+};
+
+export const getPlayerGameData = (gameData: GameData): GameData => {
+  return {
+    gameDetails: gameData.gameDetails,
+    gameSettings: gameData.gameSettings,
+    gameState: {
+      publicState: gameData.gameState.publicState,
       secretState: {
         common: {
           deck: [],
