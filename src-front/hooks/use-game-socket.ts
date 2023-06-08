@@ -60,8 +60,21 @@ export const useGameSocket = (
   );
 
   useEffect(() => {
-    document.cookie = `dicecityplayerid=${playerDetails.id}; SameSite=Lax;`;
-    document.cookie = `dicecityplayerpass=${playerDetails.password}; SameSite=Lax;`;
+    const currentDomainParts = location.origin.split(".").reverse();
+    const apiDomainParts = __API_ORIGIN__.split(".").reverse();
+
+    let topDomainParts = [];
+    for (let i = 0; i < currentDomainParts.length; i++) {
+      if (currentDomainParts[i] !== apiDomainParts[i]) {
+        break;
+      }
+
+      topDomainParts.push(currentDomainParts[i]);
+    }
+
+    const topDomain = topDomainParts.join(".");
+    document.cookie = `dicecityplayerid=${playerDetails.id}; Domain=${topDomain};`;
+    document.cookie = `dicecityplayerpass=${playerDetails.password}; Domain=${topDomain};`;
 
     reOpenWebSocketRef.current = true;
     getNewWebSocketRef.current = (
