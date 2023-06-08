@@ -69,10 +69,11 @@ export const useGameSocket = (
         break;
       }
 
-      topDomainParts.push(currentDomainParts[i]);
+      topDomainParts.unshift(currentDomainParts[i]);
     }
 
     const topDomain = topDomainParts.join(".");
+    console.log("topDomain", topDomain);
     document.cookie = `dicecityplayerid=${playerDetails.id}; Domain=${topDomain};`;
     document.cookie = `dicecityplayerpass=${playerDetails.password}; Domain=${topDomain};`;
 
