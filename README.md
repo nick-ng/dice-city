@@ -43,9 +43,7 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 ### ToDo Comments
 
-- src-back/worker.ts:84: // @todo(nick-ng): remove this listener when the game is finished or some time has passed
-- src-back/worker.ts:96: // @todo(nick-ng): account for mutated game state
-- src-back/worker.ts:135:// @todo(nick-ng): check for "orphaned" games when starting up.
+- src-back/worker.ts:127:// @todo(nick-ng): check for "orphaned" games when starting up.
 - src-common/actions/index.ts:36: // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
 - src-common/actions/index.ts:37: // @todo(nick-ng): check if a player has all 4 landmarks after building
 - src-common/actions/index.ts:38: // @todo(nick-ng): handle mutating gameData
@@ -53,6 +51,6 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/index.ts:56: // @todo(nick-ng): do server actions need an action object?
 - src-common/actions/index.ts:80: // @todo(nick-ng): purple establishments go here
 - src-common/actions/index.ts:82: // @todo(nick-ng): remove once you can handle purple establishments
-- src-common/actions/index.ts:95: // @todo(nick-ng): put in the build action?
+- src-common/actions/index.ts:95: // @todo(nick-ng): put these in the build action?
 - src-front/app/game-screen/game.tsx:41: // @todo(nick-ng): show opponents cities below and clicking on the opponent in the players list takes you to their city
 - src-front/app/game-screen/game.tsx:42: // @todo(nick-ng): players list shows money (and landmark count?)

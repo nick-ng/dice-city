@@ -36,7 +36,7 @@ export const createGameFromHostId = (hostId: string): GameData => {
         },
       },
     },
-    lastActionId: "",
+    lastActionId: `${Date.now()}-0`,
     playersSecrets: {},
   };
 };

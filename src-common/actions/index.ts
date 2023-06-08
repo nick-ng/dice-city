@@ -92,7 +92,7 @@ export const performAction = (
       tempResult = buildAction(gameData, action);
 
       if (!tempResult.error) {
-        // @todo(nick-ng): put in the build action?
+        // @todo(nick-ng): put these in the build action?
         const turnOrder =
           tempResult.gameData.gameState.publicState.common.turnOrder;
         const activePlayerId =
