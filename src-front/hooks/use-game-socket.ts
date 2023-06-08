@@ -73,9 +73,9 @@ export const useGameSocket = (
     }
 
     const topDomain = topDomainParts.join(".");
-    console.log("topDomain", topDomain);
-    document.cookie = `dicecityplayerid=${playerDetails.id}; Domain=${topDomain};`;
-    document.cookie = `dicecityplayerpass=${playerDetails.password}; Domain=${topDomain};`;
+
+    document.cookie = `dicecityplayerid=${playerDetails.id}; Domain=${topDomain}; SameSite=Lax;`;
+    document.cookie = `dicecityplayerpass=${playerDetails.password}; Domain=${topDomain}; SameSite=Lax;`;
 
     reOpenWebSocketRef.current = true;
     getNewWebSocketRef.current = (
