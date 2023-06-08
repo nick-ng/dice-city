@@ -1,9 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import http from "node:http";
 import { randomUUID } from "node:crypto";
-import express from "express";
 
 import { startGameStreamObjectSchema } from "~common/types/schemas/message.js";
 import { actionSchema } from "~common/types/schemas/actions.js";
@@ -13,14 +11,14 @@ import { jsonSafeParseS } from "~common/utils/index.js";
 import type { GameData } from "~common/types/index.js";
 
 import {
+  MAX_GAME_AGE_SECONDS,
+  xAddExpire,
   addXRead,
   getClient,
   getListeners,
-  getXReadClient,
   getGameActionKey,
-  getGameWorkerKey,
   getGameStateKey,
-  getGameId,
+  removeXRead,
 } from "./redis/index.js";
 import { gameDataSchema } from "~common/types/schemas/game.js";
 
@@ -33,9 +31,10 @@ const sleep = (ms: number) =>
     }, ms);
   });
 
-const games: { [gameId: string]: GameData } = {};
+const games: { [gameId: string]: { gameData: GameData; listenerId: string } } =
+  {};
 
-const gameListenerUUID = addXRead({
+addXRead({
   streamKey: "games",
   messageCallback: async ({ message }) => {
     const res = jsonSafeParseS(startGameStreamObjectSchema, message.data);
@@ -48,7 +47,7 @@ const gameListenerUUID = addXRead({
     const { gameId, workerId } = res.data;
 
     if (workerId !== `worker:${INSTANCE_ID}`) {
-      console.log("test", res.data);
+      // This game isn't for this worker to handle.
       return;
     }
 
@@ -75,14 +74,11 @@ const gameListenerUUID = addXRead({
     const allListeners = getListeners();
 
     if (allListeners.map((a) => a.streamKey).includes(actionKey)) {
-      console.log("already listening to", actionKey);
+      console.debug("already listening to", actionKey);
       return;
     }
 
-    games[gameId] = gameRes.data;
-
-    // @todo(nick-ng): remove this listener when the game is finished or some time has passed
-    addXRead({
+    const listenerId = addXRead({
       streamKey: getGameActionKey(gameId),
       lastId: lastActionId,
       messageCallback: async (redisStreamData) => {
@@ -93,49 +89,63 @@ const gameListenerUUID = addXRead({
           return;
         }
 
-        // @todo(nick-ng): account for mutated game state
-        const { gameData, error } = performAction(games[gameId], res.data);
+        const error = performAction(games[gameId].gameData, res.data).error;
+
+        games[gameId].gameData.lastActionId = redisStreamData.id;
 
         if (error) {
+          console.debug(
+            "redis stream message data",
+            redisStreamData.message.data
+          );
           console.error("error when performing action", error);
           return;
         }
 
-        gameData.lastActionId = redisStreamData.id;
-
-        games[gameId] = gameData;
-
-        getClient().xAdd(getGameStateKey(gameId), "*", {
-          data: JSON.stringify(gameData),
-        });
+        xAddExpire(
+          getGameStateKey(gameId),
+          "*",
+          {
+            data: JSON.stringify(games[gameId].gameData),
+          },
+          {
+            TRIM: {
+              strategy: "MAXLEN",
+              strategyModifier: "~",
+              threshold: 10,
+              limit: 3,
+            },
+          }
+        );
       },
     });
+
+    games[gameId] = { gameData: gameRes.data, listenerId };
   },
 });
 
-const report = async () => {
-  const redis = getClient();
-  for (;;) {
-    const allListeners = getListeners();
-
-    const gameIds = allListeners
-      .filter((a) => a.streamKey !== "games")
-      .map((a) => getGameId(a.streamKey));
-
-    redis.set(`worker:${INSTANCE_ID}`, gameIds.length, {
-      EX: 10,
-    });
-
-    await sleep(9000);
-  }
-};
-
-report();
-
 // @todo(nick-ng): check for "orphaned" games when starting up.
 const main = async () => {
+  const redis = getClient();
   for (;;) {
-    await sleep(100);
+    Object.entries(games).forEach(([gameId, value]) => {
+      const [msString, _n] = value.gameData.lastActionId.split("-");
+
+      const lastActionTimestampMs = parseInt(msString, 10);
+
+      const gameAgeSeconds = (Date.now() - lastActionTimestampMs) / 1000;
+
+      if (gameAgeSeconds > MAX_GAME_AGE_SECONDS) {
+        removeXRead(value.listenerId);
+        delete games[gameId];
+      }
+    });
+
+    redis.set(`worker:${INSTANCE_ID}`, Object.keys(games).length, {
+      EX: 15,
+    });
+
+    await sleep(9000 + 1000 * Math.random());
   }
 };
 

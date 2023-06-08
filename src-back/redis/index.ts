@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { createClient } from "redis";
 
+export const MAX_GAME_AGE_SECONDS = 1 * 60 * 60;
+
 export type RedisClient2 = ReturnType<typeof createClient> & {
   id?: string;
 };
@@ -74,6 +76,20 @@ export const getClient = (name = "default"): RedisClient2 => {
 
 export const getXReadClient = (): RedisClient2 => {
   return getClient("xRead");
+};
+
+export const xAddExpire: RedisClient2["xAdd"] = async (...args) => {
+  const redis = getClient();
+
+  const temp = redis.xAdd(...args);
+
+  const key = args[0];
+
+  if (typeof key === "string") {
+    redis.expire(key, MAX_GAME_AGE_SECONDS);
+  }
+
+  return temp;
 };
 
 const sleep = (ms: number) =>

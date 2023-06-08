@@ -16,9 +16,8 @@ import {
   getClient as getRedisClient,
   getGameStateKey,
   getGameActionKey,
-  getGameWorkerKey,
-  getClient,
   addXRead,
+  xAddExpire,
 } from "../redis/index.js";
 
 /**
@@ -92,9 +91,20 @@ export default class GameConductor {
       workerId: workers[0].id,
     };
 
-    redis.xAdd("games", "*", {
-      data: JSON.stringify(startGameMessage),
-    });
+    redis.xAdd(
+      "games",
+      "*",
+      {
+        data: JSON.stringify(startGameMessage),
+      },
+      {
+        TRIM: {
+          strategy: "MAXLEN",
+          strategyModifier: "~",
+          threshold: 100,
+        },
+      }
+    );
 
     addXRead({
       streamKey: getGameStateKey(this.gameId),
@@ -165,7 +175,6 @@ export default class GameConductor {
           player.latency = Date.now() - player.lastPing;
           break;
         default:
-          const redis = getClient();
           console.info("success", res.data);
           if (!this.gameId) {
             console.error(
@@ -174,9 +183,22 @@ export default class GameConductor {
             );
             break;
           }
-          redis.xAdd(getGameActionKey(this.gameId), "*", {
-            data: JSON.stringify(res.data),
-          });
+
+          xAddExpire(
+            getGameActionKey(this.gameId),
+            "*",
+            {
+              data: JSON.stringify(res.data),
+            },
+            {
+              TRIM: {
+                strategy: "MAXLEN",
+                strategyModifier: "~",
+                threshold: 50,
+                limit: 3,
+              },
+            }
+          );
       }
     });
 
