@@ -76,7 +76,13 @@ server.on("upgrade", (request, socket, head) => {
   const playerId = cookies?.dicecityplayerid;
 
   if (!matches?.groups?.gameId || !playerId) {
-    console.debug("Websocket request has no gameId", request.url);
+    console.debug(
+      "Not enough information to connect to websocket",
+      request.url
+    );
+    console.debug("matches", JSON.stringify(matches, null, "  "));
+    console.debug("cookies", cookies);
+
     socket.destroy();
     return;
   }
