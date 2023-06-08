@@ -4,7 +4,7 @@ git checkout main
 git pull
 git branch -D gh-pages
 rm -rf ./dist-front/
-API_ORIGIN=https://dice-city-api.pux.one npm run build-front
+API_ORIGIN=https://dice-city-server.pux.one npm run build-front
 cp -R ./static/. ./dist-front
 cp ./dist-front/index.html ./dist-front/404.html
 echo dice-city.pux.one > ./dist-front/CNAME
