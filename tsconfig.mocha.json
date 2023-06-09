@@ -1,17 +1,17 @@
 {
-  "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "types": ["mocha", "node"],
-    "baseUrl": ".",
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "paths": {
-      "~front/*": ["./src-front/*"],
-      "~common/*": ["./src-common/*"],
-      "~back": ["./src-back/*"]
-    }
-  },
-  "references": [{ "path": "./src-common" }],
-  "exclude": ["node_modules"]
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		"types": ["mocha", "node"],
+		"baseUrl": ".",
+		"composite": true,
+		"declaration": true,
+		"declarationMap": true,
+		"paths": {
+			"~front/*": ["./src-front/*"],
+			"~common/*": ["./src-common/*"],
+			"~back": ["./src-back/*"]
+		}
+	},
+	"references": [{ "path": "./src-common" }],
+	"exclude": ["node_modules"]
 }

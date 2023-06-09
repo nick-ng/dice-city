@@ -3,54 +3,54 @@
 @tailwind utilities;
 
 @layer base {
-  html,
-  body,
-  #root {
-    height: 100%;
-  }
+	html,
+	body,
+	#root {
+		height: 100%;
+	}
 
-  body {
-    @apply bg-white text-black dark:bg-gray-800 dark:text-white;
-  }
+	body {
+		@apply bg-white text-black dark:bg-gray-800 dark:text-white;
+	}
 
-  a {
-    @apply text-blue-700 underline dark:text-blue-300;
-  }
+	a {
+		@apply text-blue-700 underline dark:text-blue-300;
+	}
 
-  summary {
-    @apply cursor-pointer select-none underline;
-  }
+	summary {
+		@apply cursor-pointer select-none underline;
+	}
 
-  h1 {
-    @apply text-2xl;
-  }
+	h1 {
+		@apply text-3xl;
+	}
 
-  h2 {
-    @apply text-xl;
-  }
+	h2 {
+		@apply text-2xl;
+	}
 
-  h3 {
-    @apply text-lg;
-  }
+	h3 {
+		@apply text-xl;
+	}
 
-  button:disabled {
-    @apply cursor-not-allowed opacity-70;
-  }
+	button:disabled {
+		@apply cursor-not-allowed opacity-70;
+	}
 
-  .button-default {
-    @apply rounded border border-gray-600 px-2 py-2 dark:border-gray-300 md:py-0;
-  }
+	.button-default {
+		@apply rounded border border-gray-600 px-2 py-2 dark:border-gray-300 md:py-0;
+	}
 
-  .border-default {
-    @apply border border-gray-300 dark:border-gray-600;
-  }
+	.border-default {
+		@apply border border-gray-300 dark:border-gray-600;
+	}
 
-  .coin-float {
-    @apply float-left flex h-full items-end;
-    shape-outside: inset(calc(100% - 16px) 0 0);
-  }
+	.coin-float {
+		@apply float-left flex h-full items-end;
+		shape-outside: inset(calc(100% - 16px) 0 0);
+	}
 
-  .coin {
-    @apply flex h-4 w-4 items-center justify-center rounded border border-black bg-yellow-300 text-xs font-normal text-black md:h-5 md:w-5 md:rounded-full md:font-bold;
-  }
+	.coin {
+		@apply flex h-4 w-4 items-center justify-center rounded border border-black bg-yellow-300 text-xs font-normal text-black md:h-5 md:w-5 md:rounded-full md:font-bold;
+	}
 }

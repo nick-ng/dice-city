@@ -52,5 +52,4 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/index.ts:80: // @todo(nick-ng): purple establishments go here
 - src-common/actions/index.ts:82: // @todo(nick-ng): remove once you can handle purple establishments
 - src-common/actions/index.ts:95: // @todo(nick-ng): put these in the build action?
-- src-front/app/game-screen/game.tsx:41: // @todo(nick-ng): show opponents cities below and clicking on the opponent in the players list takes you to their city
-- src-front/app/game-screen/game.tsx:42: // @todo(nick-ng): players list shows money (and landmark count?)
+- src-front/app/game-screen/game.tsx:45: // @todo(nick-ng): players list shows money (and landmark count?)

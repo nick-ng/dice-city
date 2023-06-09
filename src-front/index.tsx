@@ -9,13 +9,13 @@ import App from "./app/index.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
-  <StrictMode>
-    <BrowserRouter>
-      <SoundsContextProvider>
-        <OptionsContextProvider>
-          <App />
-        </OptionsContextProvider>
-      </SoundsContextProvider>
-    </BrowserRouter>
-  </StrictMode>
+	<StrictMode>
+		<BrowserRouter>
+			<SoundsContextProvider>
+				<OptionsContextProvider>
+					<App />
+				</OptionsContextProvider>
+			</SoundsContextProvider>
+		</BrowserRouter>
+	</StrictMode>
 );

@@ -1,25 +1,25 @@
 {
-  "compilerOptions": {
-    "lib": ["es2021"],
-    "module": "ESNext",
-    "target": "ESNext",
+	"compilerOptions": {
+		"lib": ["es2021"],
+		"module": "ESNext",
+		"target": "ESNext",
 
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "NodeNext",
-    "allowSyntheticDefaultImports": true,
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"moduleResolution": "NodeNext",
+		"allowSyntheticDefaultImports": true,
 
-    "baseUrl": ".",
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "paths": {
-      "~front/*": ["src-front/*"],
-      "~common/*": ["src-common/*"],
-      "~back/*": ["src-back/*"]
-    }
-  },
-  "ts-node": { "esm": true }
+		"baseUrl": ".",
+		"composite": true,
+		"declaration": true,
+		"declarationMap": true,
+		"paths": {
+			"~front/*": ["src-front/*"],
+			"~common/*": ["src-common/*"],
+			"~back/*": ["src-back/*"]
+		}
+	},
+	"ts-node": { "esm": true }
 }

@@ -4,23 +4,23 @@ import { createClient } from "redis";
 export const MAX_GAME_AGE_SECONDS = 1 * 60 * 60;
 
 export type RedisClient2 = ReturnType<typeof createClient> & {
-  id?: string;
+	id?: string;
 };
 
 type messageCallbackParams = {
-  id: string;
-  message: {
-    data: string;
-  };
+	id: string;
+	message: {
+		data: string;
+	};
 };
 
 const clients: { [name: string]: RedisClient2 } = {};
 
 const listeners: {
-  uuid: string;
-  streamKey: string;
-  lastId: string;
-  messageCallback: (data: messageCallbackParams) => void | Promise<void>;
+	uuid: string;
+	streamKey: string;
+	lastId: string;
+	messageCallback: (data: messageCallbackParams) => void | Promise<void>;
 }[] = [];
 
 let isListening = false;
@@ -34,176 +34,176 @@ export const getGameActionKey = (gameId: string) => `game:${gameId}:action`;
 export const getGameWorkerKey = (gameId: string) => `game:${gameId}:worker`;
 
 export const getGameId = (redisKey: string) =>
-  redisKey
-    .replace("game:", "")
-    .replace(":state", "")
-    .replace(":action", "")
-    .replace(":worker", "");
+	redisKey
+		.replace("game:", "")
+		.replace(":state", "")
+		.replace(":action", "")
+		.replace(":worker", "");
 
 export const getClient = (name = "default"): RedisClient2 => {
-  if (clients[name]) {
-    return clients[name];
-  }
+	if (clients[name]) {
+		return clients[name];
+	}
 
-  const newClient = createClient({
-    url: process.env.REDIS_URL || "redis://redis",
-  }) as RedisClient2;
+	const newClient = createClient({
+		url: process.env.REDIS_URL || "redis://redis",
+	}) as RedisClient2;
 
-  newClient.id = undefined;
+	newClient.id = undefined;
 
-  newClient.connect();
-  const tic = Date.now();
+	newClient.connect();
+	const tic = Date.now();
 
-  newClient.on("error", (err) => {
-    console.error(`${new Date().toISOString()}: ${name} Error`, err);
-    if (err.code === "ECONNREFUSED") {
-      newClient.id = undefined;
-    }
-  });
-  newClient.on("connect", async () => {
-    newClient.id = (await newClient.clientId()).toString(10);
-    console.info(
-      `${new Date().toISOString()}: ${name} Connected. ID: ${
-        newClient.id
-      }. Took ${Date.now() - tic} ms to connect.`
-    );
-  });
+	newClient.on("error", (err) => {
+		console.error(`${new Date().toISOString()}: ${name} Error`, err);
+		if (err.code === "ECONNREFUSED") {
+			newClient.id = undefined;
+		}
+	});
+	newClient.on("connect", async () => {
+		newClient.id = (await newClient.clientId()).toString(10);
+		console.info(
+			`${new Date().toISOString()}: ${name} Connected. ID: ${
+				newClient.id
+			}. Took ${Date.now() - tic} ms to connect.`
+		);
+	});
 
-  clients[name] = newClient;
+	clients[name] = newClient;
 
-  return newClient;
+	return newClient;
 };
 
 export const getXReadClient = (): RedisClient2 => {
-  return getClient("xRead");
+	return getClient("xRead");
 };
 
 export const xAddExpire: RedisClient2["xAdd"] = async (...args) => {
-  const redis = getClient();
+	const redis = getClient();
 
-  const temp = redis.xAdd(...args);
+	const temp = redis.xAdd(...args);
 
-  const key = args[0];
+	const key = args[0];
 
-  if (typeof key === "string") {
-    redis.expire(key, MAX_GAME_AGE_SECONDS);
-  }
+	if (typeof key === "string") {
+		redis.expire(key, MAX_GAME_AGE_SECONDS);
+	}
 
-  return temp;
+	return temp;
 };
 
 const sleep = (ms: number) =>
-  new Promise<void>((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, ms);
-  });
+	new Promise<void>((resolve) => {
+		setTimeout(() => {
+			resolve();
+		}, ms);
+	});
 
 const unblockReadClient = () => {
-  const readClient = getXReadClient();
+	const readClient = getXReadClient();
 
-  if (readClient.id) {
-    const normalClient = getClient();
-    normalClient.sendCommand(["CLIENT", "UNBLOCK", readClient.id]);
-  }
+	if (readClient.id) {
+		const normalClient = getClient();
+		normalClient.sendCommand(["CLIENT", "UNBLOCK", readClient.id]);
+	}
 };
 
 const listen = async () => {
-  const readClient = getXReadClient();
+	const readClient = getXReadClient();
 
-  for (;;) {
-    if (listeners.length === 0) {
-      isListening = false;
-      return;
-    }
+	for (;;) {
+		if (listeners.length === 0) {
+			isListening = false;
+			return;
+		}
 
-    isListening = true;
-    // listen
-    const streams: { [key: string]: { streamKey: string; lastId: string } } =
-      listeners.reduce((prev, curr) => {
-        const { lastId, streamKey } = curr;
-        return {
-          ...prev,
-          [streamKey]: {
-            streamKey,
-            lastId,
-          },
-        };
-      }, {});
+		isListening = true;
+		// listen
+		const streams: { [key: string]: { streamKey: string; lastId: string } } =
+			listeners.reduce((prev, curr) => {
+				const { lastId, streamKey } = curr;
+				return {
+					...prev,
+					[streamKey]: {
+						streamKey,
+						lastId,
+					},
+				};
+			}, {});
 
-    const res = await readClient.xRead(
-      Object.keys(streams).map((streamKey) => {
-        return {
-          key: streamKey,
-          id: streams[streamKey]?.lastId || "$",
-        };
-      }),
-      { BLOCK: 10000, COUNT: 1 }
-    );
+		const res = await readClient.xRead(
+			Object.keys(streams).map((streamKey) => {
+				return {
+					key: streamKey,
+					id: streams[streamKey]?.lastId || "$",
+				};
+			}),
+			{ BLOCK: 10000, COUNT: 1 }
+		);
 
-    if (res && res.length > 0) {
-      for (let i = 0; i < res.length; i++) {
-        const { name, messages } = res[i];
+		if (res && res.length > 0) {
+			for (let i = 0; i < res.length; i++) {
+				const { name, messages } = res[i];
 
-        for (let j = 0; j < messages.length; j++) {
-          const { id, message } = messages[j];
+				for (let j = 0; j < messages.length; j++) {
+					const { id, message } = messages[j];
 
-          const data = message?.data;
+					const data = message?.data;
 
-          for (let k = 0; k < listeners.length; k++) {
-            if (listeners[k].streamKey === name) {
-              listeners[k].lastId = id;
+					for (let k = 0; k < listeners.length; k++) {
+						if (listeners[k].streamKey === name) {
+							listeners[k].lastId = id;
 
-              if (typeof data === "string") {
-                listeners[k].messageCallback({
-                  id,
-                  message: {
-                    data,
-                  },
-                });
-              }
-            }
-          }
-        }
-      }
-    }
+							if (typeof data === "string") {
+								listeners[k].messageCallback({
+									id,
+									message: {
+										data,
+									},
+								});
+							}
+						}
+					}
+				}
+			}
+		}
 
-    // wait a bit
-    await sleep(1);
-  }
+		// wait a bit
+		await sleep(1);
+	}
 };
 
 export const addXRead = ({
-  streamKey,
-  lastId,
-  messageCallback,
+	streamKey,
+	lastId,
+	messageCallback,
 }: {
-  streamKey: string;
-  lastId?: string;
-  messageCallback: (data: messageCallbackParams) => void | Promise<void>;
+	streamKey: string;
+	lastId?: string;
+	messageCallback: (data: messageCallbackParams) => void | Promise<void>;
 }): string => {
-  const uuid = randomUUID();
+	const uuid = randomUUID();
 
-  listeners.push({
-    uuid,
-    streamKey,
-    lastId: lastId || "$",
-    messageCallback,
-  });
+	listeners.push({
+		uuid,
+		streamKey,
+		lastId: lastId || "$",
+		messageCallback,
+	});
 
-  if (isListening) {
-    unblockReadClient();
-  } else {
-    listen();
-  }
+	if (isListening) {
+		unblockReadClient();
+	} else {
+		listen();
+	}
 
-  return uuid;
+	return uuid;
 };
 
 export const removeXRead = (uuid: string): void => {
-  const i = listeners.findIndex((listener) => listener.uuid === uuid);
+	const i = listeners.findIndex((listener) => listener.uuid === uuid);
 
-  listeners.splice(i, 1);
+	listeners.splice(i, 1);
 
-  listen();
+	listen();
 };

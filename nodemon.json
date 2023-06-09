@@ -1,10 +1,10 @@
 {
-  "execMap": {
-    "ts": "ts-node"
-  },
-  "verbose": true,
-  "watch": ["dist-back/", "dist-common/"],
-  "ext": "js,ts,jsx,tsx,json",
-  "delay": 200,
-  "pollingInterval": 1000
+	"execMap": {
+		"ts": "ts-node"
+	},
+	"verbose": true,
+	"watch": ["dist-back/", "dist-common/"],
+	"ext": "js,ts,jsx,tsx,json",
+	"delay": 200,
+	"pollingInterval": 1000
 }

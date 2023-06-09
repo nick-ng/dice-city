@@ -1,73 +1,80 @@
 import type { Action, GameData } from "~common/types/index.js";
 
 export const joinAction = (
-  gameData: GameData,
-  action: Action,
-  skipUpdate = false
+	gameData: GameData,
+	action: Action,
+	skipUpdate = false
 ): { gameData: GameData; error?: string } => {
-  if (action.type !== "join") {
-    return {
-      gameData,
-      error: "not join",
-    };
-  }
+	if (action.type !== "join") {
+		return {
+			gameData,
+			error: "not join",
+		};
+	}
 
-  const { payload, playerId, playerPassword } = action;
-  const { playerName } = payload;
+	const { payload, playerId, playerPassword } = action;
+	const { playerName } = payload;
 
-  if (!playerName) {
-    return {
-      gameData,
-      error: "You need to enter a name in the top left corner",
-    };
-  }
+	if (!playerName) {
+		return {
+			gameData,
+			error: "You need to enter a name in the top left corner",
+		};
+	}
 
-  if (!playerId || !playerPassword) {
-    return {
-      gameData,
-      error: "missing player info",
-    };
-  }
+	if (!playerId || !playerPassword) {
+		return {
+			gameData,
+			error: "missing player info",
+		};
+	}
 
-  const { gameState, playersSecrets, gameDetails } = gameData;
-  const { publicState } = gameState;
-  const { common } = publicState;
+	const { gameState, playersSecrets, gameDetails } = gameData;
+	const { publicState } = gameState;
+	const { common } = publicState;
 
-  if (common.turnPhase !== "lobby") {
-    return {
-      gameData,
-      error: "can only join a game that is in the lobby phase",
-    };
-  }
+	if (common.turnPhase !== "lobby") {
+		return {
+			gameData,
+			error: "can only join a game that is in the lobby phase",
+		};
+	}
 
-  if (gameDetails.players.find((p) => p.id === playerId)) {
-    return {
-      gameData,
-      error: "You are already in this game",
-    };
-  }
+	if (gameDetails.players.find((p) => p.id === playerId)) {
+		return {
+			gameData,
+			error: "You are already in this game",
+		};
+	}
 
-  if (skipUpdate) {
-    return {
-      gameData,
-    };
-  }
+	if (gameDetails.players.length === 4) {
+		return {
+			gameData,
+			error: "The game is full",
+		};
+	}
 
-  gameDetails.players.push({
-    id: playerId,
-    name: playerName,
-  });
+	if (skipUpdate) {
+		return {
+			gameData,
+		};
+	}
 
-  playersSecrets[playerId] = { password: playerPassword };
+	gameDetails.players.push({
+		id: playerId,
+		name: playerName,
+	});
 
-  publicState.players[playerId] = {
-    playerId,
-    city: {
-      landmarks: {},
-      establishments: {},
-    },
-    money: 0,
-  };
+	playersSecrets[playerId] = { password: playerPassword };
 
-  return { gameData };
+	publicState.players[playerId] = {
+		playerId,
+		city: {
+			landmarks: {},
+			establishments: {},
+		},
+		money: 0,
+	};
+
+	return { gameData };
 };
