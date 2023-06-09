@@ -47,6 +47,13 @@ export const joinAction = (
 		};
 	}
 
+	if (gameDetails.players.length === 4) {
+		return {
+			gameData,
+			error: "The game is full",
+		};
+	}
+
 	if (skipUpdate) {
 		return {
 			gameData,

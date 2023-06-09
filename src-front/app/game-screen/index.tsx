@@ -41,10 +41,6 @@ export default function GameScreen() {
 			{turnPhase !== "lobby" && (
 				<Game gameData={playerGameData} sendViaWebSocket={sendViaWebSocket} />
 			)}
-			<details>
-				<summary>Dev Stuff</summary>
-				<pre>{JSON.stringify(playerGameData, null, "  ")}</pre>
-			</details>
 		</div>
 	);
 }

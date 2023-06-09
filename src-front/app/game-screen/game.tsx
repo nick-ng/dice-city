@@ -25,6 +25,10 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 
 	const myState = playerStates[options.playerId];
 	const myTurn = activePlayerId === options.playerId;
+	const myLandmarkCount = Object.values(myState.city.landmarks).reduce(
+		(p, c) => (c ? p + 1 : p),
+		0
+	);
 
 	useEffect(() => {
 		if (myTurn && turnPhase === "before-build" && myState.money === 0) {
@@ -38,7 +42,6 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		}
 	}, [turnPhase, myTurn]);
 
-	// @todo(nick-ng): show opponents cities below and clicking on the opponent in the players list takes you to their city
 	// @todo(nick-ng): players list shows money (and landmark count?)
 	return (
 		<div className="flex flex-row">
@@ -86,7 +89,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 							)}
 						</div>
 					)}
-					<h3>Your Money: {myState.money}</h3>
+					<h2>Your Money: {myState.money}</h2>
 					<details open={myTurn && turnPhase === "before-build"}>
 						<summary className="no-underline">
 							<h2 className="inline-block underline">Supply</h2>
@@ -107,7 +110,10 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 							options={options}
 						/>
 					</details>
-					<h2 id="you-city">Your City</h2>
+					<h2 className="mt-2" id="you-city">
+						Your City, Landmark{myLandmarkCount !== 1 ? "s" : ""}:{" "}
+						{myLandmarkCount}
+					</h2>
 					<City availableLandmarks={landmarks} city={myState.city} />
 					{turnOrder.map((opponentId) => {
 						if (opponentId === options.playerId) {
@@ -122,16 +128,23 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 
 						const opponentName = players.find((p) => p.id === opponentId)?.name;
 
+						const landmarkCount = Object.values(
+							playerStates[opponentId].city.landmarks
+						).reduce((p, c) => (c ? p + 1 : p), 0);
+
 						return (
-							<Fragment key={opponentId}>
-								<details key={`${opponentId}-city`}>
-									<summary className="text-2xl">{opponentName}</summary>
-									<City
-										availableLandmarks={landmarks}
-										city={opponentState.city}
-									/>
-								</details>
-							</Fragment>
+							<details className="mt-2" id={`${opponentId}-city`}>
+								<summary className="text-2xl">
+									{getName(opponentId, opponentName, showNames)}, Money:{" "}
+									{opponentState.money}, Landmark
+									{landmarkCount !== 1 ? "s" : ""}: {landmarkCount}
+									{}
+								</summary>
+								<City
+									availableLandmarks={landmarks}
+									city={opponentState.city}
+								/>
+							</details>
 						);
 					})}
 				</div>
@@ -140,19 +153,52 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				<h3>Players</h3>
 				<ul className="list-inside">
 					{players.map((player) => {
+						const isOpponent = player.id !== options.playerId;
+						const landmarkCount = Object.values(
+							playerStates[player.id].city.landmarks
+						).reduce((p, c) => (c ? p + 1 : p), 0);
 						return (
 							<li
 								className={
 									player.id === activePlayerId ? "list-disc" : "list-[circle]"
 								}
 								key={player.id}
+								role={player.id === options.playerId ? "listitem" : "button"}
+								onClick={() => {
+									let thisPlayerEl: HTMLElement | null = null;
+									for (let i = 0; i < players.length; i++) {
+										if (players[i].id === options.playerId) {
+											continue;
+										}
+
+										const detailEl = document.getElementById(
+											`${players[i].id}-city`
+										);
+										if (detailEl) {
+											if (players[i].id === player.id) {
+												detailEl.setAttribute("open", "");
+												thisPlayerEl = detailEl;
+											} else {
+												detailEl.removeAttribute("open");
+											}
+										}
+
+										if (thisPlayerEl) {
+											thisPlayerEl.scrollIntoView({ behavior: "smooth" });
+										}
+									}
+								}}
 							>
-								{getName(
-									player.id,
-									player.name,
-									showNames || player.id === options.playerId
-								)}{" "}
-								{player.id === options.playerId && "(You)"}
+								<span>
+									{getName(player.id, player.name, showNames || !isOpponent)}
+								</span>
+								<span>
+									{isOpponent
+										? `, M: ${
+												playerStates[player.id].money
+										  }, L: ${landmarkCount}`
+										: " (You)"}
+								</span>
 							</li>
 						);
 					})}
@@ -172,6 +218,29 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					))}
 				</ol>
 			</div>
+			<button
+				className="button-default fixed bottom-4 right-4"
+				onClick={() => {
+					for (let i = 0; i < players.length; i++) {
+						if (players[i].id === options.playerId) {
+							continue;
+						}
+
+						const detailEl = document.getElementById(`${players[i].id}-city`);
+						if (detailEl) {
+							detailEl.removeAttribute("open");
+						}
+					}
+
+					scrollTo({
+						top: 0,
+						left: 0,
+						behavior: "smooth",
+					});
+				}}
+			>
+				Up ⬆️
+			</button>
 		</div>
 	);
 }
