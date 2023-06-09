@@ -1,14 +1,14 @@
 {
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "../dist-back",
-    "module": "NodeNext"
-  },
-  "references": [{ "path": "../src-common" }],
-  "files": ["./main.ts", "./worker.ts"],
-  "include": ["./**/*"],
-  "watchOptions": {
-    "watchFile": "dynamicprioritypolling",
-    "watchDirectory": "dynamicprioritypolling"
-  }
+	"extends": "../tsconfig.base.json",
+	"compilerOptions": {
+		"outDir": "../dist-back",
+		"module": "NodeNext"
+	},
+	"references": [{ "path": "../src-common" }],
+	"files": ["./main.ts", "./worker.ts"],
+	"include": ["./**/*"],
+	"watchOptions": {
+		"watchFile": "dynamicprioritypolling",
+		"watchDirectory": "dynamicprioritypolling"
+	}
 }

@@ -1,22 +1,22 @@
 import z from "zod";
 
 import {
-  buildingSchema,
-  establishmentSchema,
-  establishmentListSchema,
-  landmarkSchema,
-  supplySchema,
-  citySchema,
-  deckSchema,
-  gameStateSchema,
-  gameDataSchema,
+	buildingSchema,
+	establishmentSchema,
+	establishmentListSchema,
+	landmarkSchema,
+	supplySchema,
+	citySchema,
+	deckSchema,
+	gameStateSchema,
+	gameDataSchema,
 } from "./schemas/game.js";
 import { playerActionsSchema, actionSchema } from "./schemas/actions.js";
 import {
-  newGameResponseSchema,
-  webSocketServerToClientMessageSchema,
-  webSocketClientToServerMessageSchema,
-  startGameStreamObjectSchema,
+	newGameResponseSchema,
+	webSocketServerToClientMessageSchema,
+	webSocketClientToServerMessageSchema,
+	startGameStreamObjectSchema,
 } from "./schemas/message.js";
 
 export type Building = z.infer<typeof buildingSchema>;
@@ -24,8 +24,8 @@ export type Establishment = z.infer<typeof establishmentSchema>;
 export type Landmark = z.infer<typeof landmarkSchema>;
 
 export type DeckBlueprint = {
-  card: string;
-  count: number;
+	card: string;
+	count: number;
 }[];
 
 export type Deck = z.infer<typeof deckSchema>;
@@ -42,11 +42,11 @@ export type Action = z.infer<typeof actionSchema>;
 export type NewGameResponse = z.infer<typeof newGameResponseSchema>;
 
 export type WebSocketServerToClientMessage = z.infer<
-  typeof webSocketServerToClientMessageSchema
+	typeof webSocketServerToClientMessageSchema
 >;
 
 export type WebSocketClientToServerMessage = z.infer<
-  typeof webSocketClientToServerMessageSchema
+	typeof webSocketClientToServerMessageSchema
 >;
 
 export type StartGameStreamObject = z.infer<typeof startGameStreamObjectSchema>;

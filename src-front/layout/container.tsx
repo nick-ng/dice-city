@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 
 export default function Container({
-  children,
-  className,
+	children,
+	className,
 }: {
-  children: ReactNode;
-  className?: string;
+	children: ReactNode;
+	className?: string;
 }) {
-  return <div className={`p-2 ${className || ""}`}>{children}</div>;
+	return <div className={`p-2 ${className || ""}`}>{children}</div>;
 }

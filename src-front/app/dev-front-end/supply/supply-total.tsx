@@ -7,14 +7,14 @@ import EstablishmentList from "~front/app/establishment-list/index.js";
 const supply = getSupply({}, shuffle(getDeck("base")), "total").supply;
 
 export default function SupplyTotal() {
-  return (
-    <div>
-      <EstablishmentList
-        establishments={supply}
-        onChoose={(choice) => {
-          console.info("Chosen", choice);
-        }}
-      />
-    </div>
-  );
+	return (
+		<div>
+			<EstablishmentList
+				establishments={supply}
+				onChoose={(choice) => {
+					console.info("Chosen", choice);
+				}}
+			/>
+		</div>
+	);
 }

@@ -10,36 +10,36 @@ import { xAddExpire, getGameStateKey } from "../redis/index.js";
 const router = Router();
 
 router.post("/", async (req, res, _next) => {
-  const { body } = req;
+	const { body } = req;
 
-  const result = newGameRequestSchema.safeParse(body);
+	const result = newGameRequestSchema.safeParse(body);
 
-  if (!result.success) {
-    res.statusMessage = `bad request. ${JSON.stringify(result.error)}`;
-    res.status(400).end();
-    return;
-  }
+	if (!result.success) {
+		res.statusMessage = `bad request. ${JSON.stringify(result.error)}`;
+		res.status(400).end();
+		return;
+	}
 
-  const newGame = createGameFromHostId(result.data.playerId);
+	const newGame = createGameFromHostId(result.data.playerId);
 
-  const stateRedisKey = getGameStateKey(newGame.gameDetails.id);
-  await xAddExpire(
-    stateRedisKey,
-    "*",
-    { data: JSON.stringify(newGame) },
-    {
-      TRIM: {
-        strategy: "MAXLEN",
-        strategyModifier: "~",
-        threshold: 10,
-        limit: 3,
-      },
-    }
-  );
+	const stateRedisKey = getGameStateKey(newGame.gameDetails.id);
+	await xAddExpire(
+		stateRedisKey,
+		"*",
+		{ data: JSON.stringify(newGame) },
+		{
+			TRIM: {
+				strategy: "MAXLEN",
+				strategyModifier: "~",
+				threshold: 10,
+				limit: 3,
+			},
+		}
+	);
 
-  res.json({
-    gameId: newGame.gameDetails.id,
-  } as NewGameResponse);
+	res.json({
+		gameId: newGame.gameDetails.id,
+	} as NewGameResponse);
 });
 
 export default router;

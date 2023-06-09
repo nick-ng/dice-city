@@ -1,14 +1,14 @@
 {
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
-  },
-  "references": [{ "path": "../src-common" }],
-  "include": ["./**/*"]
+	"extends": "../tsconfig.base.json",
+	"compilerOptions": {
+		"useDefineForClassFields": true,
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"allowJs": false,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"jsx": "react-jsx"
+	},
+	"references": [{ "path": "../src-common" }],
+	"include": ["./**/*"]
 }

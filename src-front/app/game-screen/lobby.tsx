@@ -8,79 +8,79 @@ import { useOptions } from "~front/hooks/options-context.js";
 import ToolTip from "~front/app/tool-tip/index.js";
 
 interface LobbyProps {
-  gameData: GameData;
-  sendViaWebSocket: (action: PlayerAction) => void;
+	gameData: GameData;
+	sendViaWebSocket: (action: PlayerAction) => void;
 }
 
 export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
-  const { options } = useOptions();
-  const { gameDetails } = gameData;
-  const { players, isPublic, hostId } = gameDetails;
+	const { options } = useOptions();
+	const { gameDetails } = gameData;
+	const { players, isPublic, hostId } = gameDetails;
 
-  const showNames = isPublic ? options.showNamesPublic : options.showNames;
+	const showNames = isPublic ? options.showNamesPublic : options.showNames;
 
-  const joinMessage: PlayerAction = {
-    ...options,
-    type: "join",
-    payload: { playerName: options.playerName },
-  };
+	const joinMessage: PlayerAction = {
+		...options,
+		type: "join",
+		payload: { playerName: options.playerName },
+	};
 
-  const startMessage: PlayerAction = {
-    ...options,
-    type: "start",
-  };
+	const startMessage: PlayerAction = {
+		...options,
+		type: "start",
+	};
 
-  const joinError = joinAction(gameData, joinMessage, true).error;
-  const startError = startAction(gameData, startMessage, true).error;
+	const joinError = joinAction(gameData, joinMessage, true).error;
+	const startError = startAction(gameData, startMessage, true).error;
 
-  return (
-    <div>
-      <h2>Game Lobby</h2>
-      <h3>{players.length > 0 ? "Players" : "No one has joined the game"}</h3>
-      <ul className="list-inside list-disc">
-        {players.map((player) => {
-          return (
-            <li key={player.id}>
-              {getName(
-                player.id,
-                player.name,
-                showNames || player.id === options.playerId
-              )}
-            </li>
-          );
-        })}
-      </ul>
-      <ToolTip message={joinError}>
-        <button
-          className="button-default w-24"
-          onClick={() => {
-            if (!joinError) {
-              sendViaWebSocket(joinMessage);
-            }
-          }}
-          disabled={!!joinError}
-        >
-          {players.map((p) => p.id).includes(options.playerId)
-            ? "Joined ✅"
-            : "Join Game"}
-        </button>
-      </ToolTip>
-      {hostId === options.playerId &&
-        players.map((p) => p.id).includes(options.playerId) && (
-          <ToolTip message={startError}>
-            <button
-              className="button-default w-28"
-              onClick={() => {
-                if (!startError) {
-                  sendViaWebSocket(startMessage);
-                }
-              }}
-              disabled={!!startError}
-            >
-              Start Game
-            </button>
-          </ToolTip>
-        )}
-    </div>
-  );
+	return (
+		<div>
+			<h2>Game Lobby</h2>
+			<h3>{players.length > 0 ? "Players" : "No one has joined the game"}</h3>
+			<ul className="list-inside list-disc">
+				{players.map((player) => {
+					return (
+						<li key={player.id}>
+							{getName(
+								player.id,
+								player.name,
+								showNames || player.id === options.playerId
+							)}
+						</li>
+					);
+				})}
+			</ul>
+			<ToolTip message={joinError}>
+				<button
+					className="button-default w-24"
+					onClick={() => {
+						if (!joinError) {
+							sendViaWebSocket(joinMessage);
+						}
+					}}
+					disabled={!!joinError}
+				>
+					{players.map((p) => p.id).includes(options.playerId)
+						? "Joined ✅"
+						: "Join Game"}
+				</button>
+			</ToolTip>
+			{hostId === options.playerId &&
+				players.map((p) => p.id).includes(options.playerId) && (
+					<ToolTip message={startError}>
+						<button
+							className="button-default w-28"
+							onClick={() => {
+								if (!startError) {
+									sendViaWebSocket(startMessage);
+								}
+							}}
+							disabled={!!startError}
+						>
+							Start Game
+						</button>
+					</ToolTip>
+				)}
+		</div>
+	);
 }

@@ -8,116 +8,116 @@ import { blueEstablishmentsAction } from "./blue-establishments.js";
 import { greenEstablishmentsAction } from "./green-establishments.js";
 
 export const performAction = (
-  gameData: GameData,
-  action: Action
+	gameData: GameData,
+	action: Action
 ): { gameData: GameData; error?: string } => {
-  if (!action.isServer && action.type !== "join") {
-    if (!gameData.gameDetails.players.find((p) => p.id === action.playerId)) {
-      return {
-        gameData,
-        error: "you aren't in this game",
-      };
-    }
+	if (!action.isServer && action.type !== "join") {
+		if (!gameData.gameDetails.players.find((p) => p.id === action.playerId)) {
+			return {
+				gameData,
+				error: "you aren't in this game",
+			};
+		}
 
-    const serverPlayerPassword =
-      gameData.playersSecrets[action.playerId]?.password;
+		const serverPlayerPassword =
+			gameData.playersSecrets[action.playerId]?.password;
 
-    if (
-      !serverPlayerPassword ||
-      action.playerPassword !== serverPlayerPassword
-    ) {
-      return {
-        gameData,
-        error: "wrong password",
-      };
-    }
-  }
+		if (
+			!serverPlayerPassword ||
+			action.playerPassword !== serverPlayerPassword
+		) {
+			return {
+				gameData,
+				error: "wrong password",
+			};
+		}
+	}
 
-  // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
-  // @todo(nick-ng): check if a player has all 4 landmarks after building
-  // @todo(nick-ng): handle mutating gameData
+	// @todo(nick-ng): way to advance game state i.e. after-roll to before-build
+	// @todo(nick-ng): check if a player has all 4 landmarks after building
+	// @todo(nick-ng): handle mutating gameData
 
-  let tempResult: { gameData: GameData; error?: string } = { gameData };
+	let tempResult: { gameData: GameData; error?: string } = { gameData };
 
-  switch (action.type) {
-    case "join":
-      return joinAction(gameData, action);
-    case "start":
-      return startAction(gameData, action);
-    case "roll-dice":
-      tempResult = rollDiceAction(gameData, action);
+	switch (action.type) {
+		case "join":
+			return joinAction(gameData, action);
+		case "start":
+			return startAction(gameData, action);
+		case "roll-dice":
+			tempResult = rollDiceAction(gameData, action);
 
-      if (tempResult.error) {
-        return tempResult;
-      }
+			if (tempResult.error) {
+				return tempResult;
+			}
 
-      // @todo(nick-ng): red establishments go here
+			// @todo(nick-ng): red establishments go here
 
-      // @todo(nick-ng): do server actions need an action object?
-      tempResult = greenEstablishmentsAction(tempResult.gameData, {
-        type: "green-establishments",
-        isServer: true,
-      });
+			// @todo(nick-ng): do server actions need an action object?
+			tempResult = greenEstablishmentsAction(tempResult.gameData, {
+				type: "green-establishments",
+				isServer: true,
+			});
 
-      if (tempResult.error) {
-        console.error(
-          "error when auto green-establishments:",
-          tempResult.error
-        );
-        return tempResult;
-      }
+			if (tempResult.error) {
+				console.error(
+					"error when auto green-establishments:",
+					tempResult.error
+				);
+				return tempResult;
+			}
 
-      tempResult = blueEstablishmentsAction(tempResult.gameData, {
-        type: "blue-establishments",
-        isServer: true,
-      });
+			tempResult = blueEstablishmentsAction(tempResult.gameData, {
+				type: "blue-establishments",
+				isServer: true,
+			});
 
-      if (tempResult.error) {
-        console.error("error when auto blue-establishments:", tempResult.error);
-        return tempResult;
-      }
+			if (tempResult.error) {
+				console.error("error when auto blue-establishments:", tempResult.error);
+				return tempResult;
+			}
 
-      // @todo(nick-ng): purple establishments go here
+			// @todo(nick-ng): purple establishments go here
 
-      // @todo(nick-ng): remove once you can handle purple establishments
-      tempResult.gameData.gameState.publicState.common.turnPhase =
-        "before-build";
+			// @todo(nick-ng): remove once you can handle purple establishments
+			tempResult.gameData.gameState.publicState.common.turnPhase =
+				"before-build";
 
-      if (tempResult.error) {
-        return tempResult;
-      }
+			if (tempResult.error) {
+				return tempResult;
+			}
 
-      return tempResult;
-    case "build":
-      tempResult = buildAction(gameData, action);
+			return tempResult;
+		case "build":
+			tempResult = buildAction(gameData, action);
 
-      if (!tempResult.error) {
-        // @todo(nick-ng): put these in the build action?
-        const turnOrder =
-          tempResult.gameData.gameState.publicState.common.turnOrder;
-        const activePlayerId =
-          tempResult.gameData.gameState.publicState.common.activePlayerId;
-        const currentPlayerIndex = turnOrder.findIndex(
-          (p) => p === activePlayerId
-        );
-        const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
+			if (!tempResult.error) {
+				// @todo(nick-ng): put these in the build action?
+				const turnOrder =
+					tempResult.gameData.gameState.publicState.common.turnOrder;
+				const activePlayerId =
+					tempResult.gameData.gameState.publicState.common.activePlayerId;
+				const currentPlayerIndex = turnOrder.findIndex(
+					(p) => p === activePlayerId
+				);
+				const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
 
-        tempResult.gameData.gameState.publicState.common.activePlayerId =
-          turnOrder[nextPlayerIndex];
-        tempResult.gameData.gameState.publicState.common.turnPhase =
-          "before-roll";
-        tempResult.gameData.gameState.publicState.common.turnEvents = [
-          `It is %${turnOrder[nextPlayerIndex]}%'s turn`,
-        ];
-      }
+				tempResult.gameData.gameState.publicState.common.activePlayerId =
+					turnOrder[nextPlayerIndex];
+				tempResult.gameData.gameState.publicState.common.turnPhase =
+					"before-roll";
+				tempResult.gameData.gameState.publicState.common.turnEvents = [
+					`It is %${turnOrder[nextPlayerIndex]}%'s turn`,
+				];
+			}
 
-      return tempResult;
-    case "green-establishments":
-      return greenEstablishmentsAction(gameData, action);
-    case "blue-establishments":
-      return blueEstablishmentsAction(gameData, action);
-    default:
-      console.error("No handler for action", action);
-      return { gameData, error: "no such action" };
-  }
+			return tempResult;
+		case "green-establishments":
+			return greenEstablishmentsAction(gameData, action);
+		case "blue-establishments":
+			return blueEstablishmentsAction(gameData, action);
+		default:
+			console.error("No handler for action", action);
+			return { gameData, error: "no such action" };
+	}
 };
