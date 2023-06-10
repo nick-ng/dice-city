@@ -43,13 +43,15 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 ### ToDo Comments
 
-- src-back/worker.ts:127:// @todo(nick-ng): check for "orphaned" games when starting up.
-- src-common/actions/index.ts:36: // @todo(nick-ng): way to advance game state i.e. after-roll to before-build
-- src-common/actions/index.ts:37: // @todo(nick-ng): check if a player has all 4 landmarks after building
-- src-common/actions/index.ts:38: // @todo(nick-ng): handle mutating gameData
-- src-common/actions/index.ts:54: // @todo(nick-ng): red establishments go here
-- src-common/actions/index.ts:56: // @todo(nick-ng): do server actions need an action object?
-- src-common/actions/index.ts:80: // @todo(nick-ng): purple establishments go here
-- src-common/actions/index.ts:82: // @todo(nick-ng): remove once you can handle purple establishments
-- src-common/actions/index.ts:95: // @todo(nick-ng): put these in the build action?
-- src-front/app/game-screen/game.tsx:45: // @todo(nick-ng): players list shows money (and landmark count?)
+- src-back/worker.ts:130: @todo(nick-ng): check for "orphaned" games when starting up.
+- src-common/actions/blue-establishments.ts:28: @todo(nick-ng): check dice activation numbers once before the switch statement
+- src-common/actions/index.ts:38: @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
+- src-common/actions/index.ts:39: @todo(nick-ng): check if a player has all 4 landmarks after building
+- src-common/actions/index.ts:77: @todo(nick-ng): purple establishments go here
+- src-common/actions/index.ts:79: @todo(nick-ng): remove once you can handle purple establishments
+- src-common/actions/index.ts:92: @todo(nick-ng): put these in the build action?
+- src-common/actions/index.ts:114: @todo(nick-ng): replenish supply from deck
+- src-common/actions/supply.ts:31: @todo(nick-ng): add hybrid supply
+- src-front/app/game-screen/lobby.tsx:15: @todo(nick-ng): Switch between different supply types
+- src-front/app/game-screen/lobby.tsx:16: @todo(nick-ng): Host public game
+- src-front/utils/name-generator.ts:8: @todo(nick-ng): handle plural adjectives?

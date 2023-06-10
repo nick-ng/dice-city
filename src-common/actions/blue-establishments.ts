@@ -1,26 +1,10 @@
-import type { Action, GameData } from "~common/types/index.js";
+import type { GameData } from "~common/types/index.js";
 import { establishmentReference } from "~common/constants/buildings.js";
+import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
 export const blueEstablishmentsAction = (
-	gameData: GameData,
-	action: Action
+	gameData: GameData
 ): { gameData: GameData; error?: string } => {
-	if (action.type !== "blue-establishments") {
-		return {
-			gameData,
-			error: "not blue-establishments",
-		};
-	}
-
-	const { isServer } = action;
-
-	if (!isServer) {
-		return {
-			gameData,
-			error: "only server can disptach blue-establishments",
-		};
-	}
-
 	const { gameState } = gameData;
 	const { publicState } = gameState;
 	const { diceRolls, processedEstablishments, turnEvents } = publicState.common;
@@ -38,15 +22,12 @@ export const blueEstablishmentsAction = (
 			}
 
 			let moneyPerEstablishment = 0;
-			let singularName = "";
-			let pluralName = "";
 
 			switch (establishmentKey) {
 				case "wheatField":
+					// @todo(nick-ng): check dice activation numbers once before the switch statement
 					if (establishment.activationNumbers.includes(diceTotal)) {
 						moneyPerEstablishment = 1;
-						singularName = "wheat field";
-						pluralName = "wheat fields";
 
 						processedEstablishments.push(establishmentKey);
 					}
@@ -54,8 +35,6 @@ export const blueEstablishmentsAction = (
 				case "ranch":
 					if (establishment.activationNumbers.includes(diceTotal)) {
 						moneyPerEstablishment = 1;
-						singularName = "ranch";
-						pluralName = "ranches";
 
 						processedEstablishments.push(establishmentKey);
 					}
@@ -63,8 +42,6 @@ export const blueEstablishmentsAction = (
 				case "forest":
 					if (establishment.activationNumbers.includes(diceTotal)) {
 						moneyPerEstablishment = 1;
-						singularName = "forest";
-						pluralName = "forests";
 
 						processedEstablishments.push(establishmentKey);
 					}
@@ -72,8 +49,6 @@ export const blueEstablishmentsAction = (
 				case "mine":
 					if (establishment.activationNumbers.includes(diceTotal)) {
 						moneyPerEstablishment = 5;
-						singularName = "mine";
-						pluralName = "mines";
 
 						processedEstablishments.push(establishmentKey);
 					}
@@ -81,8 +56,6 @@ export const blueEstablishmentsAction = (
 				case "appleOrchard":
 					if (establishment.activationNumbers.includes(diceTotal)) {
 						moneyPerEstablishment = 3;
-						singularName = "apple orchard";
-						pluralName = "apple orchards";
 
 						processedEstablishments.push(establishmentKey);
 					}
@@ -110,11 +83,14 @@ export const blueEstablishmentsAction = (
 				player.money += moneyReceived;
 
 				if (moneyReceived > 0) {
+					trimTurnEvents(turnEvents);
 					turnEvents.push(
 						`%${player.playerId}% collected ${moneyReceived} ${
 							moneyReceived === 1 ? "coin" : "coins"
-						} from the bank through their ${establishmentCount} ${
-							establishmentCount === 1 ? singularName : pluralName
+						} from the bank - ${establishmentCount} ${
+							establishmentCount === 1
+								? establishment.display
+								: establishment.pluralDisplay
 						}`
 					);
 				}

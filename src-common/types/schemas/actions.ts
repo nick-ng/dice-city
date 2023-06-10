@@ -30,7 +30,11 @@ export const rollSchema = z.object({
 
 export const establishmentsSchema = z.object({
 	playerId: z.optional(z.never()),
-	type: z.enum(["green-establishments", "blue-establishments"]),
+	type: z.enum([
+		"red-establishments",
+		"green-establishments",
+		"blue-establishments",
+	]),
 	isServer: z.literal(true),
 	payload: z.optional(z.any()),
 });

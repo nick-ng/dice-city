@@ -4,7 +4,7 @@ dotenv.config();
 import { randomUUID } from "node:crypto";
 
 import { startGameStreamObjectSchema } from "~common/types/schemas/message.js";
-import { actionSchema } from "~common/types/schemas/actions.js";
+import { playerActionsSchema } from "~common/types/schemas/actions.js";
 import { performAction } from "~common/actions/index.js";
 import { jsonSafeParseS } from "~common/utils/index.js";
 
@@ -82,7 +82,10 @@ addXRead({
 			streamKey: getGameActionKey(gameId),
 			lastId: lastActionId,
 			messageCallback: async (redisStreamData) => {
-				const res = jsonSafeParseS(actionSchema, redisStreamData.message.data);
+				const res = jsonSafeParseS(
+					playerActionsSchema,
+					redisStreamData.message.data
+				);
 
 				if (!res.success) {
 					console.error("couldn't parse message", res.error);

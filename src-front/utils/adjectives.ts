@@ -1,8 +1,9 @@
+// https://dictionary.cambridge.org/grammar/british-grammar/adjectives-order
 const QUANTITY = 1;
 const GENERAL_OPINION = 2;
 const SPECIFIC_OPINION = 3;
 const SIZE = 4;
-const CONDITION = 5;
+const PHYSICAL_QUALITY = 5;
 const SHAPE = 6;
 const AGE = 7;
 const COLOUR = 8;
@@ -68,7 +69,7 @@ const colours = [
 	"Yellow",
 ];
 
-const count = ["Singular", "Multiple"];
+const count = ["Singular", "Multiple", "One", "Two", "Extra"];
 
 const sizes = ["Big", "Small", "Huge", "Little", "Colossal", "Tiny"];
 
@@ -102,7 +103,7 @@ const natures = [
 
 const ages = ["Old", "Young", "Elder", "Adolescent"];
 
-const speeds = ["Quick", "Slow", "Fast"];
+const speeds = ["Quick", "Slow", "Fast", "Squishy"];
 
 const materials = [
 	"Water",
@@ -116,7 +117,12 @@ const materials = [
 	"Silver",
 	"Bronze",
 	"Aluminium",
+	"Linen",
 ];
+
+const physicalQualities = ["Solid", "Hard", "Squishy"];
+
+const physicalQualitiesB = ["Poisonous", "Venomous"];
 
 export const allAdjectives = Object.freeze(
 	[
@@ -154,6 +160,16 @@ export const allAdjectives = Object.freeze(
 			value: material,
 			type: "material",
 			order: MATERIAL,
+		})),
+		...physicalQualities.map((physicalQuality) => ({
+			value: physicalQuality,
+			type: "physical_quality",
+			order: PHYSICAL_QUALITY,
+		})),
+		...physicalQualitiesB.map((physicalQuality) => ({
+			value: physicalQuality,
+			type: "physical_quality_b",
+			order: PHYSICAL_QUALITY,
 		})),
 	].map((a) => Object.freeze(a))
 );

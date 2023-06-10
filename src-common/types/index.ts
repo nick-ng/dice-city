@@ -13,6 +13,7 @@ import {
 } from "./schemas/game.js";
 import { playerActionsSchema, actionSchema } from "./schemas/actions.js";
 import {
+	newGameRequestSchema,
 	newGameResponseSchema,
 	webSocketServerToClientMessageSchema,
 	webSocketClientToServerMessageSchema,
@@ -39,6 +40,7 @@ export type GameData = z.infer<typeof gameDataSchema>;
 export type PlayerAction = z.infer<typeof playerActionsSchema>;
 export type Action = z.infer<typeof actionSchema>;
 
+export type NewGameRequest = z.infer<typeof newGameRequestSchema>;
 export type NewGameResponse = z.infer<typeof newGameResponseSchema>;
 
 export type WebSocketServerToClientMessage = z.infer<

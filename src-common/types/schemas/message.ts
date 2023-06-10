@@ -5,6 +5,8 @@ import { gameDataSchema } from "./game.js";
 
 export const newGameRequestSchema = z.object({
 	playerId: z.string(),
+	playerName: z.string(),
+	playerPassword: z.string(),
 });
 
 export const newGameResponseSchema = z.object({

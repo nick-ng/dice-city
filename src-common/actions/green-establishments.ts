@@ -1,9 +1,7 @@
-import type {
-	Action,
-	GameData,
-	EstablishmentList,
-} from "~common/types/index.js";
+import type { GameData, EstablishmentList } from "~common/types/index.js";
+
 import { establishmentReference } from "~common/constants/buildings.js";
+import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
 const countTagsInEstablishments = (
 	establishments: EstablishmentList,
@@ -25,25 +23,8 @@ const countTagsInEstablishments = (
 };
 
 export const greenEstablishmentsAction = (
-	gameData: GameData,
-	action: Action
+	gameData: GameData
 ): { gameData: GameData; error?: string } => {
-	if (action.type !== "green-establishments") {
-		return {
-			gameData,
-			error: "not green-establishments",
-		};
-	}
-
-	const { isServer } = action;
-
-	if (!isServer) {
-		return {
-			gameData,
-			error: "only server can disptach green-establishments",
-		};
-	}
-
 	const { gameState } = gameData;
 	const { publicState } = gameState;
 	const { diceRolls, activePlayerId, processedEstablishments, turnEvents } =
@@ -80,11 +61,14 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
+						trimTurnEvents(turnEvents);
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank through their ${establishmentCount} ${
-								establishmentCount === 1 ? "bakery" : "bakeries"
+							} from the bank - ${establishmentCount} ${
+								establishmentCount === 1
+									? establishment.display
+									: establishment.pluralDisplay
 							}`
 						);
 					}
@@ -96,11 +80,14 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
+						trimTurnEvents(turnEvents);
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank through their ${establishmentCount} convenience ${
-								establishmentCount === 1 ? "store" : "stores"
+							} from the bank - ${establishmentCount} convenience ${
+								establishmentCount === 1
+									? establishment.display
+									: establishment.pluralDisplay
 							}`
 						);
 					}
@@ -114,11 +101,14 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
+						trimTurnEvents(turnEvents);
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank through their ${establishmentCount} cheese ${
-								establishmentCount === 1 ? "factory" : "factories"
+							} from the bank - ${establishmentCount} cheese ${
+								establishmentCount === 1
+									? establishment.display
+									: establishment.pluralDisplay
 							}`
 						);
 					}
@@ -132,11 +122,14 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
+						trimTurnEvents(turnEvents);
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank through their ${establishmentCount} furniture ${
-								establishmentCount === 1 ? "factory" : "factories"
+							} from the bank - ${establishmentCount} furniture ${
+								establishmentCount === 1
+									? establishment.display
+									: establishment.pluralDisplay
 							}`
 						);
 					}
@@ -150,11 +143,14 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
+						trimTurnEvents(turnEvents);
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank through their ${establishmentCount} fruit and vegetable ${
-								establishmentCount === 1 ? "market" : "markets"
+							} from the bank - ${establishmentCount} fruit and vegetable ${
+								establishmentCount === 1
+									? establishment.display
+									: establishment.pluralDisplay
 							}`
 						);
 					}

@@ -6,6 +6,8 @@ import { rollDiceAction } from "./roll-dice.js";
 import { buildAction } from "./build.js";
 import { blueEstablishmentsAction } from "./blue-establishments.js";
 import { greenEstablishmentsAction } from "./green-establishments.js";
+import { redEstablishmentsAction } from "./red-establishments.js";
+import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
 export const performAction = (
 	gameData: GameData,
@@ -33,10 +35,8 @@ export const performAction = (
 		}
 	}
 
-	// @todo(nick-ng): way to advance game state i.e. after-roll to before-build
+	// @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
 	// @todo(nick-ng): check if a player has all 4 landmarks after building
-	// @todo(nick-ng): handle mutating gameData
-
 	let tempResult: { gameData: GameData; error?: string } = { gameData };
 
 	switch (action.type) {
@@ -51,13 +51,13 @@ export const performAction = (
 				return tempResult;
 			}
 
-			// @todo(nick-ng): red establishments go here
+			tempResult = redEstablishmentsAction(gameData);
+			if (tempResult.error) {
+				console.error("error when auto red-establishments:", tempResult.error);
+				return tempResult;
+			}
 
-			// @todo(nick-ng): do server actions need an action object?
-			tempResult = greenEstablishmentsAction(tempResult.gameData, {
-				type: "green-establishments",
-				isServer: true,
-			});
+			tempResult = greenEstablishmentsAction(gameData);
 
 			if (tempResult.error) {
 				console.error(
@@ -67,10 +67,7 @@ export const performAction = (
 				return tempResult;
 			}
 
-			tempResult = blueEstablishmentsAction(tempResult.gameData, {
-				type: "blue-establishments",
-				isServer: true,
-			});
+			tempResult = blueEstablishmentsAction(gameData);
 
 			if (tempResult.error) {
 				console.error("error when auto blue-establishments:", tempResult.error);
@@ -106,16 +103,24 @@ export const performAction = (
 					turnOrder[nextPlayerIndex];
 				tempResult.gameData.gameState.publicState.common.turnPhase =
 					"before-roll";
-				tempResult.gameData.gameState.publicState.common.turnEvents = [
-					`It is %${turnOrder[nextPlayerIndex]}%'s turn`,
-				];
+
+				trimTurnEvents(
+					tempResult.gameData.gameState.publicState.common.turnEvents
+				);
+				tempResult.gameData.gameState.publicState.common.turnEvents.push(
+					`It is %${turnOrder[nextPlayerIndex]}%'s turn`
+				);
+
+				// @todo(nick-ng): replenish supply from deck
 			}
 
 			return tempResult;
+		case "red-establishments":
+			return redEstablishmentsAction(gameData);
 		case "green-establishments":
-			return greenEstablishmentsAction(gameData, action);
+			return greenEstablishmentsAction(gameData);
 		case "blue-establishments":
-			return blueEstablishmentsAction(gameData, action);
+			return blueEstablishmentsAction(gameData);
 		default:
 			console.error("No handler for action", action);
 			return { gameData, error: "no such action" };

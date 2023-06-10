@@ -2,10 +2,24 @@ import { randomUUID } from "node:crypto";
 
 import type { GameData } from "~common/types/index.js";
 
-export const createGameFromHostId = (hostId: string): GameData => {
+export const createGameFromHostId = (
+	hostId: string,
+	hostName: string,
+	hostPassword: string
+): GameData => {
 	const gameId = randomUUID();
 	return {
-		gameDetails: { hostId, id: gameId, players: [], isPublic: false },
+		gameDetails: {
+			hostId,
+			id: gameId,
+			players: [
+				{
+					id: hostId,
+					name: hostName,
+				},
+			],
+			isPublic: false,
+		},
 		gameSettings: {
 			landmarks: [
 				"radioTower",
@@ -28,7 +42,16 @@ export const createGameFromHostId = (hostId: string): GameData => {
 					turnPhase: "lobby",
 					turnOrder: [],
 				},
-				players: {},
+				players: {
+					[hostId]: {
+						playerId: hostId,
+						city: {
+							landmarks: {},
+							establishments: {},
+						},
+						money: 0,
+					},
+				},
 			},
 			secretState: {
 				common: {
@@ -37,7 +60,9 @@ export const createGameFromHostId = (hostId: string): GameData => {
 			},
 		},
 		lastActionId: `${Date.now()}-0`,
-		playersSecrets: {},
+		playersSecrets: {
+			[hostId]: { password: hostPassword },
+		},
 	};
 };
 
