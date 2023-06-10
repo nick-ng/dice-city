@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from "react";
+import { useEffect } from "react";
 
 import type { GameData, PlayerAction } from "~common/types/index.js";
 

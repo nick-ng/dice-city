@@ -53,3 +53,4 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/index.ts:82: // @todo(nick-ng): remove once you can handle purple establishments
 - src-common/actions/index.ts:95: // @todo(nick-ng): put these in the build action?
 - src-front/app/game-screen/game.tsx:45: // @todo(nick-ng): players list shows money (and landmark count?)
+- src-front/utils/name-generator.ts:8:// @todo(nick-ng): handle plural adjectives?

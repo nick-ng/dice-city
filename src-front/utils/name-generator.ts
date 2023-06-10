@@ -5,6 +5,7 @@ import { allAdjectives } from "./adjectives.js";
 
 const adjectiveCount = 2;
 
+// @todo(nick-ng): handle plural adjectives?
 export const getName = (seed: string, name = "", showName = false) => {
 	if (name && showName) {
 		return name;
