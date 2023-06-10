@@ -52,4 +52,6 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/index.ts:92: @todo(nick-ng): put these in the build action?
 - src-common/actions/index.ts:114: @todo(nick-ng): replenish supply from deck
 - src-common/actions/supply.ts:31: @todo(nick-ng): add hybrid supply
+- src-front/app/game-screen/lobby.tsx:15: @todo(nick-ng): Switch between different supply types
+- src-front/app/game-screen/lobby.tsx:16: @todo(nick-ng): Host public game
 - src-front/utils/name-generator.ts:8: @todo(nick-ng): handle plural adjectives?

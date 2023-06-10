@@ -20,7 +20,9 @@ router.post("/", async (req, res, _next) => {
 		return;
 	}
 
-	const newGame = createGameFromHostId(result.data.playerId);
+	const { playerId, playerName, playerPassword } = result.data;
+
+	const newGame = createGameFromHostId(playerId, playerName, playerPassword);
 
 	const stateRedisKey = getGameStateKey(newGame.gameDetails.id);
 	await xAddExpire(

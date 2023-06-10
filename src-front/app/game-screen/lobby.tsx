@@ -12,6 +12,8 @@ interface LobbyProps {
 	sendViaWebSocket: (action: PlayerAction) => void;
 }
 
+// @todo(nick-ng): Switch between different supply types
+// @todo(nick-ng): Host public game
 export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
 	const { options } = useOptions();
 	const { gameDetails } = gameData;
