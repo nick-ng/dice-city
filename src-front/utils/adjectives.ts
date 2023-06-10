@@ -69,7 +69,7 @@ const colours = [
 	"Yellow",
 ];
 
-const count = ["Singular", "Multiple", "One", "Two"];
+const count = ["Singular", "Multiple", "One", "Two", "Extra"];
 
 const sizes = ["Big", "Small", "Huge", "Little", "Colossal", "Tiny"];
 
@@ -117,6 +117,7 @@ const materials = [
 	"Silver",
 	"Bronze",
 	"Aluminium",
+	"Linen",
 ];
 
 const physicalQualities = ["Solid", "Hard", "Squishy"];

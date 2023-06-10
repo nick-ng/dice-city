@@ -4,10 +4,10 @@ const addCardToSupply = (supply: Supply, cardId: string): void => {
 	const cardKey = cardId.split(":")[0];
 
 	if (!supply[cardKey]) {
-		supply[cardKey] = [cardId];
-	} else {
-		supply[cardKey] = [...supply[cardKey], cardId];
+		supply[cardKey] = [];
 	}
+
+	supply[cardKey].push(cardId);
 };
 
 export const totalSupply = (
@@ -28,6 +28,7 @@ export const totalSupply = (
 	};
 };
 
+// @todo(nick-ng): add hybrid supply
 export const getSupply = (
 	currentSupply: Supply,
 	remainingDeck: Deck,

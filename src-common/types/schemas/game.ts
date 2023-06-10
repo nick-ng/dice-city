@@ -25,6 +25,7 @@ export const landmarkSchema = z.object({
 const establishmentOnly = z.object({
 	colour,
 	activationNumbers: z.array(z.number()),
+	pluralDisplay: z.string(),
 });
 
 export const establishmentSchema = landmarkSchema.merge(establishmentOnly);

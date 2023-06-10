@@ -18,6 +18,7 @@ import { greenCheeseFactoryTests } from "~common/actions/test-data/green-cheese-
 import { greenFurnitureFactoryTests } from "~common/actions/test-data/green-furniture-factory-test-1.js";
 import { greenFruitAndVegetableTests } from "~common/actions/test-data/green-fruit-and-vegetable-market-test-1.js";
 import { blueTests } from "~common/actions/test-data/blue-tests-1.js";
+import { redEstablishmentsTest } from "~common/actions/test-data/red-establishments.js";
 
 import StateDisplay from "./state-display.js";
 
@@ -36,6 +37,7 @@ const dataAndActions = [
 	greenFurnitureFactoryTests,
 	greenFruitAndVegetableTests,
 	blueTests,
+	redEstablishmentsTest,
 ]
 	.flat()
 	.map((stateAndAction, i) => ({

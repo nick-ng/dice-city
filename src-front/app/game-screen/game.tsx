@@ -7,6 +7,7 @@ import { useOptions } from "~front/hooks/options-context.js";
 
 import Build from "~front/app/build/index.js";
 import City from "~front/app/city/index.js";
+import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
 
 interface GameProps {
 	gameData: GameData;
@@ -42,7 +43,6 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		}
 	}, [turnPhase, myTurn]);
 
-	// @todo(nick-ng): players list shows money (and landmark count?)
 	return (
 		<div className="flex flex-row">
 			<div className="flex-grow">
@@ -115,7 +115,11 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						{myLandmarkCount}
 					</h2>
 					<City availableLandmarks={landmarks} city={myState.city} />
-					{turnOrder.map((opponentId) => {
+					{getPlayerOrderStartingFromPlayer(
+						turnOrder,
+						options.playerId,
+						true
+					).map((opponentId) => {
 						if (opponentId === options.playerId) {
 							return null;
 						}
@@ -152,18 +156,23 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 			<div className="flex-shrink-0">
 				<h3>Players</h3>
 				<ul className="list-inside">
-					{players.map((player) => {
-						const isOpponent = player.id !== options.playerId;
+					{getPlayerOrderStartingFromPlayer(
+						turnOrder,
+						options.playerId,
+						true
+					).map((playerId) => {
+						const isOpponent = playerId !== options.playerId;
+						const player = players.find((p) => p.id === playerId);
 						const landmarkCount = Object.values(
-							playerStates[player.id].city.landmarks
+							playerStates[playerId].city.landmarks
 						).reduce((p, c) => (c ? p + 1 : p), 0);
 						return (
 							<li
 								className={
-									player.id === activePlayerId ? "list-disc" : "list-[circle]"
+									playerId === activePlayerId ? "list-disc" : "list-[circle]"
 								}
-								key={player.id}
-								role={player.id === options.playerId ? "listitem" : "button"}
+								key={playerId}
+								role={playerId === options.playerId ? "listitem" : "button"}
 								onClick={() => {
 									let thisPlayerEl: HTMLElement | null = null;
 									for (let i = 0; i < players.length; i++) {
@@ -175,7 +184,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 											`${players[i].id}-city`
 										);
 										if (detailEl) {
-											if (players[i].id === player.id) {
+											if (players[i].id === playerId) {
 												detailEl.setAttribute("open", "");
 												thisPlayerEl = detailEl;
 											} else {
@@ -190,13 +199,11 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								}}
 							>
 								<span>
-									{getName(player.id, player.name, showNames || !isOpponent)}
+									{getName(playerId, player.name, showNames || !isOpponent)}
 								</span>
 								<span>
 									{isOpponent
-										? `, M: ${
-												playerStates[player.id].money
-										  }, L: ${landmarkCount}`
+										? `, M: ${playerStates[playerId].money}, L: ${landmarkCount}`
 										: " (You)"}
 								</span>
 							</li>
@@ -204,19 +211,21 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					})}
 				</ul>
 				<hr />
-				<h3>Turn Events</h3>
-				<ol className="list-inside list-decimal">
-					{turnEvents.map((event) => (
-						<li key={event}>
-							{players.reduce((prev, { id, name }) => {
-								return prev.replaceAll(
-									`%${id}%`,
-									getName(id, name, showNames || id === options.playerId)
-								);
-							}, event)}
-						</li>
-					))}
-				</ol>
+				<details open>
+					<summary className="text-xl">Turn Events</summary>
+					<ul className="list-inside list-disc">
+						{turnEvents.map((event) => (
+							<li key={event}>
+								{players.reduce((prev, { id, name }) => {
+									return prev.replaceAll(
+										`%${id}%`,
+										getName(id, name, showNames || id === options.playerId)
+									);
+								}, event)}
+							</li>
+						))}
+					</ul>
+				</details>
 			</div>
 			<button
 				className="button-default fixed bottom-4 right-4"
