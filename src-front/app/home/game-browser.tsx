@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { NewGameRequest } from "~common/types/index.js";
@@ -12,7 +12,6 @@ export default function GameBrowser() {
 	const { options } = useOptions();
 	const navigate = useNavigate();
 	const [error, setError] = useState("");
-	const [errorToolTip, setErrorToolTip] = useState("");
 
 	const { playerId, playerPassword, playerName } = options;
 
@@ -22,12 +21,7 @@ export default function GameBrowser() {
 		playerName,
 	};
 
-	useEffect(() => {
-		if (!playerName) {
-			setErrorToolTip;
-		}
-	}, [playerId, playerPassword, playerName]);
-
+	// @todo(nick-ng): show public games
 	return (
 		<div>
 			<h2>Games</h2>
