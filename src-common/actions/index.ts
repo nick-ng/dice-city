@@ -51,6 +51,8 @@ export const performAction = (
 				return tempResult;
 			}
 
+			// @todo(nick-ng): handle radio tower
+
 			tempResult = redEstablishmentsAction(gameData);
 			if (tempResult.error) {
 				console.error("error when auto red-establishments:", tempResult.error);
@@ -97,6 +99,8 @@ export const performAction = (
 				const currentPlayerIndex = turnOrder.findIndex(
 					(p) => p === activePlayerId
 				);
+
+				// @todo(nick-ng): handle amusement park
 				const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
 
 				tempResult.gameData.gameState.publicState.common.activePlayerId =
