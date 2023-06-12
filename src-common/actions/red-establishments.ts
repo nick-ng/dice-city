@@ -119,8 +119,7 @@ export const redEstablishmentsAction = (
 						}`
 					);
 
-					otherPlayerState.money =
-						otherPlayerState.money + activePlayerState.money;
+					otherPlayerState.money += activePlayerState.money;
 					activePlayerState.money = 0;
 				} else {
 					trimTurnEvents(turnEvents);
@@ -134,8 +133,8 @@ export const redEstablishmentsAction = (
 						}`
 					);
 
-					otherPlayerState.money = otherPlayerState.money + totalMoney;
-					activePlayerState.money = activePlayerState.money - totalMoney;
+					otherPlayerState.money += totalMoney;
+					activePlayerState.money -= totalMoney;
 				}
 			});
 

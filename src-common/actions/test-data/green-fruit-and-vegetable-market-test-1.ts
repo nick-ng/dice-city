@@ -79,6 +79,7 @@ const startingState: GameData["gameState"] = {
 				"%84c45332-4911-4823-839e-996bad56ba61% rolled an 11 (5 + 6)",
 			],
 			turnOrder: [],
+			pendingActions: [],
 			supply: {
 				familyRestaurant: [
 					"familyRestaurant:5",

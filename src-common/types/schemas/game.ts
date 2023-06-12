@@ -67,6 +67,12 @@ const publicStateSchema = z.object({
 			"before-build",
 			"after-build",
 		]),
+		pendingActions: z.array(
+			z.object({
+				playerId: z.string(),
+				action: z.string(),
+			})
+		),
 		diceRolls: z.array(z.number()),
 		processedEstablishments: z.array(z.string()),
 		turnEvents: z.array(z.string()),

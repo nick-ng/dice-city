@@ -22,8 +22,6 @@ export const rollDiceAction = (
 	action: Action,
 	skipUpdate = false
 ): { gameData: GameData; error?: string } => {
-	let error = undefined;
-
 	if (action.type !== "roll-dice") {
 		return { gameData, error: "not roll-dice" };
 	}

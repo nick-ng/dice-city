@@ -27,15 +27,27 @@ export const greenEstablishmentsAction = (
 ): { gameData: GameData; error?: string } => {
 	const { gameState } = gameData;
 	const { publicState } = gameState;
-	const { diceRolls, activePlayerId, processedEstablishments, turnEvents } =
-		publicState.common;
-	const activePlayerState = publicState.players[activePlayerId];
+	const {
+		diceRolls,
+		activePlayerId,
+		processedEstablishments,
+		turnEvents,
+		turnPhase,
+	} = publicState.common;
+
+	if (turnPhase !== "after-roll") {
+		return {
+			gameData,
+			error: "Red establishments are only processed in the after-roll phase.",
+		};
+	}
 
 	let diceTotal = 0;
 	for (let n = 0; n < diceRolls.length; n++) {
 		diceTotal += diceRolls[n];
 	}
 
+	const activePlayerState = publicState.players[activePlayerId];
 	const { city } = activePlayerState;
 	const { establishments, landmarks } = city;
 	const haveShoppingMall = landmarks.shoppingMall;

@@ -34,9 +34,20 @@ export const establishmentsSchema = z.object({
 		"red-establishments",
 		"green-establishments",
 		"blue-establishments",
+		"purple-establishments",
 	]),
 	isServer: z.literal(true),
 	payload: z.optional(z.any()),
+});
+
+export const tvStationSchema = z.object({
+	type: z.literal("tv-station"),
+	isServer: z.optional(z.literal(false)),
+	payload: z.object({
+		opponentId: z.string(),
+	}),
+	playerId: z.string(),
+	playerPassword: z.string(),
 });
 
 export const buildEstablishmentSchema = z.object({
@@ -53,6 +64,7 @@ export const playerActionsSchema = z.union([
 	joinSchema,
 	startSchema,
 	rollSchema,
+	tvStationSchema,
 	buildEstablishmentSchema,
 ]);
 

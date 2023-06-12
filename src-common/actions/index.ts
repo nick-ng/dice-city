@@ -7,6 +7,7 @@ import { buildAction } from "./build.js";
 import { blueEstablishmentsAction } from "./blue-establishments.js";
 import { greenEstablishmentsAction } from "./green-establishments.js";
 import { redEstablishmentsAction } from "./red-establishments.js";
+import { purpleEstablishmentsAction } from "./purple-establishments.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
 export const performAction = (
@@ -76,11 +77,15 @@ export const performAction = (
 				return tempResult;
 			}
 
-			// @todo(nick-ng): purple establishments go here
+			tempResult = purpleEstablishmentsAction(gameData);
 
-			// @todo(nick-ng): remove once you can handle purple establishments
-			tempResult.gameData.gameState.publicState.common.turnPhase =
-				"before-build";
+			if (tempResult.error) {
+				console.error(
+					"error when auto purple-establishments:",
+					tempResult.error
+				);
+				return tempResult;
+			}
 
 			if (tempResult.error) {
 				return tempResult;

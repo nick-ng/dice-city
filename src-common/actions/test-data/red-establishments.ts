@@ -74,6 +74,7 @@ const startingState: GameData["gameState"] = {
 				"7107307a-bbd8-4b4d-a676-76c261bbbc9e",
 				"84c45332-4911-4823-839e-996bad56ba61",
 			],
+			pendingActions: [],
 			supply: {
 				familyRestaurant: [
 					"familyRestaurant:5",

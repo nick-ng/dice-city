@@ -7,7 +7,15 @@ export const blueEstablishmentsAction = (
 ): { gameData: GameData; error?: string } => {
 	const { gameState } = gameData;
 	const { publicState } = gameState;
-	const { diceRolls, processedEstablishments, turnEvents } = publicState.common;
+	const { diceRolls, processedEstablishments, turnEvents, turnPhase } =
+		publicState.common;
+
+	if (turnPhase !== "after-roll") {
+		return {
+			gameData,
+			error: "Red establishments are only processed in the after-roll phase.",
+		};
+	}
 
 	let diceTotal = 0;
 	for (let n = 0; n < diceRolls.length; n++) {

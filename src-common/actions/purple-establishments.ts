@@ -19,12 +19,23 @@ export const purpleEstablishmentsAction = (
 		turnEvents,
 		turnPhase,
 		turnOrder,
+		pendingActions,
 	} = common;
+
+	if (turnPhase !== "after-roll") {
+		return {
+			gameData,
+			error: "Red establishments are only processed in the after-roll phase.",
+		};
+	}
 
 	let diceTotal = 0;
 	for (let n = 0; n < diceRolls.length; n++) {
 		diceTotal += diceRolls[n];
 	}
+
+	let nextPhase: GameData["gameState"]["publicState"]["common"]["turnPhase"] =
+		"before-build";
 
 	Object.entries(establishmentReference)
 		.filter(([_, establishment]) => establishment.colour === "purple")
@@ -37,14 +48,13 @@ export const purpleEstablishmentsAction = (
 				return;
 			}
 
+			const activePlayerState = playerStates[activePlayerId];
+			const { city } = activePlayerState;
+			const { establishments } = city;
+			const establishmentCount = establishments[establishmentKey]?.length || 0;
+
 			switch (establishmentKey) {
 				case "stadium":
-					const activePlayerState = playerStates[activePlayerId];
-					const { city } = activePlayerState;
-					const { establishments } = city;
-					const establishmentCount =
-						establishments[establishmentKey]?.length || 0;
-
 					if (establishmentCount === 0) {
 						return;
 					}
@@ -73,7 +83,7 @@ export const purpleEstablishmentsAction = (
 						} else if (opponentState.money < moneyPerOpponent) {
 							trimTurnEvents(turnEvents);
 							turnEvents.push(
-								`%${activePlayerId}% collected ${activePlayerState.money} ${
+								`%${activePlayerId}% collected ${opponentState.money} ${
 									opponentState.money === 1 ? "coin" : "coins"
 								} from %${opponentIds[i]}% - ${establishmentCount} ${
 									establishmentCount === 1
@@ -82,13 +92,12 @@ export const purpleEstablishmentsAction = (
 								}`
 							);
 
-							activePlayerState.money =
-								activePlayerState.money + opponentState.money;
+							activePlayerState.money += opponentState.money;
 							opponentState.money = 0;
 						} else {
 							trimTurnEvents(turnEvents);
 							turnEvents.push(
-								`%${activePlayerId}% collected ${activePlayerState.money} ${
+								`%${activePlayerId}% collected ${moneyPerOpponent} ${
 									moneyPerOpponent === 1 ? "coin" : "coins"
 								} from %${opponentIds[i]}% - ${establishmentCount} ${
 									establishmentCount === 1
@@ -97,11 +106,24 @@ export const purpleEstablishmentsAction = (
 								}`
 							);
 
-							activePlayerState.money =
-								activePlayerState.money + moneyPerOpponent;
-							opponentState.money = opponentState.money - moneyPerOpponent;
+							activePlayerState.money += moneyPerOpponent;
+							opponentState.money -= moneyPerOpponent;
 						}
 					}
+					break;
+				case "tvStation":
+					if (establishmentCount > 0) {
+						nextPhase = "after-roll";
+					}
+
+					pendingActions.push({
+						playerId: activePlayerId,
+						action: "tv-station",
+					});
+
+					break;
+				case "businessCentre":
+					// @todo(nick-ng): handle business centre
 					break;
 				default:
 					console.error(
@@ -112,6 +134,8 @@ export const purpleEstablishmentsAction = (
 					return;
 			}
 		});
+
+	common.turnPhase = nextPhase;
 
 	return { gameData };
 };
