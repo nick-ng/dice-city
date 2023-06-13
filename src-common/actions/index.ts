@@ -8,6 +8,7 @@ import { blueEstablishmentsAction } from "./blue-establishments.js";
 import { greenEstablishmentsAction } from "./green-establishments.js";
 import { redEstablishmentsAction } from "./red-establishments.js";
 import { purpleEstablishmentsAction } from "./purple-establishments.js";
+import { tvStationAction } from "./tv-station.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
 export const performAction = (
@@ -130,6 +131,8 @@ export const performAction = (
 			return greenEstablishmentsAction(gameData);
 		case "blue-establishments":
 			return blueEstablishmentsAction(gameData);
+		case "tv-station":
+			return tvStationAction(gameData, action);
 		default:
 			console.error("No handler for action", action);
 			return { gameData, error: "no such action" };

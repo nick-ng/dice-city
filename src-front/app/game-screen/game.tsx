@@ -2,24 +2,43 @@ import { useEffect } from "react";
 
 import type { GameData, PlayerAction } from "~common/types/index.js";
 
+import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
+import { establishmentReference } from "~common/constants/buildings.js";
+
 import { getName } from "~front/utils/name-generator.js";
 import { useOptions } from "~front/hooks/options-context.js";
 
 import Build from "~front/app/build/index.js";
 import City from "~front/app/city/index.js";
-import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
+import DiceControls from "./dice-controls.js";
 
 interface GameProps {
 	gameData: GameData;
 	sendViaWebSocket: (action: PlayerAction) => void;
 }
 
+const pendingActionsForMe = (
+	pendingActions: GameData["gameState"]["publicState"]["common"]["pendingActions"],
+	myPlayerId: string
+): string[] => {
+	return pendingActions
+		.filter((p) => p.playerId === myPlayerId)
+		.map((p) => p.action);
+};
+
 export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	const { options } = useOptions();
 	const { gameDetails, gameState, gameSettings } = gameData;
 	const { players, isPublic } = gameDetails;
 	const { common, players: playerStates } = gameState.publicState;
-	const { activePlayerId, supply, turnEvents, turnPhase, turnOrder } = common;
+	const {
+		activePlayerId,
+		supply,
+		turnEvents,
+		turnPhase,
+		turnOrder,
+		pendingActions,
+	} = common;
 	const { landmarks } = gameSettings;
 
 	const showNames = isPublic ? options.showNamesPublic : options.showNames;
@@ -43,6 +62,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		}
 	}, [turnPhase, myTurn]);
 
+	// @todo(nick-ng): notice so you know if a player is deciding who to use their tv station etc. on.
 	return (
 		<div className="flex flex-row">
 			<div className="flex-grow">
@@ -59,36 +79,58 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 							to finish their turn.
 						</div>
 					)}
-					{myTurn && turnPhase === "before-roll" && (
-						<div className="mt-1">
-							<button
-								className="button-default px-4 py-2"
-								onClick={() => {
-									sendViaWebSocket({
-										...options,
-										type: "roll-dice",
-										payload: { diceCount: 1 },
-									});
-								}}
-							>
-								Roll 1 🎲
-							</button>
-							{myState.city.landmarks.trainStation && (
-								<button
-									className="button-default px-4 py-2"
-									onClick={() => {
-										sendViaWebSocket({
-											...options,
-											type: "roll-dice",
-											payload: { diceCount: 2 },
-										});
-									}}
-								>
-									Roll 2 🎲
-								</button>
-							)}
+					{pendingActionsForMe(pendingActions, options.playerId).includes(
+						"tv-station"
+					) && (
+						<div>
+							<h3>TV Station</h3>
+							<p>Choose a player to take 5 coins from.</p>
+							{getPlayerOrderStartingFromPlayer(
+								turnOrder,
+								options.playerId,
+								false
+							).map((opponentId) => {
+								const opponent = players.find((p) => p.id === opponentId);
+								const opponentState = playerStates[opponentId];
+								const landmarkCount = Object.values(
+									opponentState.city.landmarks
+								).reduce((prev, curr) => (curr ? prev + 1 : prev), 0);
+								return (
+									<button
+										key={opponentId}
+										className="button-default px-4 py-2"
+										onClick={() => {
+											sendViaWebSocket({
+												...options,
+												type: "tv-station",
+												payload: {
+													opponentId,
+												},
+											});
+										}}
+									>
+										<span>
+											{getName(opponentId, opponent?.name, showNames)}
+										</span>
+										<span>
+											, M: {playerStates[opponentId].money}, L: {landmarkCount}
+										</span>
+									</button>
+								);
+							})}
 						</div>
 					)}
+					<DiceControls
+						gameData={gameData}
+						options={options}
+						onClick={(diceCount) => {
+							sendViaWebSocket({
+								...options,
+								type: "roll-dice",
+								payload: { diceCount },
+							});
+						}}
+					/>
 					<h2>Your Money: {myState.money}</h2>
 					<details open={myTurn && turnPhase === "before-build"}>
 						<summary className="no-underline">
@@ -137,7 +179,11 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						).reduce((p, c) => (c ? p + 1 : p), 0);
 
 						return (
-							<details className="mt-2" id={`${opponentId}-city`}>
+							<details
+								key={opponentId}
+								className="mt-2"
+								id={`${opponentId}-city`}
+							>
 								<summary className="text-2xl">
 									{getName(opponentId, opponentName, showNames)}, Money:{" "}
 									{opponentState.money}, Landmark
@@ -199,7 +245,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								}}
 							>
 								<span>
-									{getName(playerId, player.name, showNames || !isOpponent)}
+									{getName(playerId, player?.name, showNames || !isOpponent)}
 								</span>
 								<span>
 									{isOpponent
@@ -213,9 +259,9 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				<hr />
 				<details open>
 					<summary className="text-xl">Turn Events</summary>
-					<ul className="list-inside list-disc">
-						{turnEvents.map((event) => (
-							<li key={event}>
+					<ul className="list-inside list-decimal">
+						{turnEvents.map((event, i) => (
+							<li key={`${event}-${i}`}>
 								{players.reduce((prev, { id, name }) => {
 									return prev.replaceAll(
 										`%${id}%`,

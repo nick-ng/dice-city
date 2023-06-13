@@ -45,14 +45,15 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 - src-back/worker.ts:130: @todo(nick-ng): check for "orphaned" games when starting up.
 - src-common/actions/blue-establishments.ts:36: @todo(nick-ng): check dice activation numbers once before the switch statement
-- src-common/actions/index.ts:39: @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
-- src-common/actions/index.ts:40: @todo(nick-ng): check if a player has all 4 landmarks after building
-- src-common/actions/index.ts:55: @todo(nick-ng): handle radio tower
-- src-common/actions/index.ts:99: @todo(nick-ng): put these in the build action?
-- src-common/actions/index.ts:108: @todo(nick-ng): handle amusement park
-- src-common/actions/index.ts:123: @todo(nick-ng): replenish supply from deck
-- src-common/actions/purple-establishments.ts:126: @todo(nick-ng): handle business centre
+- src-common/actions/index.ts:40: @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
+- src-common/actions/index.ts:41: @todo(nick-ng): check if a player has all 4 landmarks after building
+- src-common/actions/index.ts:56: @todo(nick-ng): handle radio tower
+- src-common/actions/index.ts:100: @todo(nick-ng): put these in the build action?
+- src-common/actions/index.ts:109: @todo(nick-ng): handle amusement park
+- src-common/actions/index.ts:124: @todo(nick-ng): replenish supply from deck
+- src-common/actions/purple-establishments.ts:127: @todo(nick-ng): handle business centre
 - src-common/actions/supply.ts:31: @todo(nick-ng): add hybrid supply
+- src-front/app/game-screen/game.tsx:65: @todo(nick-ng): notice so you know if a player is deciding who to use their tv station etc. on.
 - src-front/app/game-screen/lobby.tsx:15: @todo(nick-ng): switch between different supply types
 - src-front/app/game-screen/lobby.tsx:16: @todo(nick-ng): make your game public
 - src-front/app/game-screen/lobby.tsx:17: @todo(nick-ng): leave a game if you aren't the host

@@ -110,16 +110,17 @@ export const purpleEstablishmentsAction = (
 							opponentState.money -= moneyPerOpponent;
 						}
 					}
+
 					break;
 				case "tvStation":
 					if (establishmentCount > 0) {
 						nextPhase = "after-roll";
-					}
 
-					pendingActions.push({
-						playerId: activePlayerId,
-						action: "tv-station",
-					});
+						pendingActions.push({
+							playerId: activePlayerId,
+							action: "tv-station",
+						});
+					}
 
 					break;
 				case "businessCentre":
@@ -133,6 +134,8 @@ export const purpleEstablishmentsAction = (
 					);
 					return;
 			}
+
+			processedEstablishments.push(establishmentKey);
 		});
 
 	common.turnPhase = nextPhase;
