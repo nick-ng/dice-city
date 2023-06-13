@@ -44,7 +44,7 @@
 		"@types/react": "^18.2.12",
 		"@types/react-dom": "^18.2.4",
 		"@types/seedrandom": "^3.0.2",
-		"@types/ws": "^8.5.3",
+		"@types/ws": "^8.5.5",
 		"@vitejs/plugin-react": "^4.0.0",
 		"autoprefixer": "^10.4.12",
 		"compression": "^1.7.4",
