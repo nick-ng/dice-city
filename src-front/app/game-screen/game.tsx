@@ -17,15 +17,6 @@ interface GameProps {
 	sendViaWebSocket: (action: PlayerAction) => void;
 }
 
-const pendingActionsForMe = (
-	pendingActions: GameData["gameState"]["publicState"]["common"]["pendingActions"],
-	myPlayerId: string
-): string[] => {
-	return pendingActions
-		.filter((p) => p.playerId === myPlayerId)
-		.map((p) => p.action);
-};
-
 export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	const { options } = useOptions();
 	const { gameDetails, gameState, gameSettings } = gameData;
@@ -49,6 +40,10 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		(p, c) => (c ? p + 1 : p),
 		0
 	);
+
+	const pendingActionsForMe = pendingActions
+		.filter((p) => p.playerId === options.playerId)
+		.map((p) => p.action);
 
 	useEffect(() => {
 		if (myTurn && turnPhase === "before-build" && myState.money === 0) {
@@ -79,9 +74,46 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 							to finish their turn.
 						</div>
 					)}
-					{pendingActionsForMe(pendingActions, options.playerId).includes(
-						"tv-station"
-					) && (
+					{pendingActionsForMe.includes("tv-station") && (
+						<div>
+							<h3>TV Station</h3>
+							<p>Choose a player to take 5 coins from.</p>
+							{getPlayerOrderStartingFromPlayer(
+								turnOrder,
+								options.playerId,
+								false
+							).map((opponentId) => {
+								const opponent = players.find((p) => p.id === opponentId);
+								const opponentState = playerStates[opponentId];
+								const landmarkCount = Object.values(
+									opponentState.city.landmarks
+								).reduce((prev, curr) => (curr ? prev + 1 : prev), 0);
+								return (
+									<button
+										key={opponentId}
+										className="button-default px-4 py-2"
+										onClick={() => {
+											sendViaWebSocket({
+												...options,
+												type: "tv-station",
+												payload: {
+													opponentId,
+												},
+											});
+										}}
+									>
+										<span>
+											{getName(opponentId, opponent?.name, showNames)}
+										</span>
+										<span>
+											, M: {playerStates[opponentId].money}, L: {landmarkCount}
+										</span>
+									</button>
+								);
+							})}
+						</div>
+					)}
+					{pendingActionsForMe.includes("business-centre") && (
 						<div>
 							<h3>TV Station</h3>
 							<p>Choose a player to take 5 coins from.</p>

@@ -1,6 +1,7 @@
 import type { Action, GameData } from "~common/types/index.js";
 
 import { establishmentReference } from "~common/constants/buildings.js";
+import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
 const TV_STATION_COINS = 5;
 
@@ -127,6 +128,8 @@ export const tvStationAction = (
 	if (pendingActions.length === 0) {
 		common.turnPhase = "before-build";
 	}
+
+	trimTurnEvents(turnEvents);
 
 	return { gameData };
 };

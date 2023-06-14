@@ -28,7 +28,7 @@ export const getPlayerOrderStartingFromPlayer = (
 };
 
 export const trimTurnEvents = (turnEvents: any[]): void => {
-	const excess = turnEvents.length - MAX_TURN_EVENTS + 1;
+	const excess = turnEvents.length - MAX_TURN_EVENTS;
 
 	if (excess > 0) {
 		turnEvents.splice(0, excess);

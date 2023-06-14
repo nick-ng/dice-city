@@ -91,7 +91,6 @@ export const blueEstablishmentsAction = (
 				player.money += moneyReceived;
 
 				if (moneyReceived > 0) {
-					trimTurnEvents(turnEvents);
 					turnEvents.push(
 						`%${player.playerId}% collected ${moneyReceived} ${
 							moneyReceived === 1 ? "coin" : "coins"
@@ -101,6 +100,7 @@ export const blueEstablishmentsAction = (
 								: establishment.pluralDisplay
 						}`
 					);
+					trimTurnEvents(turnEvents);
 				}
 			});
 		});

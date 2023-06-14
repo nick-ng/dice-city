@@ -50,6 +50,18 @@ export const tvStationSchema = z.object({
 	playerPassword: z.string(),
 });
 
+export const businessCentreSchema = z.object({
+	type: z.literal("business-centre"),
+	isServer: z.optional(z.literal(false)),
+	payload: z.object({
+		opponentId: z.string(),
+		myOffer: z.string(),
+		opponentOffer: z.string(),
+	}),
+	playerId: z.string(),
+	playerPassword: z.string(),
+});
+
 export const buildEstablishmentSchema = z.object({
 	type: z.literal("build"),
 	isServer: z.optional(z.literal(false)),
@@ -65,6 +77,7 @@ export const playerActionsSchema = z.union([
 	startSchema,
 	rollSchema,
 	tvStationSchema,
+	businessCentreSchema,
 	buildEstablishmentSchema,
 ]);
 

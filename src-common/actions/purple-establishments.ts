@@ -1,4 +1,4 @@
-import type { GameData, EstablishmentList } from "~common/types/index.js";
+import type { GameData } from "~common/types/index.js";
 
 import { establishmentReference } from "~common/constants/buildings.js";
 import {
@@ -70,7 +70,6 @@ export const purpleEstablishmentsAction = (
 						const opponentState = playerStates[opponentIds[i]];
 
 						if (opponentState.money === 0) {
-							trimTurnEvents(turnEvents);
 							turnEvents.push(
 								`%${activePlayerId}% couldn't collect any coins from %${
 									opponentIds[i]
@@ -81,7 +80,6 @@ export const purpleEstablishmentsAction = (
 								}`
 							);
 						} else if (opponentState.money < moneyPerOpponent) {
-							trimTurnEvents(turnEvents);
 							turnEvents.push(
 								`%${activePlayerId}% collected ${opponentState.money} ${
 									opponentState.money === 1 ? "coin" : "coins"
@@ -95,7 +93,6 @@ export const purpleEstablishmentsAction = (
 							activePlayerState.money += opponentState.money;
 							opponentState.money = 0;
 						} else {
-							trimTurnEvents(turnEvents);
 							turnEvents.push(
 								`%${activePlayerId}% collected ${moneyPerOpponent} ${
 									moneyPerOpponent === 1 ? "coin" : "coins"
@@ -124,7 +121,14 @@ export const purpleEstablishmentsAction = (
 
 					break;
 				case "businessCentre":
-					// @todo(nick-ng): handle business centre
+					if (establishmentCount > 0) {
+						nextPhase = "after-roll";
+
+						pendingActions.push({
+							playerId: activePlayerId,
+							action: "business-centre",
+						});
+					}
 					break;
 				default:
 					console.error(
@@ -134,6 +138,8 @@ export const purpleEstablishmentsAction = (
 					);
 					return;
 			}
+
+			trimTurnEvents(turnEvents);
 
 			processedEstablishments.push(establishmentKey);
 		});

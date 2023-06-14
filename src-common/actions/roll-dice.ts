@@ -2,6 +2,8 @@ import seedrandom from "seedrandom";
 
 import type { Action, GameData } from "~common/types/index.js";
 
+import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+
 const rollDice = (count: 1 | 2, gameData: GameData, sides = 6): number[] => {
 	const rng = seedrandom(`${gameData.gameDetails.id}-${gameData.lastActionId}`);
 
@@ -93,6 +95,8 @@ export const rollDiceAction = (
 			)})`
 		);
 	}
+
+	trimTurnEvents(common.turnEvents);
 
 	return {
 		gameData,

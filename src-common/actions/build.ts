@@ -4,6 +4,7 @@ import {
 	landmarkReference,
 } from "../constants/buildings.js";
 
+// @todo(nick-ng): log action in turn events
 export const buildAction = (
 	gameData: GameData,
 	action: Action,

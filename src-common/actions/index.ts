@@ -114,11 +114,12 @@ export const performAction = (
 				tempResult.gameData.gameState.publicState.common.turnPhase =
 					"before-roll";
 
-				trimTurnEvents(
-					tempResult.gameData.gameState.publicState.common.turnEvents
-				);
 				tempResult.gameData.gameState.publicState.common.turnEvents.push(
 					`It is %${turnOrder[nextPlayerIndex]}%'s turn`
+				);
+
+				trimTurnEvents(
+					tempResult.gameData.gameState.publicState.common.turnEvents
 				);
 
 				// @todo(nick-ng): replenish supply from deck

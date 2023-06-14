@@ -73,7 +73,7 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
-						trimTurnEvents(turnEvents);
+
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
@@ -92,7 +92,7 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
-						trimTurnEvents(turnEvents);
+
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
@@ -113,7 +113,7 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
-						trimTurnEvents(turnEvents);
+
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
@@ -134,7 +134,7 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
-						trimTurnEvents(turnEvents);
+
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
@@ -155,7 +155,7 @@ export const greenEstablishmentsAction = (
 						activePlayerState.money += moneyReceived;
 
 						processedEstablishments.push(establishmentKey);
-						trimTurnEvents(turnEvents);
+
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
@@ -171,6 +171,8 @@ export const greenEstablishmentsAction = (
 					console.info("couldn't handle green establishment", establishmentKey);
 			}
 		});
+
+	trimTurnEvents(turnEvents);
 
 	return {
 		gameData,
