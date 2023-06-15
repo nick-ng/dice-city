@@ -3,14 +3,14 @@ import { useEffect } from "react";
 import type { GameData, PlayerAction } from "~common/types/index.js";
 
 import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
-import { establishmentReference } from "~common/constants/buildings.js";
 
-import { getName } from "~front/utils/name-generator.js";
+import { getName, replaceName } from "~front/utils/name-generator.js";
 import { useOptions } from "~front/hooks/options-context.js";
 
 import Build from "~front/app/build/index.js";
 import City from "~front/app/city/index.js";
 import DiceControls from "./dice-controls.js";
+import BusinessCentreControls from "./business-centre-controls.js";
 
 interface GameProps {
 	gameData: GameData;
@@ -113,45 +113,17 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 							})}
 						</div>
 					)}
-					{pendingActionsForMe.includes("business-centre") && (
-						<div>
-							<h3>TV Station</h3>
-							<p>Choose a player to take 5 coins from.</p>
-							{getPlayerOrderStartingFromPlayer(
-								turnOrder,
-								options.playerId,
-								false
-							).map((opponentId) => {
-								const opponent = players.find((p) => p.id === opponentId);
-								const opponentState = playerStates[opponentId];
-								const landmarkCount = Object.values(
-									opponentState.city.landmarks
-								).reduce((prev, curr) => (curr ? prev + 1 : prev), 0);
-								return (
-									<button
-										key={opponentId}
-										className="button-default px-4 py-2"
-										onClick={() => {
-											sendViaWebSocket({
-												...options,
-												type: "tv-station",
-												payload: {
-													opponentId,
-												},
-											});
-										}}
-									>
-										<span>
-											{getName(opponentId, opponent?.name, showNames)}
-										</span>
-										<span>
-											, M: {playerStates[opponentId].money}, L: {landmarkCount}
-										</span>
-									</button>
-								);
-							})}
-						</div>
-					)}
+					<BusinessCentreControls
+						gameData={gameData}
+						options={options}
+						onClick={(payload) => {
+							sendViaWebSocket({
+								...options,
+								type: "business-centre",
+								payload,
+							});
+						}}
+					/>
 					<DiceControls
 						gameData={gameData}
 						options={options}
@@ -294,12 +266,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					<ul className="list-inside list-decimal">
 						{turnEvents.map((event, i) => (
 							<li key={`${event}-${i}`}>
-								{players.reduce((prev, { id, name }) => {
-									return prev.replaceAll(
-										`%${id}%`,
-										getName(id, name, showNames || id === options.playerId)
-									);
-								}, event)}
+								{replaceName(players, !!showNames, options.playerId, event)}
 							</li>
 						))}
 					</ul>

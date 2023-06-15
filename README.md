@@ -46,13 +46,14 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-back/worker.ts:130: @todo(nick-ng): check for "orphaned" games when starting up.
 - src-common/actions/blue-establishments.ts:36: @todo(nick-ng): check dice activation numbers once before the switch statement
 - src-common/actions/build.ts:7: @todo(nick-ng): log action in turn events
-- src-common/actions/index.ts:40: @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
-- src-common/actions/index.ts:41: @todo(nick-ng): check if a player has all 4 landmarks after building
-- src-common/actions/index.ts:56: @todo(nick-ng): handle radio tower
-- src-common/actions/index.ts:100: @todo(nick-ng): put these in the build action?
-- src-common/actions/index.ts:109: @todo(nick-ng): handle amusement park
-- src-common/actions/index.ts:125: @todo(nick-ng): replenish supply from deck
+- src-common/actions/index.ts:42: @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
+- src-common/actions/index.ts:43: @todo(nick-ng): check if a player has all 4 landmarks after building
+- src-common/actions/index.ts:58: @todo(nick-ng): handle radio tower
+- src-common/actions/index.ts:102: @todo(nick-ng): put these in the build action?
+- src-common/actions/index.ts:111: @todo(nick-ng): handle amusement park
+- src-common/actions/index.ts:127: @todo(nick-ng): replenish supply from deck
 - src-common/actions/supply.ts:31: @todo(nick-ng): add hybrid supply
+- src-front/app/build/index.tsx:30: @todo(nick-ng): hide the build and skip build buttons if it's not the build phase.
 - src-front/app/game-screen/game.tsx:60: @todo(nick-ng): notice so you know if a player is deciding who to use their tv station etc. on.
 - src-front/app/game-screen/lobby.tsx:15: @todo(nick-ng): switch between different supply types
 - src-front/app/game-screen/lobby.tsx:16: @todo(nick-ng): make your game public

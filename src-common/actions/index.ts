@@ -1,5 +1,7 @@
 import type { GameData, Action } from "../types/index.js";
 
+import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+
 import { joinAction } from "./join.js";
 import { startAction } from "./start.js";
 import { rollDiceAction } from "./roll-dice.js";
@@ -9,7 +11,7 @@ import { greenEstablishmentsAction } from "./green-establishments.js";
 import { redEstablishmentsAction } from "./red-establishments.js";
 import { purpleEstablishmentsAction } from "./purple-establishments.js";
 import { tvStationAction } from "./tv-station.js";
-import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+import { businessCentreAction } from "./business-centre.js";
 
 export const performAction = (
 	gameData: GameData,
@@ -134,6 +136,8 @@ export const performAction = (
 			return blueEstablishmentsAction(gameData);
 		case "tv-station":
 			return tvStationAction(gameData, action);
+		case "business-centre":
+			return businessCentreAction(gameData, action);
 		default:
 			console.error("No handler for action", action);
 			return { gameData, error: "no such action" };

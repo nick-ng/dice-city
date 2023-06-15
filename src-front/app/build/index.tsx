@@ -27,6 +27,7 @@ export interface BuildProps {
 	options?: Options;
 }
 
+// @todo(nick-ng): hide the build and skip build buttons if it's not the build phase.
 export default function Build({
 	supply,
 	city,

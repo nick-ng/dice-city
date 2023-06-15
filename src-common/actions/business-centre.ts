@@ -1,11 +1,11 @@
-import type { Action, GameData } from "~common/types/index.js";
+import type { PlayerAction, GameData } from "~common/types/index.js";
 
 import { establishmentReference } from "~common/constants/buildings.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
-export const tvStationAction = (
+export const businessCentreAction = (
 	gameData: GameData,
-	action: Action,
+	action: PlayerAction,
 	skipUpdate = false
 ): { gameData: GameData; error?: string } => {
 	if (action.type !== "business-centre") {
@@ -43,6 +43,12 @@ export const tvStationAction = (
 
 	// skip trading if you don't want to. Japanese version allows you to skip.
 	if (action.playerId === payload.opponentId) {
+		if (skipUpdate) {
+			return {
+				gameData,
+			};
+		}
+
 		pendingActions.splice(businessCentreActionIndex, 1);
 
 		if (pendingActions.length === 0) {
@@ -88,12 +94,19 @@ export const tvStationAction = (
 		};
 	}
 
+	if (!payload.opponentId) {
+		return {
+			gameData,
+			error: "You need to choose an opponent's non-%%major% establishment.",
+		};
+	}
+
 	const opponentEstablishments =
 		playerStates[payload.opponentId].city.establishments;
 
 	if (
-		!opponentEstablishments[myOffer] ||
-		opponentEstablishments[myOffer].length === 0
+		!opponentEstablishments[opponentOffer] ||
+		opponentEstablishments[opponentOffer].length === 0
 	) {
 		return {
 			gameData,
