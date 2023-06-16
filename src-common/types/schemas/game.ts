@@ -66,6 +66,7 @@ const publicStateSchema = z.object({
 			"after-roll",
 			"before-build",
 			"after-build",
+			"end",
 		]),
 		pendingActions: z.array(
 			z.object({

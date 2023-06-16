@@ -36,10 +36,26 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 
 	const myState = playerStates[options.playerId];
 	const myTurn = activePlayerId === options.playerId;
-	const myLandmarkCount = Object.values(myState.city.landmarks).reduce(
-		(p, c) => (c ? p + 1 : p),
-		0
+
+	const landmarkCounts = Object.entries(playerStates).reduce(
+		(accumulator, [playerId, playerState]) => {
+			accumulator[playerId] = Object.values(playerState.city.landmarks).reduce(
+				(p, c) => (c ? p + 1 : p),
+				0
+			);
+
+			return accumulator;
+		},
+		{} as { [playerId: string]: number }
 	);
+
+	const myLandmarkCount = landmarkCounts[options.playerId];
+
+	const winnerId = Object.entries(landmarkCounts).find(
+		(p) => p[1] === gameSettings.landmarks.length
+	)?.[0];
+
+	const winner = players.find((p) => p.id === winnerId);
 
 	const pendingActionsForMe = pendingActions
 		.filter((p) => p.playerId === options.playerId)
@@ -63,8 +79,20 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		<div className="flex flex-row">
 			<div className="flex-grow">
 				<h1>Dice City</h1>
+				{turnPhase === "end" && winner && (
+					<div>
+						<p>The game is over.</p>
+						{winnerId === options.playerId ? (
+							<h2>🏆 You are the winner! 🏆</h2>
+						) : (
+							<h2>
+								{getName(winner.id, winner.name, showNames)} is the winner!
+							</h2>
+						)}
+					</div>
+				)}
 				<div>
-					{!myTurn && (
+					{turnPhase !== "end" && !myTurn && (
 						<div>
 							Waiting for{" "}
 							{getName(
@@ -85,10 +113,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								false
 							).map((opponentId) => {
 								const opponent = players.find((p) => p.id === opponentId);
-								const opponentState = playerStates[opponentId];
-								const landmarkCount = Object.values(
-									opponentState.city.landmarks
-								).reduce((prev, curr) => (curr ? prev + 1 : prev), 0);
+
 								return (
 									<button
 										key={opponentId}
@@ -107,7 +132,8 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 											{getName(opponentId, opponent?.name, showNames)}
 										</span>
 										<span>
-											, M: {playerStates[opponentId].money}, L: {landmarkCount}
+											, M: {playerStates[opponentId].money}, L:{" "}
+											{landmarkCounts[opponentId]}
 										</span>
 									</button>
 								);
@@ -137,7 +163,11 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						}}
 					/>
 					<h2>Your Money: {myState.money}</h2>
-					<details open={myTurn && turnPhase === "before-build"}>
+					<details
+						open={
+							turnPhase === "end" || (myTurn && turnPhase === "before-build")
+						}
+					>
 						<summary className="no-underline">
 							<h2 className="inline-block underline">Supply</h2>
 						</summary>
@@ -188,6 +218,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								key={opponentId}
 								className="mt-2"
 								id={`${opponentId}-city`}
+								open={turnPhase === "end"}
 							>
 								<summary className="text-2xl">
 									{getName(opponentId, opponentName, showNames)}, Money:{" "}
@@ -206,7 +237,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 			</div>
 			<div className="flex-shrink-0">
 				<h3>Players</h3>
-				<ul className="list-inside">
+				<ul className="ml-4 list-outside">
 					{getPlayerOrderStartingFromPlayer(
 						turnOrder,
 						options.playerId,
@@ -264,9 +295,12 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				<hr />
 				<details open>
 					<summary className="text-xl">Turn Events</summary>
-					<ul className="list-inside list-disc">
+					<ul className="ml-4 list-outside list-disc">
 						{turnEvents.map((event, i) => (
-							<li key={`${event}-${i}`}>
+							<li
+								key={`${event}-${i}`}
+								className="max-w-xs px-0.5 even:bg-gray-200 dark:even:bg-gray-600"
+							>
 								{replaceName(players, !!showNames, options.playerId, event)}
 							</li>
 						))}
