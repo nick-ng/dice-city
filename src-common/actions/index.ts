@@ -12,6 +12,7 @@ import { redEstablishmentsAction } from "./red-establishments.js";
 import { purpleEstablishmentsAction } from "./purple-establishments.js";
 import { tvStationAction } from "./tv-station.js";
 import { businessCentreAction } from "./business-centre.js";
+import { checkVictory } from "./check-victory.js";
 
 export const performAction = (
 	gameData: GameData,
@@ -40,7 +41,6 @@ export const performAction = (
 	}
 
 	// @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
-	// @todo(nick-ng): check if a player has all 4 landmarks after building
 	let tempResult: { gameData: GameData; error?: string } = { gameData };
 
 	switch (action.type) {
@@ -98,34 +98,44 @@ export const performAction = (
 		case "build":
 			tempResult = buildAction(gameData, action);
 
-			if (!tempResult.error) {
-				// @todo(nick-ng): put these in the build action?
-				const turnOrder =
-					tempResult.gameData.gameState.publicState.common.turnOrder;
-				const activePlayerId =
-					tempResult.gameData.gameState.publicState.common.activePlayerId;
-				const currentPlayerIndex = turnOrder.findIndex(
-					(p) => p === activePlayerId
-				);
-
-				// @todo(nick-ng): handle amusement park
-				const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
-
-				tempResult.gameData.gameState.publicState.common.activePlayerId =
-					turnOrder[nextPlayerIndex];
-				tempResult.gameData.gameState.publicState.common.turnPhase =
-					"before-roll";
-
-				tempResult.gameData.gameState.publicState.common.turnEvents.push(
-					`It is %${turnOrder[nextPlayerIndex]}%'s turn`
-				);
-
-				trimTurnEvents(
-					tempResult.gameData.gameState.publicState.common.turnEvents
-				);
-
-				// @todo(nick-ng): replenish supply from deck
+			if (tempResult.error) {
+				return tempResult;
 			}
+
+			const { gameData: newGameData, gameOver } = checkVictory(
+				tempResult.gameData
+			);
+
+			if (gameOver) {
+				return { gameData: newGameData };
+			}
+
+			// @todo(nick-ng): put these in the build action?
+			const turnOrder =
+				tempResult.gameData.gameState.publicState.common.turnOrder;
+			const activePlayerId =
+				tempResult.gameData.gameState.publicState.common.activePlayerId;
+			const currentPlayerIndex = turnOrder.findIndex(
+				(p) => p === activePlayerId
+			);
+
+			// @todo(nick-ng): handle amusement park
+			const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
+
+			tempResult.gameData.gameState.publicState.common.activePlayerId =
+				turnOrder[nextPlayerIndex];
+			tempResult.gameData.gameState.publicState.common.turnPhase =
+				"before-roll";
+
+			tempResult.gameData.gameState.publicState.common.turnEvents.push(
+				`It is %${turnOrder[nextPlayerIndex]}%'s turn`
+			);
+
+			trimTurnEvents(
+				tempResult.gameData.gameState.publicState.common.turnEvents
+			);
+
+			// @todo(nick-ng): replenish supply from deck
 
 			return tempResult;
 		case "red-establishments":

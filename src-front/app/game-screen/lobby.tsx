@@ -42,7 +42,7 @@ export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
 		<div>
 			<h2>Game Lobby</h2>
 			<h3>{players.length > 0 ? "Players" : "No one has joined the game"}</h3>
-			<ul className="list-inside list-disc">
+			<ul className="ml-4 list-outside list-disc">
 				{players.map((player) => {
 					return (
 						<li key={player.id}>

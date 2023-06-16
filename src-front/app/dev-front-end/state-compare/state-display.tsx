@@ -36,7 +36,7 @@ export default function StateDisplay({ gameData }: StateDisplayProps) {
 			</div>
 			<div>
 				Processed Establishments: {processedEstablishments.length}
-				<ul className="list-inside list-disc">
+				<ul className="ml-4 list-outside list-disc">
 					{processedEstablishments.map((establishmentKey) => (
 						<li key={establishmentKey}>{establishmentKey}</li>
 					))}
@@ -44,7 +44,7 @@ export default function StateDisplay({ gameData }: StateDisplayProps) {
 			</div>
 			<div>
 				Turn Events: {turnEvents.length}
-				<ol className="list-inside list-decimal">
+				<ol className="ml-4 list-outside list-decimal">
 					{turnEvents.map((turnEvent, i) => (
 						<li key={`${turnEvent}-${i}`}>
 							{players.reduce((prev, { id, name }) => {

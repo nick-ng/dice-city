@@ -96,7 +96,7 @@ export const greenEstablishmentsAction = (
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank - ${establishmentCount} convenience ${
+							} from the bank - ${establishmentCount} ${
 								establishmentCount === 1
 									? establishment.display
 									: establishment.pluralDisplay
@@ -117,7 +117,7 @@ export const greenEstablishmentsAction = (
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank - ${establishmentCount} cheese ${
+							} from the bank - ${establishmentCount} ${
 								establishmentCount === 1
 									? establishment.display
 									: establishment.pluralDisplay
@@ -138,7 +138,7 @@ export const greenEstablishmentsAction = (
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank - ${establishmentCount} furniture ${
+							} from the bank - ${establishmentCount} ${
 								establishmentCount === 1
 									? establishment.display
 									: establishment.pluralDisplay
@@ -159,7 +159,7 @@ export const greenEstablishmentsAction = (
 						turnEvents.push(
 							`%${activePlayerId}% collected ${moneyReceived} ${
 								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank - ${establishmentCount} fruit and vegetable ${
+							} from the bank - ${establishmentCount} ${
 								establishmentCount === 1
 									? establishment.display
 									: establishment.pluralDisplay
