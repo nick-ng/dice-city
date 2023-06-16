@@ -152,7 +152,7 @@ const tempEstablishmentReference: {
 		picture: ["🏢", "🏢"],
 		cost: 8,
 		effect:
-			"Trade one non %%major% establishment with another player, on your turn only.",
+			"Trade one non-%%major% establishment with another player, on your turn only.",
 	},
 	cheeseFactory: {
 		colour: "green",

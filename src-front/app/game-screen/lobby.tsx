@@ -12,8 +12,11 @@ interface LobbyProps {
 	sendViaWebSocket: (action: PlayerAction) => void;
 }
 
-// @todo(nick-ng): Switch between different supply types
-// @todo(nick-ng): Host public game
+// @todo(nick-ng): switch between different supply types
+// @todo(nick-ng): make your game public
+// @todo(nick-ng): leave a game if you aren't the host
+// @todo(nick-ng): kick a player from your game if you are the host
+// @todo(nick-ng): ready check?
 export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
 	const { options } = useOptions();
 	const { gameDetails } = gameData;

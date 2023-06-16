@@ -6,7 +6,11 @@ import { allAdjectives } from "./adjectives.js";
 const adjectiveCount = 2;
 
 // @todo(nick-ng): handle plural adjectives?
-export const getName = (seed: string, name = "", showName = false) => {
+export const getName = (
+	seed: string,
+	name?: string | null,
+	showName = false
+): string => {
 	if (name && showName) {
 		return name;
 	}
@@ -37,3 +41,21 @@ export const getName = (seed: string, name = "", showName = false) => {
 		noun,
 	].join("");
 };
+
+export const replaceName = (
+	data: {
+		id: string;
+		name?: string | null;
+	}[],
+	showName: boolean,
+	playerId: string,
+	text: string
+): string =>
+	data.reduce(
+		(accumulator, { id, name }) =>
+			accumulator.replaceAll(
+				`%${id}%`,
+				getName(id, name, showName || id === playerId)
+			),
+		text
+	);

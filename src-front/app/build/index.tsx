@@ -9,6 +9,7 @@ import type { Options } from "~front/hooks/options-context.js";
 
 import {
 	idToBuilding,
+	establishmentReference,
 	landmarkReference,
 } from "~common/constants/buildings.js";
 import { buildAction } from "~common/actions/build.js";
@@ -26,6 +27,7 @@ export interface BuildProps {
 	options?: Options;
 }
 
+// @todo(nick-ng): hide the build and skip build buttons if it's not the build phase.
 export default function Build({
 	supply,
 	city,
@@ -65,6 +67,19 @@ export default function Build({
 				true
 			).error || "";
 	}
+
+	const actualSupply = Object.entries(supply).reduce(
+		(prev, [key, buildings]) => {
+			const establishment = establishmentReference[key];
+
+			if (establishment.tag !== "major" || !city.establishments[key]?.length) {
+				prev[key] = buildings;
+			}
+
+			return prev;
+		},
+		{} as SupplyType
+	);
 
 	return (
 		<div className="flex flex-row items-start justify-start">
@@ -130,7 +145,7 @@ export default function Build({
 					})}
 				</div>
 				<EstablishmentList
-					establishments={supply}
+					establishments={actualSupply}
 					onChoose={(buildingString) => {
 						setChosenBuildingString(buildingString);
 					}}

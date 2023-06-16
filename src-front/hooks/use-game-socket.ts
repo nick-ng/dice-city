@@ -139,6 +139,7 @@ export const useGameSocket = (
 							break;
 						case "game-data":
 							const playerGameData = message.payload.playerGameData;
+
 							if (playerGameData.gameDetails.id === gameId) {
 								setPlayerGameData(playerGameData);
 								setConnectionStatus("connected");

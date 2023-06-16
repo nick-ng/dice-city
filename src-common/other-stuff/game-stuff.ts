@@ -41,6 +41,7 @@ export const createGameFromHostId = (
 					turnEvents: [],
 					turnPhase: "lobby",
 					turnOrder: [],
+					pendingActions: [],
 				},
 				players: {
 					[hostId]: {

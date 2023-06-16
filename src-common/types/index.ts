@@ -11,7 +11,11 @@ import {
 	gameStateSchema,
 	gameDataSchema,
 } from "./schemas/game.js";
-import { playerActionsSchema, actionSchema } from "./schemas/actions.js";
+import {
+	playerActionsSchema,
+	actionSchema,
+	businessCentreSchema as businessCentreActionSchema,
+} from "./schemas/actions.js";
 import {
 	newGameRequestSchema,
 	newGameResponseSchema,
@@ -39,6 +43,7 @@ export type GameData = z.infer<typeof gameDataSchema>;
 
 export type PlayerAction = z.infer<typeof playerActionsSchema>;
 export type Action = z.infer<typeof actionSchema>;
+export type BusinessCentreAction = z.infer<typeof businessCentreActionSchema>;
 
 export type NewGameRequest = z.infer<typeof newGameRequestSchema>;
 export type NewGameResponse = z.infer<typeof newGameResponseSchema>;

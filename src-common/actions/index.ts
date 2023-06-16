@@ -1,5 +1,7 @@
 import type { GameData, Action } from "../types/index.js";
 
+import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+
 import { joinAction } from "./join.js";
 import { startAction } from "./start.js";
 import { rollDiceAction } from "./roll-dice.js";
@@ -7,7 +9,9 @@ import { buildAction } from "./build.js";
 import { blueEstablishmentsAction } from "./blue-establishments.js";
 import { greenEstablishmentsAction } from "./green-establishments.js";
 import { redEstablishmentsAction } from "./red-establishments.js";
-import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+import { purpleEstablishmentsAction } from "./purple-establishments.js";
+import { tvStationAction } from "./tv-station.js";
+import { businessCentreAction } from "./business-centre.js";
 
 export const performAction = (
 	gameData: GameData,
@@ -51,6 +55,8 @@ export const performAction = (
 				return tempResult;
 			}
 
+			// @todo(nick-ng): handle radio tower
+
 			tempResult = redEstablishmentsAction(gameData);
 			if (tempResult.error) {
 				console.error("error when auto red-establishments:", tempResult.error);
@@ -74,11 +80,15 @@ export const performAction = (
 				return tempResult;
 			}
 
-			// @todo(nick-ng): purple establishments go here
+			tempResult = purpleEstablishmentsAction(gameData);
 
-			// @todo(nick-ng): remove once you can handle purple establishments
-			tempResult.gameData.gameState.publicState.common.turnPhase =
-				"before-build";
+			if (tempResult.error) {
+				console.error(
+					"error when auto purple-establishments:",
+					tempResult.error
+				);
+				return tempResult;
+			}
 
 			if (tempResult.error) {
 				return tempResult;
@@ -97,6 +107,8 @@ export const performAction = (
 				const currentPlayerIndex = turnOrder.findIndex(
 					(p) => p === activePlayerId
 				);
+
+				// @todo(nick-ng): handle amusement park
 				const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
 
 				tempResult.gameData.gameState.publicState.common.activePlayerId =
@@ -104,11 +116,12 @@ export const performAction = (
 				tempResult.gameData.gameState.publicState.common.turnPhase =
 					"before-roll";
 
-				trimTurnEvents(
-					tempResult.gameData.gameState.publicState.common.turnEvents
-				);
 				tempResult.gameData.gameState.publicState.common.turnEvents.push(
 					`It is %${turnOrder[nextPlayerIndex]}%'s turn`
+				);
+
+				trimTurnEvents(
+					tempResult.gameData.gameState.publicState.common.turnEvents
 				);
 
 				// @todo(nick-ng): replenish supply from deck
@@ -121,6 +134,10 @@ export const performAction = (
 			return greenEstablishmentsAction(gameData);
 		case "blue-establishments":
 			return blueEstablishmentsAction(gameData);
+		case "tv-station":
+			return tvStationAction(gameData, action);
+		case "business-centre":
+			return businessCentreAction(gameData, action);
 		default:
 			console.error("No handler for action", action);
 			return { gameData, error: "no such action" };

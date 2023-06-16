@@ -77,6 +77,7 @@ const publicCommonState: GameData["gameState"]["publicState"]["common"] = {
 	processedEstablishments: [],
 	turnEvents: ["%84c45332-4911-4823-839e-996bad56ba61% rolled a 1"],
 	turnOrder: [],
+	pendingActions: [],
 	supply: {
 		familyRestaurant: [
 			"familyRestaurant:5",

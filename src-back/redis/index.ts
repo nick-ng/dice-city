@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { createClient } from "redis";
 
-export const MAX_GAME_AGE_SECONDS = 1 * 60 * 60;
+export const MAX_GAME_AGE_SECONDS = 5 * 60 * 60;
 
 export type RedisClient2 = ReturnType<typeof createClient> & {
 	id?: string;
