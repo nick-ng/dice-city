@@ -57,7 +57,8 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		}
 	}, [turnPhase, myTurn]);
 
-	// @todo(nick-ng): notice so you know if a player is deciding who to use their tv station etc. on.
+	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on.
+	// @todo(nick-ng): show what was rolled in the main area.
 	return (
 		<div className="flex flex-row">
 			<div className="flex-grow">
@@ -263,7 +264,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				<hr />
 				<details open>
 					<summary className="text-xl">Turn Events</summary>
-					<ul className="list-inside list-decimal">
+					<ul className="list-inside list-disc">
 						{turnEvents.map((event, i) => (
 							<li key={`${event}-${i}`}>
 								{replaceName(players, !!showNames, options.playerId, event)}
