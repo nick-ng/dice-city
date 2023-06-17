@@ -134,7 +134,7 @@ export const purpleEstablishmentsAction = (
 					console.error(
 						"Unknown purple establishment",
 						establishmentKey,
-						establishment
+						JSON.stringify(establishment)
 					);
 					return;
 			}

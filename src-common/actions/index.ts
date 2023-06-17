@@ -5,13 +5,15 @@ import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 import { joinAction } from "./join.js";
 import { startAction } from "./start.js";
 import { rollDiceAction } from "./roll-dice.js";
+import { rerollDiceAction } from "./reroll-dice.js";
 import { buildAction } from "./build.js";
 import { blueEstablishmentsAction } from "./blue-establishments.js";
 import { greenEstablishmentsAction } from "./green-establishments.js";
 import { redEstablishmentsAction } from "./red-establishments.js";
-import { purpleEstablishmentsAction } from "./purple-establishments.js";
+import { allEstablishmentsAction } from "./all-establishments.js";
 import { tvStationAction } from "./tv-station.js";
 import { businessCentreAction } from "./business-centre.js";
+import { radioTowerHandler } from "./radio-tower.js";
 import { checkVictory } from "./check-victory.js";
 
 export const performAction = (
@@ -40,7 +42,6 @@ export const performAction = (
 		}
 	}
 
-	// @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
 	let tempResult: { gameData: GameData; error?: string } = { gameData };
 
 	switch (action.type) {
@@ -55,46 +56,19 @@ export const performAction = (
 				return tempResult;
 			}
 
-			// @todo(nick-ng): handle radio tower
-
-			tempResult = redEstablishmentsAction(gameData);
-			if (tempResult.error) {
-				console.error("error when auto red-establishments:", tempResult.error);
-				return tempResult;
+			if (radioTowerHandler(gameData).requireInput) {
+				return { gameData };
 			}
 
-			tempResult = greenEstablishmentsAction(gameData);
-
-			if (tempResult.error) {
-				console.error(
-					"error when auto green-establishments:",
-					tempResult.error
-				);
-				return tempResult;
-			}
-
-			tempResult = blueEstablishmentsAction(gameData);
-
-			if (tempResult.error) {
-				console.error("error when auto blue-establishments:", tempResult.error);
-				return tempResult;
-			}
-
-			tempResult = purpleEstablishmentsAction(gameData);
-
-			if (tempResult.error) {
-				console.error(
-					"error when auto purple-establishments:",
-					tempResult.error
-				);
-				return tempResult;
-			}
+			return allEstablishmentsAction(gameData);
+		case "reroll-dice":
+			tempResult = rerollDiceAction(gameData, action);
 
 			if (tempResult.error) {
 				return tempResult;
 			}
 
-			return tempResult;
+			return allEstablishmentsAction(gameData);
 		case "build":
 			tempResult = buildAction(gameData, action);
 
@@ -122,6 +96,7 @@ export const performAction = (
 			// @todo(nick-ng): handle amusement park
 			const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
 
+			// @todo(nick-ng): better way to advance game state
 			tempResult.gameData.gameState.publicState.common.activePlayerId =
 				turnOrder[nextPlayerIndex];
 			tempResult.gameData.gameState.publicState.common.turnPhase =
@@ -149,7 +124,7 @@ export const performAction = (
 		case "business-centre":
 			return businessCentreAction(gameData, action);
 		default:
-			console.error("No handler for action", action);
+			console.error("No handler for action", JSON.stringify(action));
 			return { gameData, error: "no such action" };
 	}
 };

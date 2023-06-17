@@ -47,11 +47,10 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/blue-establishments.ts:36: @todo(nick-ng): check dice activation numbers once before the switch statement
 - src-common/actions/build.ts:7: @todo(nick-ng): log action in turn events
 - src-common/actions/business-centre.ts:6: @todo(nick-ng): show cards when you hover the buttons.
-- src-common/actions/index.ts:43: @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
-- src-common/actions/index.ts:58: @todo(nick-ng): handle radio tower
-- src-common/actions/index.ts:113: @todo(nick-ng): put these in the build action?
-- src-common/actions/index.ts:122: @todo(nick-ng): handle amusement park
-- src-common/actions/index.ts:138: @todo(nick-ng): replenish supply from deck
+- src-common/actions/index.ts:87: @todo(nick-ng): put these in the build action?
+- src-common/actions/index.ts:96: @todo(nick-ng): handle amusement park
+- src-common/actions/index.ts:99: @todo(nick-ng): better way to advance game state
+- src-common/actions/index.ts:113: @todo(nick-ng): replenish supply from deck
 - src-common/actions/supply.ts:31: @todo(nick-ng): add hybrid supply
 - src-front/app/build/index.tsx:30: @todo(nick-ng): hide the build and skip build buttons if it's not the build phase.
 - src-front/app/game-screen/game.tsx:76: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on.

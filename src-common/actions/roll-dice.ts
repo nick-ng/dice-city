@@ -4,7 +4,11 @@ import type { Action, GameData } from "~common/types/index.js";
 
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
-const rollDice = (count: 1 | 2, gameData: GameData, sides = 6): number[] => {
+export const rollDice = (
+	count: number,
+	gameData: GameData,
+	sides = 6
+): number[] => {
 	const rng = seedrandom(`${gameData.gameDetails.id}-${gameData.lastActionId}`);
 
 	const result = new Array(count).fill(0).map(() => {
