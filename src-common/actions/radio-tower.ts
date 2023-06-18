@@ -27,7 +27,7 @@ export const radioTowerHandler = (
 			action: "radio-tower",
 		});
 
-		common.turnPhase = "after-roll";
+		common.turnPhase = "before-roll";
 
 		return { gameData, requireInput: true };
 	}

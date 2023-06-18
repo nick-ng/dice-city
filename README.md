@@ -53,8 +53,8 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/index.ts:113: @todo(nick-ng): replenish supply from deck
 - src-common/actions/supply.ts:31: @todo(nick-ng): add hybrid supply
 - src-front/app/build/index.tsx:30: @todo(nick-ng): hide the build and skip build buttons if it's not the build phase.
-- src-front/app/game-screen/game.tsx:76: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on.
-- src-front/app/game-screen/game.tsx:77: @todo(nick-ng): show what was rolled in the main area.
+- src-front/app/game-screen/game.tsx:77: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on.
+- src-front/app/game-screen/game.tsx:78: @todo(nick-ng): show what was rolled in the main area.
 - src-front/app/game-screen/lobby.tsx:15: @todo(nick-ng): switch between different supply types
 - src-front/app/game-screen/lobby.tsx:16: @todo(nick-ng): make your game public
 - src-front/app/game-screen/lobby.tsx:17: @todo(nick-ng): leave a game if you aren't the host

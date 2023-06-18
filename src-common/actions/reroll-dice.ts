@@ -17,7 +17,7 @@ export const rerollDiceAction = (
 	const { common } = publicState;
 	const { activePlayerId, pendingActions, turnPhase, diceRolls } = common;
 
-	if (turnPhase !== "after-roll") {
+	if (turnPhase !== "before-roll") {
 		return { gameData, error: "You cannot re-roll dice right now." };
 	}
 
@@ -33,16 +33,17 @@ export const rerollDiceAction = (
 		return { gameData, error: "You cannot re-roll dice right now." };
 	}
 
+	if (skipUpdate) {
+		return { gameData };
+	}
+
 	pendingActions.splice(radioTowerActionIndex, 1);
+	common.turnPhase = "after-roll";
 
 	const { payload } = action;
 	const { skip } = payload;
 
 	if (skip) {
-		return { gameData };
-	}
-
-	if (skipUpdate) {
 		return { gameData };
 	}
 
