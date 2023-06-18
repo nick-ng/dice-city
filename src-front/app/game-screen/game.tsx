@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import type { GameData, PlayerAction } from "~common/types/index.js";
 
 import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
-import { rerollDiceAction } from "~common/actions/reroll-dice.js";
 
 import { getName, replaceName } from "~front/utils/name-generator.js";
 import { useOptions } from "~front/hooks/options-context.js";
@@ -74,8 +73,9 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		}
 	}, [turnPhase, myTurn]);
 
-	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on.
-	// @todo(nick-ng): show what was rolled in the main area.
+	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
+	// @todo(nick-ng): show what was rolled in the main area
+	// @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game
 	return (
 		<div className="flex flex-row">
 			<div className="flex-grow">
