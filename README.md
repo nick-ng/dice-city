@@ -51,7 +51,7 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/blue-establishments.ts:36: @todo(nick-ng): check dice activation numbers once before the switch statement
 - src-common/actions/build.ts:7: @todo(nick-ng): log action in turn events
 - src-common/actions/business-centre.ts:6: @todo(nick-ng): show cards when you hover the buttons.
-- src-common/actions/index.ts:109: @todo(nick-ng): replenish supply from deck
+- src-common/actions/index.ts:106: @todo(nick-ng): replenish supply from deck
 - src-common/actions/supply.ts:31: @todo(nick-ng): add hybrid supply
 - src-common/constants/buildings.ts:1: @todo(nick-ng): Add Harbor expansion
 - src-front/app/build/index.tsx:30: @todo(nick-ng): hide the build and skip build buttons if it's not the build phase.
