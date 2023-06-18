@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import type { GameData, PlayerAction } from "~common/types/index.js";
 
 import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
+import { rerollDiceAction } from "~common/actions/reroll-dice.js";
 
 import { getName, replaceName } from "~front/utils/name-generator.js";
 import { useOptions } from "~front/hooks/options-context.js";
@@ -154,11 +155,20 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					<DiceControls
 						gameData={gameData}
 						options={options}
-						onClick={(diceCount) => {
+						rollHandler={(diceCount) => {
 							sendViaWebSocket({
 								...options,
 								type: "roll-dice",
 								payload: { diceCount },
+							});
+						}}
+						rerollHandler={(skip) => {
+							sendViaWebSocket({
+								...options,
+								type: "reroll-dice",
+								payload: {
+									skip,
+								},
 							});
 						}}
 					/>

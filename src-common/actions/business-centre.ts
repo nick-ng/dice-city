@@ -42,6 +42,13 @@ export const businessCentreAction = (
 		(p) => p.action === "business-centre" && p.playerId === action.playerId
 	);
 
+	if (businessCentreActionIndex < 0) {
+		return {
+			gameData,
+			error: "No pending Business Centre action to do.",
+		};
+	}
+
 	// skip trading if you don't want to. Japanese version allows you to skip.
 	if (action.playerId === payload.opponentId) {
 		if (skipUpdate) {

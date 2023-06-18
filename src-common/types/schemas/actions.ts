@@ -28,6 +28,16 @@ export const rollSchema = z.object({
 	playerPassword: z.string(),
 });
 
+export const rerollSchema = z.object({
+	type: z.literal("reroll-dice"),
+	isServer: z.optional(z.literal(false)),
+	payload: z.object({
+		skip: z.boolean(),
+	}),
+	playerId: z.string(),
+	playerPassword: z.string(),
+});
+
 export const establishmentsSchema = z.object({
 	playerId: z.optional(z.never()),
 	type: z.enum([
@@ -76,6 +86,7 @@ export const playerActionsSchema = z.union([
 	joinSchema,
 	startSchema,
 	rollSchema,
+	rerollSchema,
 	tvStationSchema,
 	businessCentreSchema,
 	buildEstablishmentSchema,

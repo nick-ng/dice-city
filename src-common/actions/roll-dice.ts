@@ -1,11 +1,17 @@
-import seedrandom from "seedrandom";
+// import seedrandom from "seedrandom";
 
 import type { Action, GameData } from "~common/types/index.js";
 
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
-const rollDice = (count: 1 | 2, gameData: GameData, sides = 6): number[] => {
-	const rng = seedrandom(`${gameData.gameDetails.id}-${gameData.lastActionId}`);
+export const rollDice = (
+	count: number,
+	_gameData: GameData,
+	sides = 6
+): number[] => {
+	// const seed = `${gameData.gameDetails.id}-${gameData.lastActionId}`;
+	// const rng = seedrandom(seed);
+	const rng = Math.random;
 
 	const result = new Array(count).fill(0).map(() => {
 		const die = new Array(sides).fill(0).map((_, i) => ({

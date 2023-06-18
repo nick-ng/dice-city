@@ -1,18 +1,25 @@
 import type { GameData, Action } from "../types/index.js";
 
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+import { landmarkReference } from "~common/constants/buildings.js";
 
 import { joinAction } from "./join.js";
 import { startAction } from "./start.js";
 import { rollDiceAction } from "./roll-dice.js";
+import { rerollDiceAction } from "./reroll-dice.js";
 import { buildAction } from "./build.js";
 import { blueEstablishmentsAction } from "./blue-establishments.js";
 import { greenEstablishmentsAction } from "./green-establishments.js";
 import { redEstablishmentsAction } from "./red-establishments.js";
-import { purpleEstablishmentsAction } from "./purple-establishments.js";
+import { allEstablishmentsAction } from "./all-establishments.js";
 import { tvStationAction } from "./tv-station.js";
 import { businessCentreAction } from "./business-centre.js";
+import { radioTowerHandler } from "./radio-tower.js";
 import { checkVictory } from "./check-victory.js";
+import {
+	amusementParkRollHandler,
+	amusementParkTurnHandler,
+} from "./amusement-park.js";
 
 export const performAction = (
 	gameData: GameData,
@@ -40,7 +47,6 @@ export const performAction = (
 		}
 	}
 
-	// @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
 	let tempResult: { gameData: GameData; error?: string } = { gameData };
 
 	switch (action.type) {
@@ -55,46 +61,23 @@ export const performAction = (
 				return tempResult;
 			}
 
-			// @todo(nick-ng): handle radio tower
-
-			tempResult = redEstablishmentsAction(gameData);
-			if (tempResult.error) {
-				console.error("error when auto red-establishments:", tempResult.error);
-				return tempResult;
+			if (radioTowerHandler(gameData).requireInput) {
+				return { gameData };
 			}
 
-			tempResult = greenEstablishmentsAction(gameData);
+			amusementParkRollHandler(gameData);
 
-			if (tempResult.error) {
-				console.error(
-					"error when auto green-establishments:",
-					tempResult.error
-				);
-				return tempResult;
-			}
-
-			tempResult = blueEstablishmentsAction(gameData);
-
-			if (tempResult.error) {
-				console.error("error when auto blue-establishments:", tempResult.error);
-				return tempResult;
-			}
-
-			tempResult = purpleEstablishmentsAction(gameData);
-
-			if (tempResult.error) {
-				console.error(
-					"error when auto purple-establishments:",
-					tempResult.error
-				);
-				return tempResult;
-			}
+			return allEstablishmentsAction(gameData);
+		case "reroll-dice":
+			tempResult = rerollDiceAction(gameData, action);
 
 			if (tempResult.error) {
 				return tempResult;
 			}
 
-			return tempResult;
+			amusementParkRollHandler(gameData);
+
+			return allEstablishmentsAction(gameData);
 		case "build":
 			tempResult = buildAction(gameData, action);
 
@@ -110,30 +93,18 @@ export const performAction = (
 				return { gameData: newGameData };
 			}
 
-			// @todo(nick-ng): put these in the build action?
-			const turnOrder =
-				tempResult.gameData.gameState.publicState.common.turnOrder;
-			const activePlayerId =
-				tempResult.gameData.gameState.publicState.common.activePlayerId;
-			const currentPlayerIndex = turnOrder.findIndex(
-				(p) => p === activePlayerId
-			);
+			amusementParkTurnHandler(gameData);
 
-			// @todo(nick-ng): handle amusement park
-			const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
+			const { pendingActions } = gameData.gameState.publicState.common;
 
-			tempResult.gameData.gameState.publicState.common.activePlayerId =
-				turnOrder[nextPlayerIndex];
-			tempResult.gameData.gameState.publicState.common.turnPhase =
-				"before-roll";
+			if (pendingActions.length > 0) {
+				console.error(
+					"Unfinished pending actions some how",
+					JSON.stringify(pendingActions)
+				);
 
-			tempResult.gameData.gameState.publicState.common.turnEvents.push(
-				`It is %${turnOrder[nextPlayerIndex]}%'s turn`
-			);
-
-			trimTurnEvents(
-				tempResult.gameData.gameState.publicState.common.turnEvents
-			);
+				pendingActions.splice(0, pendingActions.length);
+			}
 
 			// @todo(nick-ng): replenish supply from deck
 
@@ -149,7 +120,7 @@ export const performAction = (
 		case "business-centre":
 			return businessCentreAction(gameData, action);
 		default:
-			console.error("No handler for action", action);
+			console.error("No handler for action", JSON.stringify(action));
 			return { gameData, error: "no such action" };
 	}
 };

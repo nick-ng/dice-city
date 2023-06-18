@@ -39,6 +39,10 @@ Forked from [this commit](https://github.com/nick-ng/robot-race/tree/4e2171de5a3
 
 Create a `/spec` directory next to the files you want to test then create a file `<name-of-file-to-test>.spec.cjs` in that.
 
+## Notes:
+
+- [Using a Harbour to change your result doesn't remove the "doubles nature" of the roll.](https://boardgamegeek.com/thread/1312128/amusement-park-harbor)
+
 ## ToDos
 
 ### ToDo Comments
@@ -47,15 +51,12 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/blue-establishments.ts:36: @todo(nick-ng): check dice activation numbers once before the switch statement
 - src-common/actions/build.ts:7: @todo(nick-ng): log action in turn events
 - src-common/actions/business-centre.ts:6: @todo(nick-ng): show cards when you hover the buttons.
-- src-common/actions/index.ts:43: @todo(nick-ng): better way to advance game state i.e. after-roll to before-build
-- src-common/actions/index.ts:58: @todo(nick-ng): handle radio tower
-- src-common/actions/index.ts:113: @todo(nick-ng): put these in the build action?
-- src-common/actions/index.ts:122: @todo(nick-ng): handle amusement park
-- src-common/actions/index.ts:138: @todo(nick-ng): replenish supply from deck
+- src-common/actions/index.ts:109: @todo(nick-ng): replenish supply from deck
 - src-common/actions/supply.ts:31: @todo(nick-ng): add hybrid supply
+- src-common/constants/buildings.ts:1: @todo(nick-ng): Add Harbor expansion
 - src-front/app/build/index.tsx:30: @todo(nick-ng): hide the build and skip build buttons if it's not the build phase.
-- src-front/app/game-screen/game.tsx:76: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on.
-- src-front/app/game-screen/game.tsx:77: @todo(nick-ng): show what was rolled in the main area.
+- src-front/app/game-screen/game.tsx:77: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on.
+- src-front/app/game-screen/game.tsx:78: @todo(nick-ng): show what was rolled in the main area.
 - src-front/app/game-screen/lobby.tsx:15: @todo(nick-ng): switch between different supply types
 - src-front/app/game-screen/lobby.tsx:16: @todo(nick-ng): make your game public
 - src-front/app/game-screen/lobby.tsx:17: @todo(nick-ng): leave a game if you aren't the host
