@@ -1,5 +1,7 @@
 import type { Action, GameData } from "~common/types/index.js";
 
+const MAX_PLAYERS = 5;
+
 export const joinAction = (
 	gameData: GameData,
 	action: Action,
@@ -47,7 +49,7 @@ export const joinAction = (
 		};
 	}
 
-	if (gameDetails.players.length === 4) {
+	if (gameDetails.players.length >= MAX_PLAYERS) {
 		return {
 			gameData,
 			error: "The game is full",

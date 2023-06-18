@@ -62,7 +62,7 @@ export const startAction = (
 	common.turnPhase = "before-roll";
 	common.turnOrder = shuffle(players.map((p) => p.id));
 	common.activePlayerId = common.turnOrder[0];
-	const deck = getDeck("base");
+	const deck = getDeck("base", players.length);
 	const temp = getSupply({}, deck);
 	common.supply = temp.supply;
 	secretState.common.deck = temp.deck;
@@ -72,7 +72,7 @@ export const startAction = (
 		publicState.players[id].money = gameSettings.startingMoney;
 		publicState.players[id].city.establishments = {
 			wheatField: [`wheatField:${id}`],
-			ranch: [`ranch:${id}`],
+			bakery: [`bakery:${id}`],
 		};
 		for (let j = 0; j < gameSettings.landmarks.length; j++) {
 			const landmark = gameSettings.landmarks[j];

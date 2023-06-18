@@ -1,6 +1,7 @@
+// @todo(nick-ng): Add Harbor expansion
 import type {
 	Deck,
-	DeckBlueprint,
+	DeckList,
 	Establishment,
 	Landmark,
 } from "../types/index.js";
@@ -222,86 +223,49 @@ const tempEstablishmentReference: {
 export const establishmentReference: { [key: string]: Establishment } =
 	addKeyProperty(tempEstablishmentReference);
 
-export const baseDeck: DeckBlueprint = [
-	{
-		card: "wheatField",
-		count: 6,
-	},
-	{
-		card: "ranch",
-		count: 6,
-	},
-	{
-		card: "bakery",
-		count: 6,
-	},
-	{
-		card: "cafe",
-		count: 6,
-	},
-	{
-		card: "convenienceStore",
-		count: 6,
-	},
-	{
-		card: "forest",
-		count: 6,
-	},
-	{
-		card: "stadium",
-		count: 4,
-	},
-	{
-		card: "tvStation",
-		count: 4,
-	},
-	{
-		card: "businessCentre",
-		count: 4,
-	},
-	{
-		card: "cheeseFactory",
-		count: 6,
-	},
-	{
-		card: "furnitureFactory",
-		count: 6,
-	},
-	{
-		card: "mine",
-		count: 6,
-	},
-	{
-		card: "familyRestaurant",
-		count: 6,
-	},
-	{
-		card: "appleOrchard",
-		count: 6,
-	},
-	{
-		card: "fruitAndVegetableMarket",
-		count: 6,
-	},
+const baseDeckList: DeckList = [
+	"wheatField",
+	"ranch",
+	"bakery",
+	"cafe",
+	"convenienceStore",
+	"forest",
+	"stadium",
+	"tvStation",
+	"businessCentre",
+	"cheeseFactory",
+	"furnitureFactory",
+	"mine",
+	"familyRestaurant",
+	"appleOrchard",
+	"fruitAndVegetableMarket",
 ];
 
-export const makeDeck = (blueprint: DeckBlueprint): Deck => {
-	return blueprint.reduce((accumulator, { card, count }) => {
-		const padLength = (count - 1).toString().length;
+export const makeDeck = (deckList: DeckList, players = 4): Deck => {
+	const deck: Deck = [];
 
-		return accumulator.concat(
-			[...Array(count).keys()].map(
-				(n) => `${card}:${n.toString().padStart(padLength, "0")}`
-			)
-		);
-	}, [] as string[]);
+	for (let i = 0; i < deckList.length; i++) {
+		const establishmentKey = deckList[i];
+		const cardCount =
+			establishmentReference[establishmentKey].tag === "major"
+				? Math.max(players, 4)
+				: 6;
+
+		const padLength = (cardCount - 1).toString().length;
+
+		for (let j = 0; j < cardCount; j++) {
+			deck.push(`${establishmentKey}:${j.toString().padStart(padLength, "0")}`);
+		}
+	}
+
+	return deck;
 };
 
-export const getDeck = (cardSet: "base" = "base"): Deck => {
+export const getDeck = (cardSet = "base", players = 4): Deck => {
 	switch (cardSet) {
 		case "base":
 		default:
-			return makeDeck(baseDeck);
+			return makeDeck(baseDeckList, players);
 	}
 };
 

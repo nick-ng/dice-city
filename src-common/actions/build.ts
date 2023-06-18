@@ -71,7 +71,10 @@ export const buildAction = (
 			};
 		}
 
-		if (establishment.tag === "major" && city.establishments[buildingKey]) {
+		if (
+			establishment.tag === "major" &&
+			city.establishments[buildingKey]?.length >= 1
+		) {
 			return {
 				gameData,
 				error: "cannot have more than one of each %%major% building",

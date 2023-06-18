@@ -28,10 +28,7 @@ export type Building = z.infer<typeof buildingSchema>;
 export type Establishment = z.infer<typeof establishmentSchema>;
 export type Landmark = z.infer<typeof landmarkSchema>;
 
-export type DeckBlueprint = {
-	card: string;
-	count: number;
-}[];
+export type DeckList = string[];
 
 export type Deck = z.infer<typeof deckSchema>;
 export type EstablishmentList = z.infer<typeof establishmentListSchema>;
