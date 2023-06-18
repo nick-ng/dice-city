@@ -1,6 +1,7 @@
 import type { GameData, Action } from "../types/index.js";
 
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+import { landmarkReference } from "~common/constants/buildings.js";
 
 import { joinAction } from "./join.js";
 import { startAction } from "./start.js";
@@ -15,6 +16,10 @@ import { tvStationAction } from "./tv-station.js";
 import { businessCentreAction } from "./business-centre.js";
 import { radioTowerHandler } from "./radio-tower.js";
 import { checkVictory } from "./check-victory.js";
+import {
+	amusementParkRollHandler,
+	amusementParkTurnHandler,
+} from "./amusement-park.js";
 
 export const performAction = (
 	gameData: GameData,
@@ -60,6 +65,8 @@ export const performAction = (
 				return { gameData };
 			}
 
+			amusementParkRollHandler(gameData);
+
 			return allEstablishmentsAction(gameData);
 		case "reroll-dice":
 			tempResult = rerollDiceAction(gameData, action);
@@ -67,6 +74,8 @@ export const performAction = (
 			if (tempResult.error) {
 				return tempResult;
 			}
+
+			amusementParkRollHandler(gameData);
 
 			return allEstablishmentsAction(gameData);
 		case "build":
@@ -84,31 +93,18 @@ export const performAction = (
 				return { gameData: newGameData };
 			}
 
-			// @todo(nick-ng): put these in the build action?
-			const turnOrder =
-				tempResult.gameData.gameState.publicState.common.turnOrder;
-			const activePlayerId =
-				tempResult.gameData.gameState.publicState.common.activePlayerId;
-			const currentPlayerIndex = turnOrder.findIndex(
-				(p) => p === activePlayerId
-			);
+			amusementParkTurnHandler(gameData);
 
-			// @todo(nick-ng): handle amusement park
-			const nextPlayerIndex = (currentPlayerIndex + 1) % turnOrder.length;
+			const { pendingActions } = gameData.gameState.publicState.common;
 
-			// @todo(nick-ng): better way to advance game state
-			tempResult.gameData.gameState.publicState.common.activePlayerId =
-				turnOrder[nextPlayerIndex];
-			tempResult.gameData.gameState.publicState.common.turnPhase =
-				"before-roll";
+			if (pendingActions.length > 0) {
+				console.error(
+					"Unfinished pending actions some how",
+					JSON.stringify(pendingActions)
+				);
 
-			tempResult.gameData.gameState.publicState.common.turnEvents.push(
-				`It is %${turnOrder[nextPlayerIndex]}%'s turn`
-			);
-
-			trimTurnEvents(
-				tempResult.gameData.gameState.publicState.common.turnEvents
-			);
+				pendingActions.splice(0, pendingActions.length);
+			}
 
 			// @todo(nick-ng): replenish supply from deck
 

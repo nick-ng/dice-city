@@ -71,7 +71,12 @@ const publicStateSchema = z.object({
 		pendingActions: z.array(
 			z.object({
 				playerId: z.string(),
-				action: z.enum(["tv-station", "business-centre", "radio-tower"]),
+				action: z.enum([
+					"tv-station",
+					"business-centre",
+					"radio-tower",
+					"amusement-park",
+				]),
 			})
 		),
 		diceRolls: z.array(z.number()),
