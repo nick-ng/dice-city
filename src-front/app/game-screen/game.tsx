@@ -233,7 +233,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								key={opponentId}
 								className="mt-2"
 								id={`${opponentId}-city`}
-								open={turnPhase === "end"}
+								open={options.alwaysShowCities || turnPhase === "end"}
 							>
 								<summary className="text-2xl">
 									{getName(opponentId, opponentName, showNames)}, Money:{" "}
@@ -284,7 +284,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 											if (players[i].id === playerId) {
 												detailEl.setAttribute("open", "");
 												thisPlayerEl = detailEl;
-											} else {
+											} else if (!options.alwaysShowCities) {
 												detailEl.removeAttribute("open");
 											}
 										}
@@ -325,14 +325,16 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 			<button
 				className="button-default fixed bottom-4 right-4"
 				onClick={() => {
-					for (let i = 0; i < players.length; i++) {
-						if (players[i].id === options.playerId) {
-							continue;
-						}
+					if (!options.alwaysShowCities) {
+						for (let i = 0; i < players.length; i++) {
+							if (players[i].id === options.playerId) {
+								continue;
+							}
 
-						const detailEl = document.getElementById(`${players[i].id}-city`);
-						if (detailEl) {
-							detailEl.removeAttribute("open");
+							const detailEl = document.getElementById(`${players[i].id}-city`);
+							if (detailEl) {
+								detailEl.removeAttribute("open");
+							}
 						}
 					}
 

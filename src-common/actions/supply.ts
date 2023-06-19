@@ -113,7 +113,6 @@ export const hybridSupply = (
 	};
 };
 
-// @todo(nick-ng): add hybrid supply
 export const getSupply = (
 	currentSupply: Supply,
 	remainingDeck: Deck,

@@ -8,6 +8,7 @@ interface DicecontrolsProps {
 	rerollHandler: (skip: boolean) => void | Promise<void>;
 }
 
+// @todo(nick-ng): make the dice roll buttons more obvious (animation or something)
 export default function DiceControls({
 	gameData,
 	options,

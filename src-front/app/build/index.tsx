@@ -9,7 +9,6 @@ import type { Options } from "~front/hooks/options-context.js";
 
 import {
 	idToBuilding,
-	establishmentReference,
 	landmarkReference,
 } from "~common/constants/buildings.js";
 import { buildAction } from "~common/actions/build.js";
@@ -27,7 +26,6 @@ export interface BuildProps {
 	options?: Options;
 }
 
-// @todo(nick-ng): hide the build and skip build buttons if it's not the build phase.
 export default function Build({
 	supply,
 	city,

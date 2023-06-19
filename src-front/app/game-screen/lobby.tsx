@@ -19,7 +19,6 @@ const SUPPLY_TYPE_MAP = {
 	hybrid: "Hybrid (5-5-2, Recommended)",
 };
 
-// @todo(nick-ng): switch between different supply types
 // @todo(nick-ng): make your game public
 // @todo(nick-ng): leave a game if you aren't the host
 // @todo(nick-ng): kick a player from your game if you are the host

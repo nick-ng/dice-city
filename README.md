@@ -51,17 +51,15 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/blue-establishments.ts:36: @todo(nick-ng): check dice activation numbers once before the switch statement
 - src-common/actions/build.ts:9: @todo(nick-ng): log action in turn events
 - src-common/actions/business-centre.ts:7: @todo(nick-ng): show cards when you hover the buttons.
-- src-common/actions/supply.ts:116: @todo(nick-ng): add hybrid supply
 - src-common/constants/buildings.ts:1: @todo(nick-ng): add Harbor expansion
-- src-front/app/build/index.tsx:30: @todo(nick-ng): hide the build and skip build buttons if it's not the build phase.
+- src-front/app/game-screen/dice-controls.tsx:11: @todo(nick-ng): make the dice roll buttons more obvious (animation or something)
 - src-front/app/game-screen/game.tsx:76: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
 - src-front/app/game-screen/game.tsx:77: @todo(nick-ng): show what was rolled in the main area
 - src-front/app/game-screen/game.tsx:78: @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game
 - src-front/app/game-screen/game.tsx:79: @todo(nick-ng): option to always show opponents' cities
-- src-front/app/game-screen/lobby.tsx:22: @todo(nick-ng): switch between different supply types
-- src-front/app/game-screen/lobby.tsx:23: @todo(nick-ng): make your game public
-- src-front/app/game-screen/lobby.tsx:24: @todo(nick-ng): leave a game if you aren't the host
-- src-front/app/game-screen/lobby.tsx:25: @todo(nick-ng): kick a player from your game if you are the host
-- src-front/app/game-screen/lobby.tsx:26: @todo(nick-ng): ready check?
+- src-front/app/game-screen/lobby.tsx:22: @todo(nick-ng): make your game public
+- src-front/app/game-screen/lobby.tsx:23: @todo(nick-ng): leave a game if you aren't the host
+- src-front/app/game-screen/lobby.tsx:24: @todo(nick-ng): kick a player from your game if you are the host
+- src-front/app/game-screen/lobby.tsx:25: @todo(nick-ng): ready check?
 - src-front/app/home/game-browser.tsx:24: @todo(nick-ng): show public games
 - src-front/utils/name-generator.ts:8: @todo(nick-ng): handle plural adjectives?
