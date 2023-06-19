@@ -247,9 +247,7 @@ export const makeDeck = (deckList: DeckList, players = 4): Deck => {
 	for (let i = 0; i < deckList.length; i++) {
 		const establishmentKey = deckList[i];
 		const cardCount =
-			establishmentReference[establishmentKey].tag === "major"
-				? Math.max(players, 4)
-				: 6;
+			establishmentReference[establishmentKey].tag === "major" ? players : 6;
 
 		const padLength = (cardCount - 1).toString().length;
 
@@ -264,8 +262,10 @@ export const makeDeck = (deckList: DeckList, players = 4): Deck => {
 export const getDeck = (cardSet = "base", players = 4): Deck => {
 	switch (cardSet) {
 		case "base":
-		default:
 			return makeDeck(baseDeckList, players);
+		case "full":
+		default:
+			return makeDeck(Object.keys(establishmentReference), players);
 	}
 };
 
