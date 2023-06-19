@@ -30,6 +30,7 @@ export const createGameFromHostId = (
 			timeLimitSeconds: 999,
 			timeLimitType: "off",
 			startingMoney: 3,
+			supplyType: "hybrid",
 		},
 		gameState: {
 			publicState: {

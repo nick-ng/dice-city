@@ -76,6 +76,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
 	// @todo(nick-ng): show what was rolled in the main area
 	// @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game
+	// @todo(nick-ng): option to always show opponents' cities
 	return (
 		<div className="flex flex-row">
 			<div className="flex-grow">

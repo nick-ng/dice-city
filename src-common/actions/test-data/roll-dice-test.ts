@@ -21,6 +21,7 @@ const gameSettings: GameData["gameSettings"] = {
 	timeLimitSeconds: 999,
 	timeLimitType: "off" as const,
 	startingMoney: 3,
+	supplyType: "total",
 };
 
 const startingState: GameData["gameState"] = {

@@ -112,6 +112,7 @@ export const gameSettingsSchema = z.object({
 	timeLimitSeconds: z.number(),
 	timeLimitType: z.enum(["off", "on"]),
 	startingMoney: z.number(),
+	supplyType: z.enum(["total", "variable", "hybrid"]),
 });
 
 export const gameStateSchema = z.object({

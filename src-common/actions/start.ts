@@ -63,7 +63,7 @@ export const startAction = (
 	common.turnOrder = shuffle(players.map((p) => p.id));
 	common.activePlayerId = common.turnOrder[0];
 	const deck = getDeck("base", players.length);
-	const temp = getSupply({}, deck);
+	const temp = getSupply({}, deck, gameSettings.supplyType);
 	common.supply = temp.supply;
 	secretState.common.deck = temp.deck;
 
