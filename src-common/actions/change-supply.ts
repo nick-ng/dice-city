@@ -29,5 +29,19 @@ export const changeSupplyAction = (
 		};
 	}
 
+	const { gameState, gameSettings } = gameData;
+	const { publicState } = gameState;
+	const { common } = publicState;
+	const { turnPhase } = common;
+
+	if (turnPhase !== "lobby") {
+		return {
+			gameData,
+			error: "The game has already started",
+		};
+	}
+
+	gameSettings.supplyType = action.payload.supplyType;
+
 	return { gameData };
 };
