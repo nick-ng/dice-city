@@ -52,7 +52,6 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-common/actions/build.ts:9: @todo(nick-ng): log action in turn events
 - src-common/actions/business-centre.ts:7: @todo(nick-ng): show cards when you hover the buttons.
 - src-common/constants/buildings.ts:1: @todo(nick-ng): add Harbor expansion
-- src-front/app/game-screen/dice-controls.tsx:11: @todo(nick-ng): make the dice roll buttons more obvious (animation or something)
 - src-front/app/game-screen/game.tsx:76: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
 - src-front/app/game-screen/game.tsx:77: @todo(nick-ng): show what was rolled in the main area
 - src-front/app/game-screen/game.tsx:78: @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game

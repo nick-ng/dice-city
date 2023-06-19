@@ -8,7 +8,6 @@ interface DicecontrolsProps {
 	rerollHandler: (skip: boolean) => void | Promise<void>;
 }
 
-// @todo(nick-ng): make the dice roll buttons more obvious (animation or something)
 export default function DiceControls({
 	gameData,
 	options,
@@ -35,7 +34,7 @@ export default function DiceControls({
 			return (
 				<div className="mt-1">
 					<button
-						className="button-default px-4 py-2"
+						className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
 						onClick={() => {
 							rerollHandler(false);
 						}}
@@ -43,7 +42,7 @@ export default function DiceControls({
 						Re-Roll 🎲
 					</button>
 					<button
-						className="button-default px-4 py-2"
+						className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
 						onClick={() => {
 							rerollHandler(true);
 						}}
@@ -57,7 +56,7 @@ export default function DiceControls({
 		return (
 			<div className="mt-1">
 				<button
-					className="button-default px-4 py-2"
+					className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
 					onClick={() => {
 						rerollHandler(false);
 					}}
@@ -65,7 +64,7 @@ export default function DiceControls({
 					Re-Roll {diceRolls.map(() => "🎲").join("")}
 				</button>
 				<button
-					className="button-default px-4 py-2"
+					className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
 					onClick={() => {
 						rerollHandler(true);
 					}}
@@ -80,7 +79,7 @@ export default function DiceControls({
 	return (
 		<div className="mt-1">
 			<button
-				className="button-default px-4 py-2"
+				className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
 				onClick={() => {
 					rollHandler(1);
 				}}
@@ -89,7 +88,7 @@ export default function DiceControls({
 			</button>
 			{myState.city.landmarks.trainStation && (
 				<button
-					className="button-default px-4 py-2"
+					className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
 					onClick={() => {
 						rollHandler(2);
 					}}
