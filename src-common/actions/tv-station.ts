@@ -2,6 +2,7 @@ import type { Action, GameData } from "~common/types/index.js";
 
 import { establishmentReference } from "~common/constants/buildings.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+import { verifyPassword } from "./verify-password.js";
 
 const TV_STATION_COINS = 5;
 
@@ -26,6 +27,15 @@ export const tvStationAction = (
 		return {
 			gameData,
 			error: "It's not your turn.",
+		};
+	}
+
+	const { validPassword } = verifyPassword(gameData, action);
+
+	if (!skipUpdate && !validPassword) {
+		return {
+			gameData,
+			error: "Invalid password",
 		};
 	}
 

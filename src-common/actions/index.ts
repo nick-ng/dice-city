@@ -1,6 +1,7 @@
 import type { GameData, Action } from "../types/index.js";
 
 import { joinAction } from "./join.js";
+import { changeSupplyAction } from "./change-supply.js";
 import { startAction } from "./start.js";
 import { rollDiceAction } from "./roll-dice.js";
 import { rerollDiceAction } from "./reroll-dice.js";
@@ -17,6 +18,7 @@ import {
 	amusementParkRollHandler,
 	amusementParkTurnHandler,
 } from "./amusement-park.js";
+import { getSupply } from "./supply.js";
 
 export const performAction = (
 	gameData: GameData,
@@ -49,6 +51,8 @@ export const performAction = (
 	switch (action.type) {
 		case "join":
 			return joinAction(gameData, action);
+		case "change-supply":
+			return changeSupplyAction(gameData, action);
 		case "start":
 			return startAction(gameData, action);
 		case "roll-dice":
@@ -103,7 +107,14 @@ export const performAction = (
 				pendingActions.splice(0, pendingActions.length);
 			}
 
-			// @todo(nick-ng): replenish supply from deck
+			const temp = getSupply(
+				gameData.gameState.publicState.common.supply,
+				gameData.gameState.secretState.common.deck,
+				gameData.gameSettings.supplyType
+			);
+
+			gameData.gameState.publicState.common.supply = temp.supply;
+			gameData.gameState.secretState.common.deck = temp.deck;
 
 			return tempResult;
 		case "red-establishments":

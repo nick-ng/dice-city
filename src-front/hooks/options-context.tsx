@@ -21,6 +21,7 @@ export interface Options {
 	darkMode?: "light" | "dark" | "system";
 	showNames?: boolean;
 	showNamesPublic?: boolean;
+	alwaysShowCities?: boolean;
 }
 
 export const defaultOptions: Options = {

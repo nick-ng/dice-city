@@ -1,8 +1,10 @@
 import type { Action, GameData } from "~common/types/index.js";
+
 import {
 	establishmentReference,
 	landmarkReference,
 } from "../constants/buildings.js";
+import { verifyPassword } from "./verify-password.js";
 
 // @todo(nick-ng): log action in turn events
 export const buildAction = (
@@ -14,6 +16,15 @@ export const buildAction = (
 		return {
 			gameData,
 			error: "not build",
+		};
+	}
+
+	const { validPassword } = verifyPassword(gameData, action);
+
+	if (!skipUpdate && !validPassword) {
+		return {
+			gameData,
+			error: "Invalid password",
 		};
 	}
 

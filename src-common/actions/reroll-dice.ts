@@ -2,6 +2,7 @@ import type { Action, GameData } from "~common/types/index.js";
 
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 import { rollDice } from "./roll-dice.js";
+import { verifyPassword } from "./verify-password.js";
 
 export const rerollDiceAction = (
 	gameData: GameData,
@@ -10,6 +11,15 @@ export const rerollDiceAction = (
 ): { gameData: GameData; error?: string } => {
 	if (action.type !== "reroll-dice") {
 		return { gameData, error: "not reroll-dice" };
+	}
+
+	const { validPassword } = verifyPassword(gameData, action);
+
+	if (!skipUpdate && !validPassword) {
+		return {
+			gameData,
+			error: "Invalid password",
+		};
 	}
 
 	const { gameState } = gameData;
