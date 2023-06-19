@@ -22,7 +22,7 @@ import EstablishmentList from "../establishment-list/index.js";
 export interface BuildProps {
 	supply: SupplyType;
 	city: CityType;
-	onBuild: (buildingKey: string) => void | Promise<void>;
+	onBuild?: (buildingKey: string) => void | Promise<void>;
 	gameData?: GameData;
 	options?: Options;
 }
@@ -68,59 +68,48 @@ export default function Build({
 			).error || "";
 	}
 
-	const actualSupply = Object.entries(supply).reduce(
-		(prev, [key, buildings]) => {
-			const establishment = establishmentReference[key];
-
-			if (establishment.tag !== "major" || !city.establishments[key]?.length) {
-				prev[key] = buildings;
-			}
-
-			return prev;
-		},
-		{} as SupplyType
-	);
-
 	return (
 		<div className="flex flex-row items-start justify-start">
-			<div className="sticky top-0 z-10 inline-block w-min">
-				<p className="text-center text-sm md:text-base">Chosen Building</p>
-				<ToolTip message={buildError}>
-					<button
-						className="button-default w-min p-0.5 pb-1"
-						disabled={!chosenBuilding || !!buildError}
-						onClick={() => {
-							if (!chosenBuilding || !!buildError) {
-								return;
-							}
+			{onBuild && (
+				<div className="sticky top-0 z-10 inline-block w-min">
+					<p className="text-center text-sm md:text-base">Chosen Building</p>
+					<ToolTip message={buildError}>
+						<button
+							className="button-default w-min p-0.5 pb-1"
+							disabled={!chosenBuilding || !!buildError}
+							onClick={() => {
+								if (!chosenBuilding || !!buildError) {
+									return;
+								}
 
-							onBuild(chosenBuildingString);
+								onBuild(chosenBuildingString);
+							}}
+						>
+							{chosenBuilding ? (
+								<Building building={chosenBuilding} />
+							) : (
+								<BuildingContainer className="flex flex-row justify-center align-middle text-3xl">
+									❔
+								</BuildingContainer>
+							)}
+
+							<span className="px-0.5">
+								{chosenBuilding
+									? `Build ${chosenBuilding.display}`
+									: "Choose a Building"}
+							</span>
+						</button>
+					</ToolTip>
+					<button
+						className="button-default mt-2 w-full p-0.5 py-1"
+						onClick={() => {
+							onBuild("");
 						}}
 					>
-						{chosenBuilding ? (
-							<Building building={chosenBuilding} />
-						) : (
-							<BuildingContainer className="flex flex-row justify-center align-middle text-3xl">
-								❔
-							</BuildingContainer>
-						)}
-
-						<span className="px-0.5">
-							{chosenBuilding
-								? `Build ${chosenBuilding.display}`
-								: "Choose a Building"}
-						</span>
-					</button>
-				</ToolTip>
-				<button
-					className="button-default mt-2 w-full p-0.5 py-1"
-					onClick={() => {
-						onBuild("");
-					}}
-				>
-					Skip Building
-				</button>{" "}
-			</div>
+						Skip Building
+					</button>{" "}
+				</div>
+			)}
 			<div>
 				<p className="text-sm md:text-base">Available Buildings</p>
 				<div className="flex flex-row">
@@ -145,7 +134,7 @@ export default function Build({
 					})}
 				</div>
 				<EstablishmentList
-					establishments={actualSupply}
+					establishments={supply}
 					onChoose={(buildingString) => {
 						setChosenBuildingString(buildingString);
 					}}

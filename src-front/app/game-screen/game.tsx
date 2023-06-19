@@ -184,15 +184,19 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						</summary>
 						<Build
 							city={myState.city}
-							onBuild={(e) => {
-								sendViaWebSocket({
-									...options,
-									type: "build",
-									payload: {
-										buildingKey: e,
-									},
-								});
-							}}
+							onBuild={
+								myTurn && turnPhase === "before-build"
+									? (e) => {
+											sendViaWebSocket({
+												...options,
+												type: "build",
+												payload: {
+													buildingKey: e,
+												},
+											});
+									  }
+									: undefined
+							}
 							supply={supply}
 							gameData={gameData}
 							options={options}

@@ -32,7 +32,7 @@ export const tvStationAction = (
 
 	const { validPassword } = verifyPassword(gameData, action);
 
-	if (!validPassword) {
+	if (!skipUpdate && !validPassword) {
 		return {
 			gameData,
 			error: "Invalid password",
