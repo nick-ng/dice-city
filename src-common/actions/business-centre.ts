@@ -2,6 +2,7 @@ import type { PlayerAction, GameData } from "~common/types/index.js";
 
 import { establishmentReference } from "~common/constants/buildings.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+import { verifyPassword } from "./verify-password.js";
 
 // @todo(nick-ng): show cards when you hover the buttons.
 export const businessCentreAction = (
@@ -13,6 +14,15 @@ export const businessCentreAction = (
 		return {
 			gameData,
 			error: "not business-centre",
+		};
+	}
+
+	const { validPassword } = verifyPassword(gameData, action);
+
+	if (!validPassword) {
+		return {
+			gameData,
+			error: "Invalid password",
 		};
 	}
 

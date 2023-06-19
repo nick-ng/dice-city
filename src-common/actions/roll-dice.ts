@@ -3,6 +3,7 @@
 import type { Action, GameData } from "~common/types/index.js";
 
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+import { verifyPassword } from "./verify-password.js";
 
 export const rollDice = (
 	count: number,
@@ -32,6 +33,15 @@ export const rollDiceAction = (
 ): { gameData: GameData; error?: string } => {
 	if (action.type !== "roll-dice") {
 		return { gameData, error: "not roll-dice" };
+	}
+
+	const { validPassword } = verifyPassword(gameData, action);
+
+	if (!validPassword) {
+		return {
+			gameData,
+			error: "Invalid password",
+		};
 	}
 
 	const { payload, playerId } = action;

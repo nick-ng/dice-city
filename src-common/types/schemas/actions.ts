@@ -1,10 +1,22 @@
 import z from "zod";
 
+import { supplyTypeSchema } from "./game.js";
+
 export const joinSchema = z.object({
 	type: z.literal("join"),
 	isServer: z.optional(z.literal(false)),
 	payload: z.object({
 		playerName: z.string(),
+	}),
+	playerId: z.string(),
+	playerPassword: z.string(),
+});
+
+export const changeSupplySchema = z.object({
+	type: z.literal("change-supply"),
+	isServer: z.optional(z.literal(false)),
+	payload: z.object({
+		supplyType: supplyTypeSchema,
 	}),
 	playerId: z.string(),
 	playerPassword: z.string(),
@@ -84,6 +96,7 @@ export const buildEstablishmentSchema = z.object({
 
 export const playerActionsSchema = z.union([
 	joinSchema,
+	changeSupplySchema,
 	startSchema,
 	rollSchema,
 	rerollSchema,

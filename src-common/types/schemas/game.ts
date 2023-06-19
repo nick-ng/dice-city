@@ -107,12 +107,14 @@ export const gameDetailsSchema = z.object({
 	isPublic: z.optional(z.boolean()),
 });
 
+export const supplyTypeSchema = z.enum(["total", "variable", "hybrid"]);
+
 export const gameSettingsSchema = z.object({
 	landmarks: z.array(z.string()),
 	timeLimitSeconds: z.number(),
 	timeLimitType: z.enum(["off", "on"]),
 	startingMoney: z.number(),
-	supplyType: z.enum(["total", "variable", "hybrid"]),
+	supplyType: supplyTypeSchema,
 });
 
 export const gameStateSchema = z.object({
