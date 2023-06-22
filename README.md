@@ -48,7 +48,6 @@ Create a `/spec` directory next to the files you want to test then create a file
 ### ToDo Comments
 
 - src-back/worker.ts:130: @todo(nick-ng): check for "orphaned" games when starting up.
-- src-common/actions/blue-establishments.ts:36: @todo(nick-ng): check dice activation numbers once before the switch statement
 - src-common/actions/build.ts:9: @todo(nick-ng): log action in turn events
 - src-common/actions/business-centre.ts:7: @todo(nick-ng): show cards when you hover the buttons.
 - src-common/constants/buildings.ts:1: @todo(nick-ng): add Harbor expansion

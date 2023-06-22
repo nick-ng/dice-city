@@ -59,117 +59,71 @@ export const greenEstablishmentsAction = (
 				return;
 			}
 
+			if (!establishment.activationNumbers.includes(diceTotal)) {
+				return;
+			}
+
 			const establishmentCount = establishments[establishmentKey]?.length || 0;
 
 			if (establishmentCount < 1) {
 				return;
 			}
 
+			let moneyPerEstablishment = 0;
+
 			switch (establishmentKey) {
-				case "bakery":
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						const moneyPerEstablishment = haveShoppingMall ? 2 : 1;
-						const moneyReceived = moneyPerEstablishment * establishmentCount;
-						activePlayerState.money += moneyReceived;
-
-						processedEstablishments.push(establishmentKey);
-
-						turnEvents.push(
-							`%${activePlayerId}% collected ${moneyReceived} ${
-								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank - ${establishmentCount} ${
-								establishmentCount === 1
-									? establishment.display
-									: establishment.pluralDisplay
-							}`
-						);
-					}
+				case "bakery": {
+					moneyPerEstablishment = haveShoppingMall ? 2 : 1;
 					break;
-				case "convenienceStore":
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						const moneyPerEstablishment = haveShoppingMall ? 4 : 3;
-						const moneyReceived = moneyPerEstablishment * establishmentCount;
-						activePlayerState.money += moneyReceived;
-
-						processedEstablishments.push(establishmentKey);
-
-						turnEvents.push(
-							`%${activePlayerId}% collected ${moneyReceived} ${
-								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank - ${establishmentCount} ${
-								establishmentCount === 1
-									? establishment.display
-									: establishment.pluralDisplay
-							}`
-						);
-					}
+				}
+				case "convenienceStore": {
+					moneyPerEstablishment = haveShoppingMall ? 4 : 3;
 					break;
-				case "cheeseFactory":
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						const cowsCount = countTagsInEstablishments(establishments, "cow");
+				}
+				case "cheeseFactory": {
+					const cowsCount = countTagsInEstablishments(establishments, "cow");
 
-						const moneyPerEstablishment = 3 * cowsCount;
-						const moneyReceived = moneyPerEstablishment * establishmentCount;
-						activePlayerState.money += moneyReceived;
-
-						processedEstablishments.push(establishmentKey);
-
-						turnEvents.push(
-							`%${activePlayerId}% collected ${moneyReceived} ${
-								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank - ${establishmentCount} ${
-								establishmentCount === 1
-									? establishment.display
-									: establishment.pluralDisplay
-							}`
-						);
-					}
+					moneyPerEstablishment = 3 * cowsCount;
 					break;
-				case "furnitureFactory":
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						const cogCount = countTagsInEstablishments(establishments, "cog");
+				}
+				case "furnitureFactory": {
+					const cogCount = countTagsInEstablishments(establishments, "cog");
 
-						const moneyPerEstablishment = 3 * cogCount;
-						const moneyReceived = moneyPerEstablishment * establishmentCount;
-						activePlayerState.money += moneyReceived;
-
-						processedEstablishments.push(establishmentKey);
-
-						turnEvents.push(
-							`%${activePlayerId}% collected ${moneyReceived} ${
-								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank - ${establishmentCount} ${
-								establishmentCount === 1
-									? establishment.display
-									: establishment.pluralDisplay
-							}`
-						);
-					}
+					moneyPerEstablishment = 3 * cogCount;
 					break;
-				case "fruitAndVegetableMarket":
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						const cogCount = countTagsInEstablishments(establishments, "wheat");
+				}
+				case "fruitAndVegetableMarket": {
+					const wheatCount = countTagsInEstablishments(establishments, "wheat");
 
-						const moneyPerEstablishment = 2 * cogCount;
-						const moneyReceived = moneyPerEstablishment * establishmentCount;
-						activePlayerState.money += moneyReceived;
-
-						processedEstablishments.push(establishmentKey);
-
-						turnEvents.push(
-							`%${activePlayerId}% collected ${moneyReceived} ${
-								moneyReceived === 1 ? "coin" : "coins"
-							} from the bank - ${establishmentCount} ${
-								establishmentCount === 1
-									? establishment.display
-									: establishment.pluralDisplay
-							}`
-						);
-					}
+					moneyPerEstablishment = 2 * wheatCount;
 					break;
+				}
+				case "flowerShop": {
+					const moneyPerFlowerGarden = haveShoppingMall ? 2 : 1;
+					const flowerGardenCount = establishments.flowerGarden?.length || 0;
+
+					moneyPerEstablishment = moneyPerFlowerGarden * flowerGardenCount;
+					break;
+				}
 				default:
 					console.info("couldn't handle green establishment", establishmentKey);
+					return;
 			}
+
+			const moneyReceived = moneyPerEstablishment * establishmentCount;
+			activePlayerState.money += moneyReceived;
+
+			processedEstablishments.push(establishmentKey);
+
+			turnEvents.push(
+				`%${activePlayerId}% collected ${moneyReceived} ${
+					moneyReceived === 1 ? "coin" : "coins"
+				} from the bank - ${establishmentCount} ${
+					establishmentCount === 1
+						? establishment.display
+						: establishment.pluralDisplay
+				}`
+			);
 		});
 
 	trimTurnEvents(turnEvents);

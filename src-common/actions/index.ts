@@ -46,17 +46,18 @@ export const performAction = (
 		}
 	}
 
-	let tempResult: { gameData: GameData; error?: string } = { gameData };
-
 	switch (action.type) {
-		case "join":
+		case "join": {
 			return joinAction(gameData, action);
-		case "change-supply":
+		}
+		case "change-supply": {
 			return changeSupplyAction(gameData, action);
-		case "start":
+		}
+		case "start": {
 			return startAction(gameData, action);
-		case "roll-dice":
-			tempResult = rollDiceAction(gameData, action);
+		}
+		case "roll-dice": {
+			let tempResult = rollDiceAction(gameData, action);
 
 			if (tempResult.error) {
 				return tempResult;
@@ -69,8 +70,9 @@ export const performAction = (
 			amusementParkRollHandler(gameData);
 
 			return allEstablishmentsAction(gameData);
-		case "reroll-dice":
-			tempResult = rerollDiceAction(gameData, action);
+		}
+		case "reroll-dice": {
+			let tempResult = rerollDiceAction(gameData, action);
 
 			if (tempResult.error) {
 				return tempResult;
@@ -79,8 +81,9 @@ export const performAction = (
 			amusementParkRollHandler(gameData);
 
 			return allEstablishmentsAction(gameData);
-		case "build":
-			tempResult = buildAction(gameData, action);
+		}
+		case "build": {
+			let tempResult = buildAction(gameData, action);
 
 			if (tempResult.error) {
 				return tempResult;
@@ -117,18 +120,25 @@ export const performAction = (
 			gameData.gameState.secretState.common.deck = temp.deck;
 
 			return tempResult;
-		case "red-establishments":
+		}
+		case "red-establishments": {
 			return redEstablishmentsAction(gameData);
-		case "green-establishments":
+		}
+		case "green-establishments": {
 			return greenEstablishmentsAction(gameData);
-		case "blue-establishments":
+		}
+		case "blue-establishments": {
 			return blueEstablishmentsAction(gameData);
-		case "tv-station":
+		}
+		case "tv-station": {
 			return tvStationAction(gameData, action);
-		case "business-centre":
+		}
+		case "business-centre": {
 			return businessCentreAction(gameData, action);
-		default:
+		}
+		default: {
 			console.error("No handler for action", JSON.stringify(action));
 			return { gameData, error: "no such action" };
+		}
 	}
 };

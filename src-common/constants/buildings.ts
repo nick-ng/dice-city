@@ -48,7 +48,9 @@ const tempLandmarks: {
 			"🛍️",
 		],
 		cost: 10,
-		effect: "Each of your %%cup% and %%bread% establishments earn +1 coin.",
+		// effect: "Each of your %%cup% and %%bread% establishments earn +1 coin.",
+		effect:
+			"Increase the coin amounts on each of your %%cup% and %%bread% establishments by 1.",
 	},
 	trainStation: {
 		display: "Train Station",
@@ -217,6 +219,27 @@ const tempEstablishmentReference: {
 		cost: 2,
 		effect:
 			"Get 2 coins from the bank for each %%wheat% establishment that you own, on your turn only.",
+	},
+	flowerGarden: {
+		colour: "blue",
+		activationNumbers: [4],
+		display: "Flower Garden",
+		pluralDisplay: "Flower Gardens",
+		tag: "wheat",
+		picture: ["🌼", "🌺"],
+		cost: 2,
+		effect: "Get 1 coin from the bank, on anyone's turn.",
+	},
+	flowerShop: {
+		colour: "green",
+		activationNumbers: [6],
+		display: "Flower Shop",
+		pluralDisplay: "Flower Shops",
+		tag: "bread",
+		picture: ["💐", "💐"],
+		cost: 1,
+		effect:
+			"Get 1 coin from the bank for each Flower Garden you own, on your turn only.",
 	},
 };
 

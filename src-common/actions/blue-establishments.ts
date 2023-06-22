@@ -29,49 +29,50 @@ export const blueEstablishmentsAction = (
 				return;
 			}
 
+			if (!establishment.activationNumbers.includes(diceTotal)) {
+				return;
+			}
+
 			let moneyPerEstablishment = 0;
 
 			switch (establishmentKey) {
-				case "wheatField":
-					// @todo(nick-ng): check dice activation numbers once before the switch statement
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						moneyPerEstablishment = 1;
+				case "wheatField": {
+					moneyPerEstablishment = 1;
 
-						processedEstablishments.push(establishmentKey);
-					}
 					break;
-				case "ranch":
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						moneyPerEstablishment = 1;
+				}
+				case "ranch": {
+					moneyPerEstablishment = 1;
 
-						processedEstablishments.push(establishmentKey);
-					}
 					break;
-				case "forest":
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						moneyPerEstablishment = 1;
+				}
+				case "forest": {
+					moneyPerEstablishment = 1;
 
-						processedEstablishments.push(establishmentKey);
-					}
 					break;
-				case "mine":
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						moneyPerEstablishment = 5;
+				}
+				case "mine": {
+					moneyPerEstablishment = 5;
 
-						processedEstablishments.push(establishmentKey);
-					}
 					break;
-				case "appleOrchard":
-					if (establishment.activationNumbers.includes(diceTotal)) {
-						moneyPerEstablishment = 3;
+				}
+				case "appleOrchard": {
+					moneyPerEstablishment = 3;
 
-						processedEstablishments.push(establishmentKey);
-					}
 					break;
-				default:
+				}
+				case "flowerGarden": {
+					moneyPerEstablishment = 1;
+
+					break;
+				}
+				default: {
 					console.info("couldn't handle blue establishment", establishmentKey);
 					return;
+				}
 			}
+
+			processedEstablishments.push(establishmentKey);
 
 			if (moneyPerEstablishment === 0) {
 				return;
