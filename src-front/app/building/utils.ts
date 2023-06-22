@@ -8,7 +8,7 @@ export const bgColours = {
 const TAGS: { [tag: string]: string } = {
 	major: "🏛️",
 	cup: "☕",
-	bread: "🍞",
+	bread: "🛒",
 	wheat: "🌾",
 	cow: "🐄",
 	cog: "⚙️",
