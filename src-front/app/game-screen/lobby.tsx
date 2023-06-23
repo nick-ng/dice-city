@@ -15,7 +15,7 @@ interface LobbyProps {
 
 const SUPPLY_TYPE_MAP = {
 	total: "Total (Base game)",
-	variable: "Variable (Harbor expansion)",
+	variable: "Variable (Harbour expansion)",
 	hybrid: "Hybrid (5-5-2, Recommended)",
 };
 

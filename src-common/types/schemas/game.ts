@@ -9,6 +9,7 @@ const tags = z.enum([
 	"cog",
 	"factory",
 	"fruit",
+	"boat",
 ]);
 
 const colour = z.enum(["blue", "green", "red", "purple"]);

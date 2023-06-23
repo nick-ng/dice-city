@@ -14,6 +14,7 @@ const TAGS: { [tag: string]: string } = {
 	cog: "⚙️",
 	factory: "🏭",
 	fruit: "🍎",
+	boat: "⛵",
 };
 
 export const getTag = (tag: string) => TAGS[tag] || "";

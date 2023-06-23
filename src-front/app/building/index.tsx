@@ -31,7 +31,11 @@ export default function Building({ building, inactive }: BuildingProps) {
 		>
 			{isEstablishment && (
 				<div className={`${bgColours[colour]} relative font-bold text-white`}>
-					{activationNumbers.join(" ~ ")}
+					{activationNumbers.length === 1
+						? activationNumbers[0]
+						: `${Math.min(...activationNumbers)} ~ ${Math.max(
+								...activationNumbers
+						  )}`}
 					<div className="coin absolute bottom-0 right-0.5 top-0 my-auto">
 						{cost}
 					</div>

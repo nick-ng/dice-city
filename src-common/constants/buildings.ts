@@ -1,4 +1,4 @@
-// @todo(nick-ng): add Harbor expansion
+// @todo(nick-ng): add Harbour expansion
 import type {
 	Deck,
 	DeckList,
@@ -58,6 +58,30 @@ const tempLandmarks: {
 		picture: ["🚉"],
 		cost: 4,
 		effect: "You may roll 1 or 2 dice.",
+	},
+	harbour: {
+		display: "Harbour",
+		tag: "major",
+		picture: ["⚓"],
+		cost: 2,
+		effect:
+			"If the dice total is 10 or more, you may add 2 to the total, on your turn only.",
+	},
+	cityHall: {
+		display: "City Hall",
+		tag: "major",
+		picture: ["🏢"],
+		cost: 0,
+		effect:
+			"Immediately before buying establishments, if you have 0 coins, get 1 from the bank.",
+	},
+	airport: {
+		display: "Airport",
+		tag: "major",
+		picture: ["✈️"],
+		cost: 30,
+		effect:
+			"If you build nothing on your turn, you get 10 coins from the bank.",
 	},
 };
 
@@ -240,6 +264,92 @@ const tempEstablishmentReference: {
 		cost: 1,
 		effect:
 			"Get 1 coin from the bank for each Flower Garden you own, on your turn only.",
+	},
+	publisher: {
+		colour: "purple",
+		activationNumbers: [7],
+		display: "Publisher",
+		pluralDisplay: "Publishers",
+		tag: "major",
+		picture: ["📖", "📚"],
+		cost: 5,
+		effect:
+			"Get 1 coin from each player for each %%cup% and %%bread% establishment they have, on your turn only.",
+	},
+	taxOffice: {
+		colour: "purple",
+		activationNumbers: [8, 9],
+		display: "Tax Office",
+		pluralDisplay: "Tax Offices",
+		tag: "major",
+		picture: ["📒", "💸"],
+		cost: 4,
+		effect:
+			"Take half (rounded down) of the coins from each player who has 10 coins or more, on your turn only.",
+	},
+	sushiBar: {
+		colour: "red",
+		activationNumbers: [1],
+		display: "Sushi Bar",
+		pluralDisplay: "Sushi Bars",
+		tag: "cup",
+		picture: ["🍣"],
+		cost: 4,
+		effect:
+			"If you have a harbour, you get 3 coins from the player who rolled the dice.",
+	},
+	pizzaParlour: {
+		colour: "red",
+		activationNumbers: [7],
+		display: "Pizza Parlour",
+		pluralDisplay: "Pizza Parlours",
+		tag: "cup",
+		picture: ["🍕"],
+		cost: 1,
+		effect: "Get 1 coin from the player who rolled the dice.",
+	},
+	hamburgerStand: {
+		colour: "red",
+		activationNumbers: [8],
+		display: "Hamburger Stand",
+		pluralDisplay: "Hamburger Stands",
+		tag: "cup",
+		picture: ["🍔"],
+		cost: 1,
+		effect: "Get 1 coin from the player who rolled the dice.",
+	},
+	foodWarehouse: {
+		colour: "green",
+		activationNumbers: [12, 13],
+		display: "Food Warehouse",
+		pluralDisplay: "Food Warehouses",
+		tag: "factory",
+		picture: ["🥫", "🥫"],
+		cost: 2,
+		effect:
+			"Get 2 coins from the bank for each %%cup% establishment that you own, on your turn only.",
+	},
+	mackerelBoat: {
+		colour: "blue",
+		activationNumbers: [8],
+		display: "Mackerel Boat",
+		pluralDisplay: "Mackerel Boats",
+		tag: "boat",
+		picture: ["🛥️", "3️"],
+		cost: 2,
+		effect:
+			"If you have a harbour, get 3 coins from the bank on anyone's turn.",
+	},
+	tunaBoat: {
+		colour: "blue",
+		activationNumbers: [12, 13, 14],
+		display: "Tuna Boat",
+		pluralDisplay: "Tuna Boats",
+		tag: "boat",
+		picture: ["🛥️", "🎲"],
+		cost: 5,
+		effect:
+			"On anyone's turn: Rolls 2 dice. If you have a harbour you get as many coins as the dice total.",
 	},
 };
 
