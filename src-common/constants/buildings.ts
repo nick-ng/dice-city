@@ -1,4 +1,3 @@
-// @todo(nick-ng): add Harbour expansion
 import type {
 	Deck,
 	DeckList,
