@@ -9,8 +9,13 @@ export const blueEstablishmentsAction = (
 ): { gameData: GameData; error?: string } => {
 	const { gameState } = gameData;
 	const { publicState } = gameState;
-	const { diceRolls, processedEstablishments, turnEvents, turnPhase } =
-		publicState.common;
+	const {
+		diceRolls,
+		harbourExtra,
+		processedEstablishments,
+		turnEvents,
+		turnPhase,
+	} = publicState.common;
 
 	if (turnPhase !== "after-roll") {
 		return {
@@ -19,10 +24,9 @@ export const blueEstablishmentsAction = (
 		};
 	}
 
-	let diceTotal = 0;
-	for (let n = 0; n < diceRolls.length; n++) {
-		diceTotal += diceRolls[n];
-	}
+	const diceRoll =
+		diceRolls.reduce((accumulator, dieRoll) => accumulator + dieRoll, 0) +
+		harbourExtra;
 
 	let shouldExplainTunaBoat = false;
 	let tunaBoatRolls: number[] = [];
@@ -34,7 +38,7 @@ export const blueEstablishmentsAction = (
 				return;
 			}
 
-			if (!establishment.activationNumbers.includes(diceTotal)) {
+			if (!establishment.activationNumbers.includes(diceRoll)) {
 				return;
 			}
 

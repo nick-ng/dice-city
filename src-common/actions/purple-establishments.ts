@@ -14,6 +14,7 @@ export const purpleEstablishmentsAction = (
 	const { players: playerStates, common } = publicState;
 	const {
 		diceRolls,
+		harbourExtra,
 		activePlayerId,
 		processedEstablishments,
 		turnEvents,
@@ -29,10 +30,9 @@ export const purpleEstablishmentsAction = (
 		};
 	}
 
-	let diceTotal = 0;
-	for (let n = 0; n < diceRolls.length; n++) {
-		diceTotal += diceRolls[n];
-	}
+	const diceRoll =
+		diceRolls.reduce((accumulator, dieRoll) => accumulator + dieRoll, 0) +
+		harbourExtra;
 
 	let nextPhase: GameData["gameState"]["publicState"]["common"]["turnPhase"] =
 		"before-build";
@@ -44,7 +44,7 @@ export const purpleEstablishmentsAction = (
 				return;
 			}
 
-			if (!establishment.activationNumbers.includes(diceTotal)) {
+			if (!establishment.activationNumbers.includes(diceRoll)) {
 				return;
 			}
 

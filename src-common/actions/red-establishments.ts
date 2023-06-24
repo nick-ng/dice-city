@@ -14,6 +14,7 @@ export const redEstablishmentsAction = (
 	const { players: playerStates, common } = publicState;
 	const {
 		diceRolls,
+		harbourExtra,
 		activePlayerId,
 		processedEstablishments,
 		turnEvents,
@@ -28,10 +29,9 @@ export const redEstablishmentsAction = (
 		};
 	}
 
-	let diceTotal = 0;
-	for (let n = 0; n < diceRolls.length; n++) {
-		diceTotal += diceRolls[n];
-	}
+	const diceRoll =
+		diceRolls.reduce((accumulator, dieRoll) => accumulator + dieRoll, 0) +
+		harbourExtra;
 
 	const otherPlayerIds = getPlayerOrderStartingFromPlayer(
 		turnOrder,
@@ -46,7 +46,7 @@ export const redEstablishmentsAction = (
 				return;
 			}
 
-			if (!establishment.activationNumbers.includes(diceTotal)) {
+			if (!establishment.activationNumbers.includes(diceRoll)) {
 				return;
 			}
 

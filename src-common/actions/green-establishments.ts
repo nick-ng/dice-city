@@ -29,6 +29,7 @@ export const greenEstablishmentsAction = (
 	const { publicState } = gameState;
 	const {
 		diceRolls,
+		harbourExtra,
 		activePlayerId,
 		processedEstablishments,
 		turnEvents,
@@ -42,10 +43,9 @@ export const greenEstablishmentsAction = (
 		};
 	}
 
-	let diceTotal = 0;
-	for (let n = 0; n < diceRolls.length; n++) {
-		diceTotal += diceRolls[n];
-	}
+	const diceRoll =
+		diceRolls.reduce((accumulator, dieRoll) => accumulator + dieRoll, 0) +
+		harbourExtra;
 
 	const activePlayerState = publicState.players[activePlayerId];
 	const { city } = activePlayerState;
@@ -59,7 +59,7 @@ export const greenEstablishmentsAction = (
 				return;
 			}
 
-			if (!establishment.activationNumbers.includes(diceTotal)) {
+			if (!establishment.activationNumbers.includes(diceRoll)) {
 				return;
 			}
 

@@ -92,9 +92,9 @@ export const harbourChangeHandler = (
 		return { gameData };
 	}
 
-	const diceRoll = common.diceRolls.reduce((a, r) => a + r, 0);
+	const diceRoll = diceRolls.reduce((a, r) => a + r, 0);
 
-	// This should never happen
+	// This should always happen
 	if (diceRoll >= 10) {
 		common.harbourExtra = 2;
 	}
