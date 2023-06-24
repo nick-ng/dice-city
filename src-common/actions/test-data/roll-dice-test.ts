@@ -65,6 +65,7 @@ const startingState: GameData["gameState"] = {
 			activePlayerId: "a",
 			turnPhase: "before-roll",
 			diceRolls: [],
+			harbourExtra: 0,
 			processedEstablishments: [],
 			turnEvents: [],
 			turnOrder: [],

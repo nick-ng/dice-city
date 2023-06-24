@@ -1,17 +1,9 @@
-// import seedrandom from "seedrandom";
-
 import type { Action, GameData } from "~common/types/index.js";
 
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 import { verifyPassword } from "./verify-password.js";
 
-export const rollDice = (
-	count: number,
-	_gameData: GameData,
-	sides = 6
-): number[] => {
-	// const seed = `${gameData.gameDetails.id}-${gameData.lastActionId}`;
-	// const rng = seedrandom(seed);
+export const rollDice = (count: number, sides = 6): number[] => {
 	const rng = Math.random;
 
 	const result = new Array(count).fill(0).map(() => {
@@ -96,7 +88,8 @@ export const rollDiceAction = (
 	}
 
 	common.turnPhase = "after-roll";
-	common.diceRolls = rollDice(diceCount, gameData, 6);
+	common.diceRolls = rollDice(diceCount, 6);
+	common.harbourExtra = 0;
 	common.processedEstablishments = [];
 
 	if (diceCount === 1) {

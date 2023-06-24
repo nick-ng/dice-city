@@ -77,10 +77,12 @@ const publicStateSchema = z.object({
 					"business-centre",
 					"radio-tower",
 					"amusement-park",
+					"harbour",
 				]),
 			})
 		),
 		diceRolls: z.array(z.number()),
+		harbourExtra: z.number(),
 		processedEstablishments: z.array(z.string()),
 		turnEvents: z.array(z.string()),
 	}),

@@ -74,28 +74,33 @@ export const greenEstablishmentsAction = (
 			switch (establishmentKey) {
 				case "bakery": {
 					moneyPerEstablishment = haveShoppingMall ? 2 : 1;
+
 					break;
 				}
 				case "convenienceStore": {
 					moneyPerEstablishment = haveShoppingMall ? 4 : 3;
+
 					break;
 				}
 				case "cheeseFactory": {
 					const cowsCount = countTagsInEstablishments(establishments, "cow");
 
 					moneyPerEstablishment = 3 * cowsCount;
+
 					break;
 				}
 				case "furnitureFactory": {
 					const cogCount = countTagsInEstablishments(establishments, "cog");
 
 					moneyPerEstablishment = 3 * cogCount;
+
 					break;
 				}
 				case "fruitAndVegetableMarket": {
 					const wheatCount = countTagsInEstablishments(establishments, "wheat");
 
 					moneyPerEstablishment = 2 * wheatCount;
+
 					break;
 				}
 				case "flowerShop": {
@@ -103,10 +108,23 @@ export const greenEstablishmentsAction = (
 					const flowerGardenCount = establishments.flowerGarden?.length || 0;
 
 					moneyPerEstablishment = moneyPerFlowerGarden * flowerGardenCount;
+
+					break;
+				}
+				case "foodWarehouse": {
+					const cupCount = countTagsInEstablishments(establishments, "cup");
+
+					moneyPerEstablishment = 2 * cupCount;
+
 					break;
 				}
 				default:
-					console.info("couldn't handle green establishment", establishmentKey);
+					console.error(
+						"Unknown green establishment",
+						establishmentKey,
+						establishment
+					);
+
 					return;
 			}
 

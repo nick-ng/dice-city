@@ -37,6 +37,7 @@ export const createGameFromHostId = (
 				common: {
 					activePlayerId: "",
 					diceRolls: [],
+					harbourExtra: 0,
 					processedEstablishments: [],
 					supply: {},
 					turnEvents: [],

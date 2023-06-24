@@ -18,6 +18,7 @@ import {
 	amusementParkRollHandler,
 	amusementParkTurnHandler,
 } from "./amusement-park.js";
+import { harbourRollHandler } from "./harbour.js";
 import { getSupply } from "./supply.js";
 
 export const performAction = (
@@ -69,10 +70,14 @@ export const performAction = (
 
 			amusementParkRollHandler(gameData);
 
+			if (harbourRollHandler(gameData).requireInput) {
+				return { gameData };
+			}
+
 			return allEstablishmentsAction(gameData);
 		}
 		case "reroll-dice": {
-			let tempResult = rerollDiceAction(gameData, action);
+			const tempResult = rerollDiceAction(gameData, action);
 
 			if (tempResult.error) {
 				return tempResult;
@@ -80,6 +85,13 @@ export const performAction = (
 
 			amusementParkRollHandler(gameData);
 
+			if (harbourRollHandler(gameData).requireInput) {
+				return { gameData };
+			}
+
+			return allEstablishmentsAction(gameData);
+		}
+		case "harbour-change-roll": {
 			return allEstablishmentsAction(gameData);
 		}
 		case "build": {

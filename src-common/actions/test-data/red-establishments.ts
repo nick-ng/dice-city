@@ -69,6 +69,7 @@ const startingState: GameData["gameState"] = {
 			activePlayerId: "84c45332-4911-4823-839e-996bad56ba61",
 			turnPhase: "after-roll",
 			diceRolls: [2, 1],
+			harbourExtra: 0,
 			processedEstablishments: [],
 			turnEvents: ["%84c45332-4911-4823-839e-996bad56ba61% rolled a 3 (2 + 1)"],
 			turnOrder: [

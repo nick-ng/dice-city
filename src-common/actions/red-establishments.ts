@@ -84,6 +84,7 @@ export const redEstablishmentsAction = (
 						establishmentKey,
 						establishment
 					);
+
 					return;
 			}
 
