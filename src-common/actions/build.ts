@@ -59,7 +59,12 @@ export const buildAction = (
 		};
 	}
 
+	// skip building
 	if (!buildingKey) {
+		if (playerState.city.landmarks.airport) {
+			playerState.money = playerState.money + 10;
+		}
+
 		return { gameData };
 	}
 
