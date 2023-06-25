@@ -49,14 +49,14 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 - src-back/worker.ts:130: @todo(nick-ng): check for "orphaned" games when starting up.
 - src-common/actions/business-centre.ts:7: @todo(nick-ng): show cards when you hover the buttons.
-- src-front/app/game-screen/game.tsx:77: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
-- src-front/app/game-screen/game.tsx:78: @todo(nick-ng): show what was rolled in the main area
-- src-front/app/game-screen/game.tsx:79: @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game
-- src-front/app/game-screen/game.tsx:80: @todo(nick-ng): reference for all establishments in sidebar
-- src-front/app/game-screen/game.tsx:81: @todo(nick-ng): put side bar in its own component?
-- src-front/app/game-screen/lobby.tsx:22: @todo(nick-ng): make your game public
-- src-front/app/game-screen/lobby.tsx:23: @todo(nick-ng): leave a game if you aren't the host
-- src-front/app/game-screen/lobby.tsx:24: @todo(nick-ng): kick a player from your game if you are the host
-- src-front/app/game-screen/lobby.tsx:25: @todo(nick-ng): ready check?
-- src-front/app/home/game-browser.tsx:24: @todo(nick-ng): show public games
+- src-front/app/game-screen/game.tsx:79: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
+- src-front/app/game-screen/game.tsx:80: @todo(nick-ng): show what was rolled in the main area
+- src-front/app/game-screen/game.tsx:81: @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game
+- src-front/app/game-screen/game.tsx:82: @todo(nick-ng): reference for all establishments in sidebar
+- src-front/app/game-screen/game.tsx:83: @todo(nick-ng): put side bar in its own component?
+- src-front/app/game-screen/lobby.tsx:23: @todo(nick-ng): make your game public
+- src-front/app/game-screen/lobby.tsx:24: @todo(nick-ng): leave a game if you aren't the host
+- src-front/app/game-screen/lobby.tsx:25: @todo(nick-ng): kick a player from your game if you are the host
+- src-front/app/game-screen/lobby.tsx:26: @todo(nick-ng): ready check?
+- src-front/app/home/game-browser.tsx:25: @todo(nick-ng): show public games
 - src-front/utils/name-generator.ts:8: @todo(nick-ng): handle plural adjectives?

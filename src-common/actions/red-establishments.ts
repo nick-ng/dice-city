@@ -36,7 +36,8 @@ export const redEstablishmentsAction = (
 	const otherPlayerIds = getPlayerOrderStartingFromPlayer(
 		turnOrder,
 		activePlayerId,
-		false
+		false,
+		true
 	);
 
 	Object.entries(establishmentReference)

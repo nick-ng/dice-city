@@ -12,6 +12,8 @@ import City from "~front/app/city/index.js";
 import DiceControls from "./dice-controls.js";
 import HarbourControls from "./harbour-controls.js";
 import BusinessCentreControls from "./business-centre-controls.js";
+import Instructions from "../instructions/index.js";
+import EstablishmentReference from "../establishment-reference/index.js";
 
 interface GameProps {
 	gameData: GameData;
@@ -121,7 +123,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								return (
 									<button
 										key={opponentId}
-										className="button-default px-4 py-2"
+										className="button-default animate-attention px-4 py-2"
 										onClick={() => {
 											sendViaWebSocket({
 												...options,
@@ -265,7 +267,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					})}
 				</div>
 			</div>
-			<div className="flex-shrink-0">
+			<div className="ml-2 flex-shrink-0 pb-12">
 				<h3>Players</h3>
 				<ul className="ml-4 list-outside">
 					{getPlayerOrderStartingFromPlayer(
@@ -323,7 +325,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					})}
 				</ul>
 				<hr />
-				<details open>
+				<details className="mb-2" open>
 					<summary className="text-xl">Turn Events</summary>
 					<ul className="ml-4 list-outside list-disc">
 						{turnEvents.map((event, i) => (
@@ -336,9 +338,13 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						))}
 					</ul>
 				</details>
+				<hr />
+				<EstablishmentReference />
+				<hr />
+				<Instructions narrow />
 			</div>
 			<button
-				className="button-default fixed bottom-4 right-4"
+				className="button-default fixed bottom-4 right-4 bg-white dark:bg-gray-800"
 				onClick={() => {
 					if (!options.alwaysShowCities) {
 						for (let i = 0; i < players.length; i++) {

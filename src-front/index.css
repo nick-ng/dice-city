@@ -33,6 +33,14 @@
 		@apply text-xl;
 	}
 
+	h4 {
+		@apply text-lg;
+	}
+
+	p + p {
+		@apply mt-1.5;
+	}
+
 	button:disabled {
 		@apply cursor-not-allowed opacity-70;
 	}

@@ -7,6 +7,7 @@ import { getName } from "~front/utils/name-generator.js";
 import { useOptions } from "~front/hooks/options-context.js";
 
 import ToolTip from "~front/app/tool-tip/index.js";
+import Instructions from "../instructions/index.js";
 
 interface LobbyProps {
 	gameData: GameData;
@@ -124,6 +125,9 @@ export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
 						</button>
 					</ToolTip>
 				)}
+			<div className="flex flex-col items-center">
+				<Instructions showStory />
+			</div>
 		</div>
 	);
 }
