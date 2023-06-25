@@ -5,7 +5,10 @@ import type { Options } from "~front/hooks/options-context.js";
 
 import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
 import { businessCentreAction } from "~common/actions/business-centre.js";
-import { establishmentReference } from "~common/constants/buildings.js";
+import {
+	establishmentReference,
+	sortEstablishments,
+} from "~common/constants/buildings.js";
 
 import { getName, replaceName } from "~front/utils/name-generator.js";
 import { replaceTags } from "~front/app/building/utils.js";
@@ -78,8 +81,14 @@ export default function BusinessCentreControls({
 							<div className="text-center font-semibold">
 								Your Establishments
 							</div>
-							{Object.entries(myState.city.establishments).map(
-								([establishmentKey, establishments]) => {
+							{Object.entries(myState.city.establishments)
+								.sort((a, b) => {
+									return sortEstablishments(
+										establishmentReference[a[0]],
+										establishmentReference[b[0]]
+									);
+								})
+								.map(([establishmentKey, establishments]) => {
 									if (establishments.length === 0) {
 										return null;
 									}
@@ -105,8 +114,7 @@ export default function BusinessCentreControls({
 											{establishments.length}
 										</button>
 									);
-								}
-							)}
+								})}
 						</div>
 					</div>
 					{getPlayerOrderStartingFromPlayer(
@@ -124,8 +132,14 @@ export default function BusinessCentreControls({
 										{getName(thisOpponentId, opponent?.name, showNames)}'s
 										Establishments
 									</div>
-									{Object.entries(opponentState.city.establishments).map(
-										([establishmentKey, establishments]) => {
+									{Object.entries(opponentState.city.establishments)
+										.sort((a, b) => {
+											return sortEstablishments(
+												establishmentReference[a[0]],
+												establishmentReference[b[0]]
+											);
+										})
+										.map(([establishmentKey, establishments]) => {
 											if (establishments.length === 0) {
 												return null;
 											}
@@ -148,8 +162,7 @@ export default function BusinessCentreControls({
 													{establishments.length}
 												</button>
 											);
-										}
-									)}
+										})}
 								</div>
 							</div>
 						);

@@ -152,6 +152,11 @@ export const purpleEstablishmentsAction = (
 		activePlayerState.money === 0
 	) {
 		activePlayerState.money = 1;
+
+		trimTurnEvents(
+			turnEvents,
+			`%${activePlayerId}% got 1 coin from their City Hall`
+		);
 	}
 
 	return { gameData };

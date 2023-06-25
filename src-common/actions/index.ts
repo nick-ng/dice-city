@@ -18,7 +18,7 @@ import {
 	amusementParkRollHandler,
 	amusementParkTurnHandler,
 } from "./amusement-park.js";
-import { harbourRollHandler } from "./harbour.js";
+import { harbourChangeHandler, harbourRollHandler } from "./harbour.js";
 import { getSupply } from "./supply.js";
 
 export const performAction = (
@@ -92,6 +92,12 @@ export const performAction = (
 			return allEstablishmentsAction(gameData);
 		}
 		case "harbour-change-roll": {
+			const tempResult = harbourChangeHandler(gameData, action);
+
+			if (tempResult.error) {
+				return tempResult;
+			}
+
 			return allEstablishmentsAction(gameData);
 		}
 		case "build": {

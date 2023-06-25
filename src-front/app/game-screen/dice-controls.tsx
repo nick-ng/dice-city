@@ -34,7 +34,7 @@ export default function DiceControls({
 			return (
 				<div className="mt-1">
 					<button
-						className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
+						className="button-default animate-attention px-4 py-2"
 						onClick={() => {
 							rerollHandler(false);
 						}}
@@ -42,7 +42,7 @@ export default function DiceControls({
 						Re-Roll 🎲
 					</button>
 					<button
-						className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
+						className="button-default animate-attention px-4 py-2"
 						onClick={() => {
 							rerollHandler(true);
 						}}
@@ -56,7 +56,7 @@ export default function DiceControls({
 		return (
 			<div className="mt-1">
 				<button
-					className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
+					className="button-default animate-attention px-4 py-2"
 					onClick={() => {
 						rerollHandler(false);
 					}}
@@ -64,7 +64,7 @@ export default function DiceControls({
 					Re-Roll {diceRolls.map(() => "🎲").join("")}
 				</button>
 				<button
-					className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
+					className="button-default animate-attention px-4 py-2"
 					onClick={() => {
 						rerollHandler(true);
 					}}
@@ -76,10 +76,14 @@ export default function DiceControls({
 		);
 	}
 
+	if (pendingActionsForMe.includes("harbour")) {
+		return null;
+	}
+
 	return (
 		<div className="mt-1">
 			<button
-				className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
+				className="button-default animate-attention px-4 py-2"
 				onClick={() => {
 					rollHandler(1);
 				}}
@@ -88,7 +92,7 @@ export default function DiceControls({
 			</button>
 			{myState.city.landmarks.trainStation && (
 				<button
-					className="button-default animate-attention-light px-4 py-2 dark:animate-attention-dark"
+					className="button-default animate-attention px-4 py-2"
 					onClick={() => {
 						rollHandler(2);
 					}}

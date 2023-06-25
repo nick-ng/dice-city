@@ -67,8 +67,11 @@ export const harbourChangeHandler = (
 	const { common } = publicState;
 	const { activePlayerId, pendingActions, turnPhase, diceRolls } = common;
 
-	if (turnPhase !== "before-build") {
-		return { gameData, error: "You cannot use your Harbour right now." };
+	if (turnPhase !== "before-roll") {
+		return {
+			gameData,
+			error: "You can only use the Harbour just after rolling dice.",
+		};
 	}
 
 	if (action.playerId !== activePlayerId) {

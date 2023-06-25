@@ -10,6 +10,7 @@ import { useOptions } from "~front/hooks/options-context.js";
 import Build from "~front/app/build/index.js";
 import City from "~front/app/city/index.js";
 import DiceControls from "./dice-controls.js";
+import HarbourControls from "./harbour-controls.js";
 import BusinessCentreControls from "./business-centre-controls.js";
 
 interface GameProps {
@@ -151,6 +152,19 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								...options,
 								type: "business-centre",
 								payload,
+							});
+						}}
+					/>
+					<HarbourControls
+						gameData={gameData}
+						options={options}
+						onClick={(skip) => {
+							sendViaWebSocket({
+								...options,
+								type: "harbour-change-roll",
+								payload: {
+									skip,
+								},
 							});
 						}}
 					/>

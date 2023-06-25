@@ -393,11 +393,13 @@ export const makeDeck = (deckList: DeckList, players = 4): Deck => {
 
 export const getDeck = (cardSet = "base", players = 4): Deck => {
 	switch (cardSet) {
-		case "base":
+		case "base": {
 			return makeDeck(baseDeckList, players);
+		}
 		case "full":
-		default:
+		default: {
 			return makeDeck(Object.keys(establishmentReference), players);
+		}
 	}
 };
 
