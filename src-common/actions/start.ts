@@ -76,7 +76,11 @@ export const startAction = (
 		};
 		for (let j = 0; j < gameSettings.landmarks.length; j++) {
 			const landmark = gameSettings.landmarks[j];
-			publicState.players[id].city.landmarks[landmark] = false;
+			if (landmark === "cityHall") {
+				publicState.players[id].city.landmarks[landmark] = true;
+			} else {
+				publicState.players[id].city.landmarks[landmark] = false;
+			}
 		}
 	}
 

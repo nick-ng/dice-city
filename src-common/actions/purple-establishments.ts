@@ -26,16 +26,19 @@ export const purpleEstablishmentsAction = (
 	if (turnPhase !== "after-roll") {
 		return {
 			gameData,
-			error: "Red establishments are only processed in the after-roll phase.",
+			error:
+				"Purple establishments are only processed in the after-roll phase.",
 		};
 	}
+
+	const activePlayerState = playerStates[activePlayerId];
+	const { city: activePlayerCity } = activePlayerState;
 
 	const diceRoll =
 		diceRolls.reduce((accumulator, dieRoll) => accumulator + dieRoll, 0) +
 		harbourExtra;
 
-	let nextPhase: GameData["gameState"]["publicState"]["common"]["turnPhase"] =
-		"before-build";
+	let nextPhase: "before-build" | "after-roll" = "before-build";
 
 	Object.entries(establishmentReference)
 		.filter(([_, establishment]) => establishment.colour === "purple")
@@ -48,9 +51,7 @@ export const purpleEstablishmentsAction = (
 				return;
 			}
 
-			const activePlayerState = playerStates[activePlayerId];
-			const { city } = activePlayerState;
-			const { establishments } = city;
+			const { establishments } = activePlayerCity;
 			const establishmentCount = establishments[establishmentKey]?.length || 0;
 
 			switch (establishmentKey) {
@@ -145,6 +146,13 @@ export const purpleEstablishmentsAction = (
 		});
 
 	common.turnPhase = nextPhase;
+	if (
+		nextPhase === "before-build" &&
+		activePlayerCity.landmarks.cityHall &&
+		activePlayerState.money === 0
+	) {
+		activePlayerState.money = 1;
+	}
 
 	return { gameData };
 };
