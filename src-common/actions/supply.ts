@@ -3,7 +3,7 @@ import type { Deck, Supply } from "~common/types/index.js";
 import { establishmentReference } from "../constants/buildings.js";
 
 // @todo(nick-ng): explain what cards were added to the supply in the turn events
-const addCardToSupply = (supply: Supply, cardId: string): void => {
+const addCardToSupply = (supply: Supply, cardId: string): string => {
 	const cardKey = cardId.split(":")[0];
 
 	if (!supply[cardKey]) {
@@ -11,12 +11,14 @@ const addCardToSupply = (supply: Supply, cardId: string): void => {
 	}
 
 	supply[cardKey].push(cardId);
+
+	return cardKey;
 };
 
 export const totalSupply = (
 	currentSupply: Supply,
 	remainingDeck: Deck
-): { supply: Supply; deck: Deck } => {
+): { supply: Supply; deck: Deck; additions: string[] } => {
 	while (remainingDeck.length > 0) {
 		const cardId = remainingDeck.shift();
 		if (!cardId) {
@@ -28,6 +30,7 @@ export const totalSupply = (
 	return {
 		supply: currentSupply,
 		deck: remainingDeck,
+		additions: [],
 	};
 };
 
@@ -35,7 +38,9 @@ export const variableSupply = (
 	supply: Supply,
 	deck: Deck,
 	piles = 10
-): { supply: Supply; deck: Deck } => {
+): { supply: Supply; deck: Deck; additions: string[] } => {
+	const additions: string[] = [];
+
 	while (Object.values(supply).filter((s) => s.length > 0).length < piles) {
 		const cardId = deck.shift();
 
@@ -43,19 +48,22 @@ export const variableSupply = (
 			break;
 		}
 
-		addCardToSupply(supply, cardId);
+		const cardKey = addCardToSupply(supply, cardId);
+
+		additions.push(cardKey);
 	}
 
 	return {
 		supply,
 		deck,
+		additions,
 	};
 };
 
 export const hybridSupply = (
 	currentSupply: Supply,
 	remainingDeck: Deck
-): { supply: Supply; deck: Deck } => {
+): { supply: Supply; deck: Deck; additions: string[] } => {
 	const lowSupply: Supply = {};
 	const highSupply: Supply = {};
 	const majorSupply: Supply = {};
@@ -100,9 +108,9 @@ export const hybridSupply = (
 		}
 	}
 
-	variableSupply(lowSupply, lowDeck, 5);
-	variableSupply(highSupply, highDeck, 5);
-	variableSupply(majorSupply, majorDeck, 2);
+	const lowAdditions = variableSupply(lowSupply, lowDeck, 5).additions;
+	const highAdditions = variableSupply(highSupply, highDeck, 5).additions;
+	const majorAdditions = variableSupply(majorSupply, majorDeck, 2).additions;
 
 	return {
 		deck: [...lowDeck, ...highDeck, ...majorDeck],
@@ -111,6 +119,7 @@ export const hybridSupply = (
 			...highSupply,
 			...majorSupply,
 		},
+		additions: [...lowAdditions, ...highAdditions, ...majorAdditions],
 	};
 };
 
@@ -118,7 +127,7 @@ export const getSupply = (
 	currentSupply: Supply,
 	remainingDeck: Deck,
 	supplyStyle: "total" | "variable" | "hybrid" = "hybrid"
-) => {
+): { supply: Supply; deck: Deck; additions: string[] } => {
 	switch (supplyStyle) {
 		case "total":
 			return totalSupply(currentSupply, remainingDeck);

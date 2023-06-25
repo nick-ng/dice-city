@@ -178,7 +178,7 @@ export const buildAction = (
 
 		trimTurnEvents(
 			turnEvents,
-			`%${action.playerId}% built ${landmark.determiner} ${landmark.display}.`
+			`%${action.playerId}% built ${landmark.determiner} ${landmark.display}`
 		);
 	}
 

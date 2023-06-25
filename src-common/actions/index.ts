@@ -1,5 +1,8 @@
 import type { GameData, Action } from "../types/index.js";
 
+import { establishmentReference } from "~common/constants/buildings.js";
+import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
+
 import { joinAction } from "./join.js";
 import { changeSupplyAction } from "./change-supply.js";
 import { startAction } from "./start.js";
@@ -136,6 +139,39 @@ export const performAction = (
 
 			gameData.gameState.publicState.common.supply = temp.supply;
 			gameData.gameState.secretState.common.deck = temp.deck;
+
+			const groupedAdditions = temp.additions.reduce(
+				(accumulator, establishmentKey) => {
+					if (!accumulator[establishmentKey]) {
+						accumulator[establishmentKey] = 0;
+					}
+
+					accumulator[establishmentKey] = accumulator[establishmentKey] + 1;
+
+					return accumulator;
+				},
+				{} as { [key: string]: number }
+			);
+
+			let totalAdditions = 0;
+
+			const additionList = Object.entries(groupedAdditions)
+				.sort((a, b) => a[0].localeCompare(b[0]))
+				.map(([establishmentKey, number]) => {
+					totalAdditions = totalAdditions + number;
+
+					const establishment = establishmentReference[establishmentKey];
+
+					return `${number} ${
+						number === 1 ? establishment?.display : establishment?.pluralDisplay
+					} added to the supply`;
+				});
+
+			if (totalAdditions > 0) {
+				additionList.forEach((a) => {
+					trimTurnEvents(gameData.gameState.publicState.common.turnEvents, a);
+				});
+			}
 
 			return tempResult;
 		}
