@@ -42,7 +42,7 @@ export default function Building({ building, inactive }: BuildingProps) {
 				</div>
 			)}
 			<div className={`${isEstablishment ? "" : "pt-1"} flex`}>
-				<span className="flex-1 text-xs md:text-sm">
+				<span className="flex-1 text-xs xl:text-sm">
 					{getTag(tag)}
 					{display}
 				</span>
@@ -53,8 +53,8 @@ export default function Building({ building, inactive }: BuildingProps) {
 					actualPicture.length === 1 ? "grid-cols-1" : "grid-cols-2"
 				} ${
 					actualPicture.length > 2 || effect.length > 80
-						? "text-[120%] md:text-[150%]"
-						: "text-[150%] md:text-[200%]"
+						? "text-[120%] xl:text-[150%]"
+						: "text-[150%] xl:text-[200%]"
 				}`}
 			>
 				{actualPicture.map((emoji, i) => (
@@ -62,7 +62,7 @@ export default function Building({ building, inactive }: BuildingProps) {
 				))}
 			</div>
 			<div
-				className={`mx-1 mb-1 text-left md:mx-2 ${
+				className={`mx-1 mb-1 text-left xl:mx-2 ${
 					effect.length > 70 ? "text-xs" : "text-sm"
 				} leading-snug`}
 			>

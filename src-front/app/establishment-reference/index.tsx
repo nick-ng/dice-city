@@ -8,7 +8,7 @@ export default function EstablishmentReference() {
 		<div>
 			<details>
 				<summary className="text-lg">Establishments</summary>
-				<div className="can-hover:hidden">
+				<div className="text-sm can-hover:hidden">
 					Tap on an establishment to see what it does
 				</div>
 				<div className="cannot-hover:hidden">
@@ -18,11 +18,11 @@ export default function EstablishmentReference() {
 					{establishments.map((establishment) => (
 						<li
 							key={establishment.key}
-							className="group relative cursor-pointer py-0.5 underline"
+							className="group relative cursor-pointer py-0.5 even:bg-gray-200 dark:even:bg-gray-600"
 							tabIndex={0}
 						>
 							<span>{establishment.display}</span>
-							<div className="absolute -left-32 top-0 hidden bg-white dark:bg-gray-800 md:-left-40 can-hover:group-hover:block cannot-hover:group-focus:block">
+							<div className="absolute -left-32 top-0 hidden bg-white dark:bg-gray-800 xl:-left-40 can-hover:group-hover:block cannot-hover:group-focus:block">
 								<Building building={establishment} />
 							</div>
 						</li>

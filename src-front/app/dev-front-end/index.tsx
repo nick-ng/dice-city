@@ -53,8 +53,8 @@ export default function DevFrontEnd() {
 		setDevDarkMode(savedDarkMode === "on");
 	}, []);
 	return (
-		<div className="flex h-full flex-col md:grid md:flex-none md:grid-cols-[auto_1fr] md:gap-2">
-			<details className="mb-2 md:hidden">
+		<div className="flex h-full flex-col xl:grid xl:flex-none xl:grid-cols-[auto_1fr] xl:gap-2">
+			<details className="mb-2 xl:hidden">
 				<summary>Components</summary>
 				<ul>
 					{components.map(({ name, section, path }) => {
@@ -69,7 +69,7 @@ export default function DevFrontEnd() {
 					})}
 				</ul>
 			</details>
-			<div className="hidden h-full overflow-y-auto md:block">
+			<div className="hidden h-full overflow-y-auto xl:block">
 				<h2>Components</h2>
 				<ul>
 					{components.map(({ name, section, path }) => {
@@ -104,7 +104,7 @@ export default function DevFrontEnd() {
 				>
 					Toggle Dark Mode
 				</button>{" "}
-				<span className="hidden md:inline">
+				<span className="hidden xl:inline">
 					Change dark mode setting for development only.
 				</span>
 				<div className="h-full border">

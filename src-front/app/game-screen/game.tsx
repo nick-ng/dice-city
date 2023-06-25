@@ -267,7 +267,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					})}
 				</div>
 			</div>
-			<div className="ml-2 flex-shrink-0 pb-12">
+			<div className="ml-2 flex-shrink-0 flex-grow-0 basis-48 pb-12 xl:basis-80 ">
 				<h3>Players</h3>
 				<ul className="ml-4 list-outside">
 					{getPlayerOrderStartingFromPlayer(
@@ -282,9 +282,9 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						).reduce((p, c) => (c ? p + 1 : p), 0);
 						return (
 							<li
-								className={
+								className={`${
 									playerId === activePlayerId ? "list-disc" : "list-[circle]"
-								}
+								} underline`}
 								key={playerId}
 								role={playerId === options.playerId ? "listitem" : "button"}
 								onClick={() => {
@@ -327,11 +327,11 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				<hr />
 				<details className="mb-2" open>
 					<summary className="text-xl">Turn Events</summary>
-					<ul className="ml-4 list-outside list-disc">
+					<ul className="ml-4 list-outside list-disc text-sm xl:text-base">
 						{turnEvents.map((event, i) => (
 							<li
 								key={`${event}-${i}`}
-								className="max-w-xs px-0.5 even:bg-gray-200 dark:even:bg-gray-600"
+								className="px-0.5 even:bg-gray-200 dark:even:bg-gray-600"
 							>
 								{replaceName(players, !!showNames, options.playerId, event)}
 							</li>
@@ -341,7 +341,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				<hr />
 				<EstablishmentReference />
 				<hr />
-				<Instructions narrow />
+				<Instructions />
 			</div>
 			<button
 				className="button-default fixed bottom-4 right-4 bg-white dark:bg-gray-800"

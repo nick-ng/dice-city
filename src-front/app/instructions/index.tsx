@@ -2,14 +2,13 @@ import { replaceTags } from "../building/utils.js";
 
 interface InstructionsProps {
 	showStory?: boolean;
-	narrow?: boolean;
 }
 
-export default function Instructions({ showStory, narrow }: InstructionsProps) {
+export default function Instructions({ showStory }: InstructionsProps) {
 	return (
-		<div className={`${narrow ? "max-w-xs" : "max-w-prose"}`}>
+		<div className={"max-w-prose text-sm xl:text-base"}>
 			<details open>
-				<summary className="text-xl">Instructions</summary>
+				<summary className="text-lg xl:text-xl">Instructions</summary>
 				{showStory && (
 					<p>
 						You are the mayor of a city. Well, it's not much of a city right
@@ -28,7 +27,7 @@ export default function Instructions({ showStory, narrow }: InstructionsProps) {
 					<li>Build</li>
 				</ul>
 				<details open>
-					<summary className="text-lg">Roll Dice</summary>
+					<summary className="text-base xl:text-lg">Roll Dice</summary>
 					<p>Begin your turn by rolling one die.</p>
 					<p>
 						Building landmarks can change the number of dice you can roll or
@@ -36,7 +35,9 @@ export default function Instructions({ showStory, narrow }: InstructionsProps) {
 					</p>
 				</details>
 				<details open>
-					<summary className="text-lg">Activate Establishments</summary>
+					<summary className="text-base xl:text-lg">
+						Activate Establishments
+					</summary>
 					<p>
 						Each establishments has one or more Activation Numbers in the
 						coloured area at the top.
@@ -74,7 +75,7 @@ export default function Instructions({ showStory, narrow }: InstructionsProps) {
 					</p>
 				</details>
 				<details open>
-					<summary className="text-lg">Build</summary>
+					<summary className="text-base xl:text-lg">Build</summary>
 					<p>
 						After collecting and/or paying money, you may pay to build one
 						Establishment OR pay to finish construction on one Landmark. The

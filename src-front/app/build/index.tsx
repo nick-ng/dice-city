@@ -70,7 +70,7 @@ export default function Build({
 		<div className="flex flex-row items-start justify-start">
 			{onBuild && (
 				<div className="sticky top-0 z-10 inline-block w-min">
-					<p className="text-center text-sm md:text-base">Chosen Building</p>
+					<p className="text-center text-sm xl:text-base">Chosen Building</p>
 					<ToolTip message={buildError}>
 						<button
 							className="button-default w-min p-0.5 pb-1"
@@ -109,7 +109,7 @@ export default function Build({
 				</div>
 			)}
 			<div>
-				<p className="text-sm md:text-base">Available Buildings</p>
+				<p className="text-sm xl:text-base">Available Buildings</p>
 				<div className="flex flex-row">
 					{Object.entries(city.landmarks).map(([landmarkKey, isBuilt]) => {
 						const tempLandmark = landmarkReference[landmarkKey];

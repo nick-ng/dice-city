@@ -26,7 +26,7 @@ export default function Stack({ establishment, count, className }: StackProps) {
 				.map((_, n) => (
 					<div
 						key={`${key}-${n}`}
-						className="-mb-1 hidden h-4 w-full overflow-y-hidden  md:block"
+						className="-mb-1 hidden h-4 w-full overflow-y-hidden  xl:block"
 					>
 						<div
 							className={`${bgColours[colour]} relative rounded-t border-x-2 border-t-2 border-x-gray-700 border-t-gray-700 text-center font-bold text-white dark:border-x-gray-300 dark:border-t-gray-300`}
@@ -38,7 +38,7 @@ export default function Stack({ establishment, count, className }: StackProps) {
 						</div>
 					</div>
 				))}
-			<div className="md:hidden">&times;{count}</div>
+			<div className="xl:hidden">&times;{count}</div>
 			<Building building={establishment} />
 		</div>
 	);

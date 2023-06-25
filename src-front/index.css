@@ -46,7 +46,7 @@
 	}
 
 	.button-default {
-		@apply rounded border border-gray-600 px-2 py-2 dark:border-gray-300 md:py-0;
+		@apply rounded border border-gray-600 px-2 py-2 dark:border-gray-300 xl:py-0;
 	}
 
 	.animate-attention {
@@ -63,6 +63,6 @@
 	}
 
 	.coin {
-		@apply flex h-4 w-4 items-center justify-center rounded border border-black bg-yellow-300 text-xs font-normal text-black md:h-5 md:w-5 md:rounded-full md:font-bold;
+		@apply flex h-4 w-4 items-center justify-center rounded border border-black bg-yellow-300 text-xs font-normal text-black xl:h-5 xl:w-5 xl:rounded-full xl:font-bold;
 	}
 }
