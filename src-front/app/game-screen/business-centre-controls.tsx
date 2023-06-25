@@ -178,7 +178,7 @@ export default function BusinessCentreControls({
 						)}
 					>
 						<button
-							className="button-default px-4 py-2"
+							className="button-default animate-attention px-4 py-2"
 							disabled={!!businessCentreError}
 							onClick={() => {
 								if (!businessCentreError) {

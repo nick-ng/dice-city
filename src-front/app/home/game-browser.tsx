@@ -7,6 +7,7 @@ import { newGameResponseSchema } from "~common/types/schemas/message.js";
 import { useOptions } from "~front/hooks/options-context.js";
 
 import ToolTip from "~front/app/tool-tip/index.js";
+import Instructions from "../instructions/index.js";
 
 export default function GameBrowser() {
 	const { options } = useOptions();
@@ -62,6 +63,9 @@ export default function GameBrowser() {
 					Host Game
 				</button>
 			</ToolTip>
+			<div className="flex flex-col items-center">
+				<Instructions showStory />
+			</div>
 		</div>
 	);
 }

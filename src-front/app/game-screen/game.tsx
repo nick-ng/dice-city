@@ -12,6 +12,8 @@ import City from "~front/app/city/index.js";
 import DiceControls from "./dice-controls.js";
 import HarbourControls from "./harbour-controls.js";
 import BusinessCentreControls from "./business-centre-controls.js";
+import Instructions from "../instructions/index.js";
+import EstablishmentReference from "../establishment-reference/index.js";
 
 interface GameProps {
 	gameData: GameData;
@@ -77,7 +79,6 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
 	// @todo(nick-ng): show what was rolled in the main area
 	// @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game
-	// @todo(nick-ng): reference for all establishments in sidebar
 	// @todo(nick-ng): put side bar in its own component?
 	return (
 		<div className="flex flex-row">
@@ -121,7 +122,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								return (
 									<button
 										key={opponentId}
-										className="button-default px-4 py-2"
+										className="button-default animate-attention px-4 py-2"
 										onClick={() => {
 											sendViaWebSocket({
 												...options,
@@ -265,7 +266,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					})}
 				</div>
 			</div>
-			<div className="flex-shrink-0">
+			<div className="ml-2 flex-shrink-0 flex-grow-0 basis-48 pb-12 xl:basis-80 ">
 				<h3>Players</h3>
 				<ul className="ml-4 list-outside">
 					{getPlayerOrderStartingFromPlayer(
@@ -280,9 +281,9 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						).reduce((p, c) => (c ? p + 1 : p), 0);
 						return (
 							<li
-								className={
+								className={`${
 									playerId === activePlayerId ? "list-disc" : "list-[circle]"
-								}
+								} underline`}
 								key={playerId}
 								role={playerId === options.playerId ? "listitem" : "button"}
 								onClick={() => {
@@ -323,22 +324,26 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					})}
 				</ul>
 				<hr />
-				<details open>
+				<details className="mb-2" open>
 					<summary className="text-xl">Turn Events</summary>
-					<ul className="ml-4 list-outside list-disc">
+					<ul className="ml-4 list-outside list-disc text-sm xl:text-base">
 						{turnEvents.map((event, i) => (
 							<li
 								key={`${event}-${i}`}
-								className="max-w-xs px-0.5 even:bg-gray-200 dark:even:bg-gray-600"
+								className="px-0.5 even:bg-gray-200 dark:even:bg-gray-600"
 							>
 								{replaceName(players, !!showNames, options.playerId, event)}
 							</li>
 						))}
 					</ul>
 				</details>
+				<hr />
+				<EstablishmentReference />
+				<hr />
+				<Instructions />
 			</div>
 			<button
-				className="button-default fixed bottom-4 right-4"
+				className="button-default fixed bottom-4 right-4 bg-white dark:bg-gray-800"
 				onClick={() => {
 					if (!options.alwaysShowCities) {
 						for (let i = 0; i < players.length; i++) {

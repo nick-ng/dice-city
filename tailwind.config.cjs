@@ -4,6 +4,10 @@ module.exports = {
 	content: ["./src-front/**/*.{html,ts,tsx}", "./index.html"],
 	theme: {
 		extend: {
+			screens: {
+				"can-hover": { raw: "(hover: hover)" },
+				"cannot-hover": { raw: "(hover: none)" },
+			},
 			keyframes: {
 				"spin-loading": {
 					"0%": { transform: "rotate(0deg)" },

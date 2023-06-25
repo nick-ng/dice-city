@@ -34,7 +34,7 @@ export default function GameScreen() {
 	const { turnPhase } = common;
 
 	return (
-		<div className="lg:mx-4">
+		<div className="md:mx-1 xl:mx-4">
 			{turnPhase === "lobby" && (
 				<Lobby gameData={playerGameData} sendViaWebSocket={sendViaWebSocket} />
 			)}

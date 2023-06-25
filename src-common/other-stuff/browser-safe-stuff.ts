@@ -3,7 +3,8 @@ const MAX_TURN_EVENTS = 20;
 export const getPlayerOrderStartingFromPlayer = (
 	playerIds: string[],
 	startingPlayerId: string,
-	includeStartingPlayer = false
+	includeStartingPlayer = false,
+	reverse = false
 ): string[] => {
 	const before: string[] = [];
 	const after: string[] = [];
@@ -23,6 +24,10 @@ export const getPlayerOrderStartingFromPlayer = (
 	}
 
 	after.push(...before);
+
+	if (reverse) {
+		after.reverse();
+	}
 
 	return after;
 };
