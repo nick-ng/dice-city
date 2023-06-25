@@ -5,6 +5,7 @@ import {
 	getPlayerOrderStartingFromPlayer,
 	trimTurnEvents,
 } from "~common/other-stuff/browser-safe-stuff.js";
+import { countTagsInEstablishments } from "./common.js";
 
 export const purpleEstablishmentsAction = (
 	gameData: GameData
@@ -54,12 +55,13 @@ export const purpleEstablishmentsAction = (
 			const { establishments } = activePlayerCity;
 			const establishmentCount = establishments[establishmentKey]?.length || 0;
 
-			switch (establishmentKey) {
-				case "stadium":
-					if (establishmentCount === 0) {
-						return;
-					}
+			if (establishmentCount === 0) {
+				processedEstablishments.push(establishmentKey);
+				return;
+			}
 
+			switch (establishmentKey) {
+				case "stadium": {
 					const moneyPerOpponent = 2 * establishmentCount;
 
 					const opponentIds = getPlayerOrderStartingFromPlayer(
@@ -67,11 +69,13 @@ export const purpleEstablishmentsAction = (
 						activePlayerId,
 						false
 					);
+
 					for (let i = 0; i < opponentIds.length; i++) {
 						const opponentState = playerStates[opponentIds[i]];
 
 						if (opponentState.money === 0) {
-							turnEvents.push(
+							trimTurnEvents(
+								turnEvents,
 								`%${activePlayerId}% couldn't collect any coins from %${
 									opponentIds[i]
 								}% - ${establishmentCount} ${
@@ -81,7 +85,8 @@ export const purpleEstablishmentsAction = (
 								}`
 							);
 						} else if (opponentState.money < moneyPerOpponent) {
-							turnEvents.push(
+							trimTurnEvents(
+								turnEvents,
 								`%${activePlayerId}% collected ${opponentState.money} ${
 									opponentState.money === 1 ? "coin" : "coins"
 								} from %${opponentIds[i]}% - ${establishmentCount} ${
@@ -94,7 +99,8 @@ export const purpleEstablishmentsAction = (
 							activePlayerState.money += opponentState.money;
 							opponentState.money = 0;
 						} else {
-							turnEvents.push(
+							trimTurnEvents(
+								turnEvents,
 								`%${activePlayerId}% collected ${moneyPerOpponent} ${
 									moneyPerOpponent === 1 ? "coin" : "coins"
 								} from %${opponentIds[i]}% - ${establishmentCount} ${
@@ -110,37 +116,145 @@ export const purpleEstablishmentsAction = (
 					}
 
 					break;
-				case "tvStation":
-					if (establishmentCount > 0) {
-						nextPhase = "after-roll";
+				}
+				case "tvStation": {
+					nextPhase = "after-roll";
 
-						pendingActions.push({
-							playerId: activePlayerId,
-							action: "tv-station",
-						});
+					pendingActions.push({
+						playerId: activePlayerId,
+						action: "tv-station",
+					});
+
+					break;
+				}
+				case "businessCentre": {
+					nextPhase = "after-roll";
+
+					pendingActions.push({
+						playerId: activePlayerId,
+						action: "business-centre",
+					});
+
+					break;
+				}
+				case "publisher": {
+					const opponentIds = getPlayerOrderStartingFromPlayer(
+						turnOrder,
+						activePlayerId,
+						false
+					);
+
+					for (let i = 0; i < opponentIds.length; i++) {
+						const opponentState = playerStates[opponentIds[i]];
+						const { city: opponentCity } = opponentState;
+
+						const cupCount = countTagsInEstablishments(
+							opponentCity.establishments,
+							"cup"
+						);
+						const breadCount = countTagsInEstablishments(
+							opponentCity.establishments,
+							"bread"
+						);
+
+						const moneyPerOpponent = cupCount + breadCount;
+
+						if (opponentState.money === 0) {
+							trimTurnEvents(
+								turnEvents,
+								`%${activePlayerId}% couldn't collect any coins from %${
+									opponentIds[i]
+								}% - ${establishmentCount} ${
+									establishmentCount === 1
+										? establishment.display
+										: establishment.pluralDisplay
+								}`
+							);
+						} else if (opponentState.money < moneyPerOpponent) {
+							trimTurnEvents(
+								turnEvents,
+								`%${activePlayerId}% collected ${opponentState.money} ${
+									opponentState.money === 1 ? "coin" : "coins"
+								} from %${opponentIds[i]}% - ${establishmentCount} ${
+									establishmentCount === 1
+										? establishment.display
+										: establishment.pluralDisplay
+								}`
+							);
+
+							activePlayerState.money += opponentState.money;
+							opponentState.money = 0;
+						} else {
+							trimTurnEvents(
+								turnEvents,
+								`%${activePlayerId}% collected ${moneyPerOpponent} ${
+									moneyPerOpponent === 1 ? "coin" : "coins"
+								} from %${opponentIds[i]}% - ${establishmentCount} ${
+									establishmentCount === 1
+										? establishment.display
+										: establishment.pluralDisplay
+								}`
+							);
+
+							activePlayerState.money += moneyPerOpponent;
+							opponentState.money -= moneyPerOpponent;
+						}
 					}
 
 					break;
-				case "businessCentre":
-					if (establishmentCount > 0) {
-						nextPhase = "after-roll";
+				}
+				case "taxOffice": {
+					const opponentIds = getPlayerOrderStartingFromPlayer(
+						turnOrder,
+						activePlayerId,
+						false
+					);
 
-						pendingActions.push({
-							playerId: activePlayerId,
-							action: "business-centre",
-						});
+					for (let i = 0; i < opponentIds.length; i++) {
+						const opponentState = playerStates[opponentIds[i]];
+
+						const moneyPerOpponent = Math.floor(opponentState.money / 2);
+
+						if (moneyPerOpponent === 0) {
+							trimTurnEvents(
+								turnEvents,
+								`%${activePlayerId}% couldn't collect any coins from %${
+									opponentIds[i]
+								}% - ${establishmentCount} ${
+									establishmentCount === 1
+										? establishment.display
+										: establishment.pluralDisplay
+								}`
+							);
+						} else {
+							trimTurnEvents(
+								turnEvents,
+								`%${activePlayerId}% collected ${moneyPerOpponent} ${
+									moneyPerOpponent === 1 ? "coin" : "coins"
+								} from %${opponentIds[i]}% - ${establishmentCount} ${
+									establishmentCount === 1
+										? establishment.display
+										: establishment.pluralDisplay
+								}`
+							);
+
+							activePlayerState.money += moneyPerOpponent;
+							opponentState.money -= moneyPerOpponent;
+						}
 					}
+
 					break;
-				default:
+				}
+				default: {
 					console.error(
 						"Unknown purple establishment",
 						establishmentKey,
 						JSON.stringify(establishment)
 					);
-					return;
-			}
 
-			trimTurnEvents(turnEvents);
+					return;
+				}
+			}
 
 			processedEstablishments.push(establishmentKey);
 		});

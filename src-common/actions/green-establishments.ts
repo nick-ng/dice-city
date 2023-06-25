@@ -1,26 +1,9 @@
-import type { GameData, EstablishmentList } from "~common/types/index.js";
+import type { GameData } from "~common/types/index.js";
 
 import { establishmentReference } from "~common/constants/buildings.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
-const countTagsInEstablishments = (
-	establishments: EstablishmentList,
-	tag: string
-): number => {
-	let tagCount = 0;
-	const establishmentsEntries = Object.entries(establishments);
-
-	for (let n = 0; n < establishmentsEntries.length; n++) {
-		const key = establishmentsEntries[n][0];
-		const establishmentDetails = establishmentReference[key];
-		if (establishmentDetails?.tag === tag) {
-			const establishmentCounts = establishmentsEntries[n][1].length;
-			tagCount += establishmentCounts;
-		}
-	}
-
-	return tagCount;
-};
+import { countTagsInEstablishments } from "./common.js";
 
 export const greenEstablishmentsAction = (
 	gameData: GameData
@@ -39,7 +22,7 @@ export const greenEstablishmentsAction = (
 	if (turnPhase !== "after-roll") {
 		return {
 			gameData,
-			error: "Red establishments are only processed in the after-roll phase.",
+			error: "Green establishments are only processed in the after-roll phase.",
 		};
 	}
 
