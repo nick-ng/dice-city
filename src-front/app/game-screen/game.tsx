@@ -10,6 +10,7 @@ import { useOptions } from "~front/hooks/options-context.js";
 import Build from "~front/app/build/index.js";
 import City from "~front/app/city/index.js";
 import DiceControls from "./dice-controls.js";
+import HarbourControls from "./harbour-controls.js";
 import BusinessCentreControls from "./business-centre-controls.js";
 
 interface GameProps {
@@ -76,7 +77,8 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
 	// @todo(nick-ng): show what was rolled in the main area
 	// @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game
-	// @todo(nick-ng): option to always show opponents' cities
+	// @todo(nick-ng): reference for all establishments in sidebar
+	// @todo(nick-ng): put side bar in its own component?
 	return (
 		<div className="flex flex-row">
 			<div className="flex-grow">
@@ -150,6 +152,19 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								...options,
 								type: "business-centre",
 								payload,
+							});
+						}}
+					/>
+					<HarbourControls
+						gameData={gameData}
+						options={options}
+						onClick={(skip) => {
+							sendViaWebSocket({
+								...options,
+								type: "harbour-change-roll",
+								payload: {
+									skip,
+								},
 							});
 						}}
 					/>

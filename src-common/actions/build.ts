@@ -1,12 +1,12 @@
 import type { Action, GameData } from "~common/types/index.js";
 
+import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 import {
 	establishmentReference,
 	landmarkReference,
 } from "../constants/buildings.js";
 import { verifyPassword } from "./verify-password.js";
 
-// @todo(nick-ng): log action in turn events
 export const buildAction = (
 	gameData: GameData,
 	action: Action,
@@ -43,7 +43,7 @@ export const buildAction = (
 		};
 	}
 
-	const { supply, activePlayerId, turnPhase } = common;
+	const { supply, activePlayerId, turnPhase, turnEvents } = common;
 
 	if (turnPhase !== "before-build") {
 		return {
@@ -59,7 +59,28 @@ export const buildAction = (
 		};
 	}
 
+	// skip building
 	if (!buildingKey) {
+		if (playerState.city.landmarks.airport) {
+			const airportCoins = 10;
+
+			playerState.money = playerState.money + airportCoins;
+
+			trimTurnEvents(
+				turnEvents,
+				`%${
+					action.playerId
+				}% skipped building anything and collected ${airportCoins} coins from their ${
+					landmarkReference.airport?.display || "Airport"
+				}`
+			);
+		} else {
+			trimTurnEvents(
+				turnEvents,
+				`%${action.playerId}% skipped building anything.`
+			);
+		}
+
 		return { gameData };
 	}
 
@@ -119,6 +140,11 @@ export const buildAction = (
 		city.establishments[buildingKey].push(tempEstablishmentId);
 		playerState.money = playerState.money - establishment.cost;
 		common.turnPhase = "after-build";
+
+		trimTurnEvents(
+			turnEvents,
+			`%${action.playerId}% built ${establishment.determiner} ${establishment.display}.`
+		);
 	} else if (landmark) {
 		if (playerState.money < landmark.cost) {
 			return {
@@ -149,6 +175,11 @@ export const buildAction = (
 
 		city.landmarks[buildingKey] = true;
 		playerState.money = playerState.money - landmark.cost;
+
+		trimTurnEvents(
+			turnEvents,
+			`%${action.playerId}% built ${landmark.determiner} ${landmark.display}`
+		);
 	}
 
 	return { gameData };

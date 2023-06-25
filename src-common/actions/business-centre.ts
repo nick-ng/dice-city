@@ -71,6 +71,18 @@ export const businessCentreAction = (
 
 		if (pendingActions.length === 0) {
 			common.turnPhase = "before-build";
+
+			if (
+				playerStates[activePlayerId].city.landmarks.cityHall &&
+				playerStates[activePlayerId].money === 0
+			) {
+				playerStates[activePlayerId].money = 1;
+
+				trimTurnEvents(
+					turnEvents,
+					`%${activePlayerId}% got 1 coin from their City Hall`
+				);
+			}
 		}
 
 		return {
@@ -166,16 +178,27 @@ export const businessCentreAction = (
 
 	opponentEstablishments[myOffer].push(myCard);
 
-	turnEvents.push(
+	trimTurnEvents(
+		turnEvents,
 		`%${action.playerId}% traded their ${establishmentReference[myOffer].display} for %${payload.opponentId}%'s ${establishmentReference[opponentOffer].display} - ${establishmentReference.businessCentre.display}`
 	);
-
-	trimTurnEvents(turnEvents);
 
 	pendingActions.splice(businessCentreActionIndex, 1);
 
 	if (pendingActions.length === 0) {
 		common.turnPhase = "before-build";
+
+		if (
+			playerStates[activePlayerId].city.landmarks.cityHall &&
+			playerStates[activePlayerId].money === 0
+		) {
+			playerStates[activePlayerId].money = 1;
+
+			trimTurnEvents(
+				turnEvents,
+				`%${activePlayerId}% got 1 coin from their City Hall`
+			);
+		}
 	}
 
 	return { gameData };

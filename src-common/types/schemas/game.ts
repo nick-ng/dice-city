@@ -21,6 +21,7 @@ export const landmarkSchema = z.object({
 	picture: z.array(z.string()),
 	cost: z.number(),
 	effect: z.string(),
+	determiner: z.enum(["a", "an"]),
 });
 
 const establishmentOnly = z.object({
@@ -77,10 +78,12 @@ const publicStateSchema = z.object({
 					"business-centre",
 					"radio-tower",
 					"amusement-park",
+					"harbour",
 				]),
 			})
 		),
 		diceRolls: z.array(z.number()),
+		harbourExtra: z.number(),
 		processedEstablishments: z.array(z.string()),
 		turnEvents: z.array(z.string()),
 	}),

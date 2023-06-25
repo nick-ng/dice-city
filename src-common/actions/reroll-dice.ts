@@ -59,7 +59,8 @@ export const rerollDiceAction = (
 
 	const diceCount = diceRolls.length;
 
-	common.diceRolls = rollDice(diceCount, gameData, 6);
+	common.diceRolls = rollDice(diceCount, 6);
+	common.harbourExtra = 0;
 
 	if (diceCount === 1) {
 		common.turnEvents.push(

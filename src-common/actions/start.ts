@@ -62,7 +62,7 @@ export const startAction = (
 	common.turnPhase = "before-roll";
 	common.turnOrder = shuffle(players.map((p) => p.id));
 	common.activePlayerId = common.turnOrder[0];
-	const deck = getDeck("base", players.length);
+	const deck = shuffle(getDeck("full", players.length));
 	const temp = getSupply({}, deck, gameSettings.supplyType);
 	common.supply = temp.supply;
 	secretState.common.deck = temp.deck;
@@ -76,7 +76,11 @@ export const startAction = (
 		};
 		for (let j = 0; j < gameSettings.landmarks.length; j++) {
 			const landmark = gameSettings.landmarks[j];
-			publicState.players[id].city.landmarks[landmark] = false;
+			if (landmark === "cityHall") {
+				publicState.players[id].city.landmarks[landmark] = true;
+			} else {
+				publicState.players[id].city.landmarks[landmark] = false;
+			}
 		}
 	}
 

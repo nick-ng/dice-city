@@ -1,26 +1,8 @@
-import type { GameData, EstablishmentList } from "~common/types/index.js";
+import type { GameData } from "~common/types/index.js";
 
 import { establishmentReference } from "~common/constants/buildings.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
-
-const countTagsInEstablishments = (
-	establishments: EstablishmentList,
-	tag: string
-): number => {
-	let tagCount = 0;
-	const establishmentsEntries = Object.entries(establishments);
-
-	for (let n = 0; n < establishmentsEntries.length; n++) {
-		const key = establishmentsEntries[n][0];
-		const establishmentDetails = establishmentReference[key];
-		if (establishmentDetails?.tag === tag) {
-			const establishmentCounts = establishmentsEntries[n][1].length;
-			tagCount += establishmentCounts;
-		}
-	}
-
-	return tagCount;
-};
+import { countTagsInEstablishments } from "./common.js";
 
 export const greenEstablishmentsAction = (
 	gameData: GameData
@@ -29,6 +11,7 @@ export const greenEstablishmentsAction = (
 	const { publicState } = gameState;
 	const {
 		diceRolls,
+		harbourExtra,
 		activePlayerId,
 		processedEstablishments,
 		turnEvents,
@@ -38,14 +21,13 @@ export const greenEstablishmentsAction = (
 	if (turnPhase !== "after-roll") {
 		return {
 			gameData,
-			error: "Red establishments are only processed in the after-roll phase.",
+			error: "Green establishments are only processed in the after-roll phase.",
 		};
 	}
 
-	let diceTotal = 0;
-	for (let n = 0; n < diceRolls.length; n++) {
-		diceTotal += diceRolls[n];
-	}
+	const diceRoll =
+		diceRolls.reduce((accumulator, dieRoll) => accumulator + dieRoll, 0) +
+		harbourExtra;
 
 	const activePlayerState = publicState.players[activePlayerId];
 	const { city } = activePlayerState;
@@ -59,7 +41,7 @@ export const greenEstablishmentsAction = (
 				return;
 			}
 
-			if (!establishment.activationNumbers.includes(diceTotal)) {
+			if (!establishment.activationNumbers.includes(diceRoll)) {
 				return;
 			}
 
@@ -74,28 +56,33 @@ export const greenEstablishmentsAction = (
 			switch (establishmentKey) {
 				case "bakery": {
 					moneyPerEstablishment = haveShoppingMall ? 2 : 1;
+
 					break;
 				}
 				case "convenienceStore": {
 					moneyPerEstablishment = haveShoppingMall ? 4 : 3;
+
 					break;
 				}
 				case "cheeseFactory": {
 					const cowsCount = countTagsInEstablishments(establishments, "cow");
 
 					moneyPerEstablishment = 3 * cowsCount;
+
 					break;
 				}
 				case "furnitureFactory": {
 					const cogCount = countTagsInEstablishments(establishments, "cog");
 
 					moneyPerEstablishment = 3 * cogCount;
+
 					break;
 				}
 				case "fruitAndVegetableMarket": {
 					const wheatCount = countTagsInEstablishments(establishments, "wheat");
 
 					moneyPerEstablishment = 2 * wheatCount;
+
 					break;
 				}
 				case "flowerShop": {
@@ -103,10 +90,23 @@ export const greenEstablishmentsAction = (
 					const flowerGardenCount = establishments.flowerGarden?.length || 0;
 
 					moneyPerEstablishment = moneyPerFlowerGarden * flowerGardenCount;
+
+					break;
+				}
+				case "foodWarehouse": {
+					const cupCount = countTagsInEstablishments(establishments, "cup");
+
+					moneyPerEstablishment = 2 * cupCount;
+
 					break;
 				}
 				default:
-					console.info("couldn't handle green establishment", establishmentKey);
+					console.error(
+						"Unknown green establishment",
+						establishmentKey,
+						establishment
+					);
+
 					return;
 			}
 

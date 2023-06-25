@@ -26,6 +26,9 @@ export const createGameFromHostId = (
 				"amusementPark",
 				"shoppingMall",
 				"trainStation",
+				"harbour",
+				"cityHall",
+				"airport",
 			],
 			timeLimitSeconds: 999,
 			timeLimitType: "off",
@@ -37,6 +40,7 @@ export const createGameFromHostId = (
 				common: {
 					activePlayerId: "",
 					diceRolls: [],
+					harbourExtra: 0,
 					processedEstablishments: [],
 					supply: {},
 					turnEvents: [],

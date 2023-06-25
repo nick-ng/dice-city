@@ -2,13 +2,20 @@ import type { GameData } from "~common/types/index.js";
 import { establishmentReference } from "~common/constants/buildings.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
+import { rollDice } from "~common/actions/roll-dice.js";
+
 export const blueEstablishmentsAction = (
 	gameData: GameData
 ): { gameData: GameData; error?: string } => {
 	const { gameState } = gameData;
 	const { publicState } = gameState;
-	const { diceRolls, processedEstablishments, turnEvents, turnPhase } =
-		publicState.common;
+	const {
+		diceRolls,
+		harbourExtra,
+		processedEstablishments,
+		turnEvents,
+		turnPhase,
+	} = publicState.common;
 
 	if (turnPhase !== "after-roll") {
 		return {
@@ -17,10 +24,12 @@ export const blueEstablishmentsAction = (
 		};
 	}
 
-	let diceTotal = 0;
-	for (let n = 0; n < diceRolls.length; n++) {
-		diceTotal += diceRolls[n];
-	}
+	const diceRoll =
+		diceRolls.reduce((accumulator, dieRoll) => accumulator + dieRoll, 0) +
+		harbourExtra;
+
+	let shouldExplainTunaBoat = false;
+	let tunaBoatRolls: number[] = [];
 
 	Object.entries(establishmentReference)
 		.filter(([_, establishment]) => establishment.colour === "blue")
@@ -29,11 +38,12 @@ export const blueEstablishmentsAction = (
 				return;
 			}
 
-			if (!establishment.activationNumbers.includes(diceTotal)) {
+			if (!establishment.activationNumbers.includes(diceRoll)) {
 				return;
 			}
 
 			let moneyPerEstablishment = 0;
+			let needHarbour = false;
 
 			switch (establishmentKey) {
 				case "wheatField": {
@@ -66,8 +76,29 @@ export const blueEstablishmentsAction = (
 
 					break;
 				}
+				case "mackerelBoat": {
+					moneyPerEstablishment = 3;
+					needHarbour = true;
+
+					break;
+				}
+				case "tunaBoat": {
+					tunaBoatRolls = rollDice(2);
+
+					const diceRoll = tunaBoatRolls.reduce(
+						(accumulator, roll) => accumulator + roll,
+						0
+					);
+
+					shouldExplainTunaBoat = true;
+
+					moneyPerEstablishment = diceRoll;
+
+					break;
+				}
 				default: {
 					console.info("couldn't handle blue establishment", establishmentKey);
+
 					return;
 				}
 			}
@@ -80,7 +111,7 @@ export const blueEstablishmentsAction = (
 
 			Object.values(publicState.players).forEach((player) => {
 				const { city } = player;
-				const { establishments } = city;
+				const { establishments, landmarks } = city;
 				const establishmentCount =
 					establishments[establishmentKey]?.length || 0;
 
@@ -88,10 +119,24 @@ export const blueEstablishmentsAction = (
 					return;
 				}
 
+				if (needHarbour && !landmarks.harbour) {
+					return;
+				}
+
 				const moneyReceived = establishmentCount * moneyPerEstablishment;
 				player.money += moneyReceived;
 
 				if (moneyReceived > 0) {
+					if (shouldExplainTunaBoat) {
+						turnEvents.push(
+							`Rolled ${tunaBoatRolls.join(
+								" + "
+							)} = ${moneyPerEstablishment} for Tuna Boats`
+						);
+
+						shouldExplainTunaBoat = false;
+					}
+
 					turnEvents.push(
 						`%${player.playerId}% collected ${moneyReceived} ${
 							moneyReceived === 1 ? "coin" : "coins"

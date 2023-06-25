@@ -14,6 +14,7 @@ export const redEstablishmentsAction = (
 	const { players: playerStates, common } = publicState;
 	const {
 		diceRolls,
+		harbourExtra,
 		activePlayerId,
 		processedEstablishments,
 		turnEvents,
@@ -28,10 +29,9 @@ export const redEstablishmentsAction = (
 		};
 	}
 
-	let diceTotal = 0;
-	for (let n = 0; n < diceRolls.length; n++) {
-		diceTotal += diceRolls[n];
-	}
+	const diceRoll =
+		diceRolls.reduce((accumulator, dieRoll) => accumulator + dieRoll, 0) +
+		harbourExtra;
 
 	const otherPlayerIds = getPlayerOrderStartingFromPlayer(
 		turnOrder,
@@ -46,30 +46,45 @@ export const redEstablishmentsAction = (
 				return;
 			}
 
-			if (!establishment.activationNumbers.includes(diceTotal)) {
+			if (!establishment.activationNumbers.includes(diceRoll)) {
 				return;
 			}
 
 			let moneyPerEstablishment = 0;
 			let shoppingMallExtra = 0;
+			let isShshiBar = false;
+			let sushiBarPer = 0;
+			let sushiBarShoppingMall = 0;
 
 			switch (establishmentKey) {
 				case "cafe":
+				case "pizzaParlour":
+				case "hamburgerStand": {
 					moneyPerEstablishment = 1;
 					shoppingMallExtra = 1;
 
 					break;
-				case "familyRestaurant":
+				}
+				case "familyRestaurant": {
 					moneyPerEstablishment = 2;
 					shoppingMallExtra = 1;
 
 					break;
+				}
+				case "sushiBar": {
+					isShshiBar = true;
+					sushiBarPer = 3;
+					sushiBarShoppingMall = 1;
+
+					break;
+				}
 				default:
 					console.error(
 						"Unknown red establishment",
 						establishmentKey,
 						establishment
 					);
+
 					return;
 			}
 
@@ -88,8 +103,21 @@ export const redEstablishmentsAction = (
 				}
 
 				let moneyPer = moneyPerEstablishment;
+
 				if (landmarks.shoppingMall) {
 					moneyPer += shoppingMallExtra;
+				}
+
+				if (isShshiBar) {
+					if (!landmarks.harbour) {
+						return;
+					}
+
+					moneyPer = sushiBarPer;
+
+					if (landmarks.shoppingMall) {
+						moneyPer += sushiBarShoppingMall;
+					}
 				}
 
 				const totalMoney = moneyPer * establishmentCount;

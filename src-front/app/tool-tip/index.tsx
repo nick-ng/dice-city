@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { replaceTags } from "../building/utils.js";
 
 interface ToolTipProps {
 	children?: ReactNode | ReactNode[];
@@ -22,7 +23,7 @@ export default function ToolTip({
 						toolTipClassName || ""
 					}`}
 				>
-					{message}
+					{replaceTags(message)}
 				</div>
 			)}
 		</div>

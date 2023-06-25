@@ -27,7 +27,14 @@ export const getPlayerOrderStartingFromPlayer = (
 	return after;
 };
 
-export const trimTurnEvents = (turnEvents: any[]): void => {
+export const trimTurnEvents = (
+	turnEvents: any[],
+	newTurnEvent?: string
+): void => {
+	if (newTurnEvent) {
+		turnEvents.push(newTurnEvent);
+	}
+
 	const excess = turnEvents.length - MAX_TURN_EVENTS;
 
 	if (excess > 0) {

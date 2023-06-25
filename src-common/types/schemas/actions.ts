@@ -50,6 +50,16 @@ export const rerollSchema = z.object({
 	playerPassword: z.string(),
 });
 
+export const harbourChangeRollSchema = z.object({
+	type: z.literal("harbour-change-roll"),
+	isServer: z.optional(z.literal(false)),
+	payload: z.object({
+		skip: z.boolean(),
+	}),
+	playerId: z.string(),
+	playerPassword: z.string(),
+});
+
 export const establishmentsSchema = z.object({
 	playerId: z.optional(z.never()),
 	type: z.enum([
@@ -100,6 +110,7 @@ export const playerActionsSchema = z.union([
 	startSchema,
 	rollSchema,
 	rerollSchema,
+	harbourChangeRollSchema,
 	tvStationSchema,
 	businessCentreSchema,
 	buildEstablishmentSchema,

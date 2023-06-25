@@ -137,6 +137,12 @@ export const tvStationAction = (
 
 	if (pendingActions.length === 0) {
 		common.turnPhase = "before-build";
+
+		if (city.landmarks.cityHall && playerStates[activePlayerId].money === 0) {
+			playerStates[activePlayerId].money = 1;
+
+			turnEvents.push(`%${activePlayerId}% got 1 coin from their City Hall`);
+		}
 	}
 
 	trimTurnEvents(turnEvents);
