@@ -2,7 +2,6 @@ import type { Deck, Supply } from "~common/types/index.js";
 
 import { establishmentReference } from "../constants/buildings.js";
 
-// @todo(nick-ng): explain what cards were added to the supply in the turn events
 const addCardToSupply = (supply: Supply, cardId: string): string => {
 	const cardKey = cardId.split(":")[0];
 
