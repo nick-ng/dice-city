@@ -48,7 +48,6 @@ Create a `/spec` directory next to the files you want to test then create a file
 ### ToDo Comments
 
 - src-back/worker.ts:130: @todo(nick-ng): check for "orphaned" games when starting up.
-- src-common/actions/build.ts:9: @todo(nick-ng): log action in turn events
 - src-common/actions/business-centre.ts:7: @todo(nick-ng): show cards when you hover the buttons.
 - src-common/actions/supply.ts:5: @todo(nick-ng): explain what cards were added to the supply in the turn events
 - src-front/app/game-screen/game.tsx:77: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on

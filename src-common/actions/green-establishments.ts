@@ -2,7 +2,6 @@ import type { GameData } from "~common/types/index.js";
 
 import { establishmentReference } from "~common/constants/buildings.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
-
 import { countTagsInEstablishments } from "./common.js";
 
 export const greenEstablishmentsAction = (

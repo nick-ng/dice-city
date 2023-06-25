@@ -21,6 +21,7 @@ export const landmarkSchema = z.object({
 	picture: z.array(z.string()),
 	cost: z.number(),
 	effect: z.string(),
+	determiner: z.enum(["a", "an"]),
 });
 
 const establishmentOnly = z.object({
