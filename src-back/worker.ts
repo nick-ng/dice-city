@@ -1,3 +1,4 @@
+// @todo(nick-ng): put some of these things in a class?
 import dotenv from "dotenv";
 dotenv.config();
 
