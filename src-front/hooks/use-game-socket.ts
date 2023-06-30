@@ -25,6 +25,7 @@ const safeSend = (
 	websocket?.send(JSON.stringify(messageObject));
 };
 
+// @todo(nick-ng): figure out why the screen flashes periodically
 export const useGameSocket = (
 	gameId: string,
 	playerDetails: {

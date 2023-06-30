@@ -3,6 +3,7 @@ import type { Action, GameData } from "~common/types/index.js";
 import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 import { verifyPassword } from "./verify-password.js";
 
+// @todo(nick-ng): make dice rolls deterministic again?
 export const rollDice = (count: number, sides = 6): number[] => {
 	const rng = Math.random;
 

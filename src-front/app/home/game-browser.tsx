@@ -63,9 +63,6 @@ export default function GameBrowser() {
 					Host Game
 				</button>
 			</ToolTip>
-			<div className="flex flex-col items-center">
-				<Instructions showStory />
-			</div>
 		</div>
 	);
 }

@@ -49,6 +49,8 @@ Create a `/spec` directory next to the files you want to test then create a file
 
 - src-back/worker.ts:130: @todo(nick-ng): check for "orphaned" games when starting up.
 - src-common/actions/business-centre.ts:7: @todo(nick-ng): show cards when you hover the buttons.
+- src-common/actions/roll-dice.ts:6: @todo(nick-ng): make dice rolls deterministic again?
+- src-common/other-stuff/game-stuff.ts:5: @todo(nick-ng): time limit on turns
 - src-front/app/game-screen/game.tsx:79: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
 - src-front/app/game-screen/game.tsx:80: @todo(nick-ng): show what was rolled in the main area
 - src-front/app/game-screen/game.tsx:81: @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game
@@ -58,4 +60,5 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-front/app/game-screen/lobby.tsx:25: @todo(nick-ng): kick a player from your game if you are the host
 - src-front/app/game-screen/lobby.tsx:26: @todo(nick-ng): ready check?
 - src-front/app/home/game-browser.tsx:25: @todo(nick-ng): show public games
+- src-front/hooks/use-game-socket.ts:28: @todo(nick-ng): figure out why the screen flashes periodically
 - src-front/utils/name-generator.ts:8: @todo(nick-ng): handle plural adjectives?

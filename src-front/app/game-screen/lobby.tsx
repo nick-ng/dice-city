@@ -46,86 +46,88 @@ export default function Lobby({ gameData, sendViaWebSocket }: LobbyProps) {
 	const startError = startAction(gameData, startMessage, true).error;
 
 	return (
-		<div>
-			<h2>Game Lobby</h2>
-			<h3>{players.length > 0 ? "Players" : "No one has joined the game"}</h3>
-			<ul className="ml-5 list-outside list-disc">
-				{players.map((player) => {
-					return (
-						<li key={player.id}>
-							{getName(
-								player.id,
-								player.name,
-								showNames || player.id === options.playerId
-							)}
-						</li>
-					);
-				})}
-			</ul>
-			<h3>Game Settings</h3>
-			{hostId === options.playerId && (
-				<div className="mb-1">
-					<label>
-						Supply Type:{" "}
-						<select
-							className="mx-1 border border-gray-300 bg-white dark:bg-gray-800 dark:text-white"
-							value={gameSettings.supplyType}
-							onChange={(e) => {
-								sendViaWebSocket({
-									...options,
-									type: "change-supply",
-									payload: {
-										supplyType: supplyTypeSchema.parse(e.target.value),
-									},
-								});
-							}}
-						>
-							{Object.entries(SUPPLY_TYPE_MAP).map(([key, display]) => (
-								<option key={key} value={key}>
-									{display}
-								</option>
-							))}
-						</select>
-					</label>
-				</div>
-			)}
-			{hostId !== options.playerId && (
-				<div className="mb-1">
-					Supply Type: {SUPPLY_TYPE_MAP[gameSettings.supplyType]}
-				</div>
-			)}
-			<ToolTip message={joinError}>
-				<button
-					className="button-default w-24"
-					onClick={() => {
-						if (!joinError) {
-							sendViaWebSocket(joinMessage);
-						}
-					}}
-					disabled={!!joinError}
-				>
-					{players.map((p) => p.id).includes(options.playerId)
-						? "Joined ✅"
-						: "Join Game"}
-				</button>
-			</ToolTip>
-			{hostId === options.playerId &&
-				players.map((p) => p.id).includes(options.playerId) && (
-					<ToolTip message={startError}>
-						<button
-							className="button-default w-28"
-							onClick={() => {
-								if (!startError) {
-									sendViaWebSocket(startMessage);
-								}
-							}}
-							disabled={!!startError}
-						>
-							Start Game
-						</button>
-					</ToolTip>
+		<div className="flex flex-row">
+			<div className="flex-shrink-0 flex-grow-0">
+				<h2>Game Lobby</h2>
+				<h3>{players.length > 0 ? "Players" : "No one has joined the game"}</h3>
+				<ul className="ml-5 list-outside list-disc">
+					{players.map((player) => {
+						return (
+							<li key={player.id}>
+								{getName(
+									player.id,
+									player.name,
+									showNames || player.id === options.playerId
+								)}
+							</li>
+						);
+					})}
+				</ul>
+				<h3>Game Settings</h3>
+				{hostId === options.playerId && (
+					<div className="mb-1">
+						<label>
+							Supply Type:{" "}
+							<select
+								className="mx-1 border border-gray-300 bg-white dark:bg-gray-800 dark:text-white"
+								value={gameSettings.supplyType}
+								onChange={(e) => {
+									sendViaWebSocket({
+										...options,
+										type: "change-supply",
+										payload: {
+											supplyType: supplyTypeSchema.parse(e.target.value),
+										},
+									});
+								}}
+							>
+								{Object.entries(SUPPLY_TYPE_MAP).map(([key, display]) => (
+									<option key={key} value={key}>
+										{display}
+									</option>
+								))}
+							</select>
+						</label>
+					</div>
 				)}
-			<div className="flex flex-col items-center">
+				{hostId !== options.playerId && (
+					<div className="mb-1">
+						Supply Type: {SUPPLY_TYPE_MAP[gameSettings.supplyType]}
+					</div>
+				)}
+				<ToolTip message={joinError}>
+					<button
+						className="button-default w-24"
+						onClick={() => {
+							if (!joinError) {
+								sendViaWebSocket(joinMessage);
+							}
+						}}
+						disabled={!!joinError}
+					>
+						{players.map((p) => p.id).includes(options.playerId)
+							? "Joined ✅"
+							: "Join Game"}
+					</button>
+				</ToolTip>
+				{hostId === options.playerId &&
+					players.map((p) => p.id).includes(options.playerId) && (
+						<ToolTip message={startError}>
+							<button
+								className="button-default w-28"
+								onClick={() => {
+									if (!startError) {
+										sendViaWebSocket(startMessage);
+									}
+								}}
+								disabled={!!startError}
+							>
+								Start Game
+							</button>
+						</ToolTip>
+					)}
+			</div>
+			<div className="flex flex-grow flex-col items-center">
 				<Instructions showStory />
 			</div>
 		</div>
