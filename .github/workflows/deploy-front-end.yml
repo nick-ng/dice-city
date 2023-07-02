@@ -13,12 +13,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - run: |
           git config user.email nick-ng@users.noreply.github.com
           git config user.name "${GITHUB_ACTOR}"
           npm ci
-          npm run build-back
           API_ORIGIN=https://dice-city-server.pux.one npm run build-front
           cp -R ./static/. ./dist-front
           cp ./dist-front/index.html ./dist-front/404.html
@@ -27,5 +26,7 @@ jobs:
           git reset
           cp -R ./dist-front/. ./
           git add $(ls ./dist-front)
+          touch .nojekyll
+          git add .nojekyll
           git commit -m "$(date) deploy front-end"
           git push --force origin gh-pages
