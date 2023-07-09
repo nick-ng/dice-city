@@ -22,6 +22,16 @@ export const changeSupplySchema = z.object({
 	playerPassword: z.string(),
 });
 
+export const changePublicSchema = z.object({
+	type: z.literal("change-public"),
+	isServer: z.optional(z.literal(false)),
+	payload: z.object({
+		isPublic: z.boolean(),
+	}),
+	playerId: z.string(),
+	playerPassword: z.string(),
+});
+
 export const startSchema = z.object({
 	type: z.literal("start"),
 	isServer: z.optional(z.literal(false)),
@@ -107,6 +117,7 @@ export const buildEstablishmentSchema = z.object({
 export const playerActionsSchema = z.union([
 	joinSchema,
 	changeSupplySchema,
+	changePublicSchema,
 	startSchema,
 	rollSchema,
 	rerollSchema,

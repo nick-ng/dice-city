@@ -138,3 +138,10 @@ export const gameDataSchema = z.object({
 	playersSecrets: z.record(z.string(), playerSecretsSchema),
 	lastActionId: z.string(),
 });
+
+export const gameListSchema = z.array(
+	z.object({
+		gameId: z.string(),
+		playerCount: z.number(),
+	})
+);

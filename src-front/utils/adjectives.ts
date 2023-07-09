@@ -103,7 +103,7 @@ const natures = [
 
 const ages = ["Old", "Young", "Elder", "Adolescent"];
 
-const speeds = ["Quick", "Slow", "Fast", "Squishy"];
+const speeds = ["Quick", "Slow", "Fast", "Sluggish"];
 
 const materials = [
 	"Water",

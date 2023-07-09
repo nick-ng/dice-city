@@ -5,6 +5,7 @@ import { trimTurnEvents } from "~common/other-stuff/browser-safe-stuff.js";
 
 import { joinAction } from "./join.js";
 import { changeSupplyAction } from "./change-supply.js";
+import { changePublicAction } from "./change-public.js";
 import { startAction } from "./start.js";
 import { rollDiceAction } from "./roll-dice.js";
 import { rerollDiceAction } from "./reroll-dice.js";
@@ -56,6 +57,9 @@ export const performAction = (
 		}
 		case "change-supply": {
 			return changeSupplyAction(gameData, action);
+		}
+		case "change-public": {
+			return changePublicAction(gameData, action);
 		}
 		case "start": {
 			return startAction(gameData, action);

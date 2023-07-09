@@ -46,7 +46,7 @@
 	}
 
 	.button-default {
-		@apply rounded border border-gray-600 px-2 py-2 dark:border-gray-300 xl:py-0;
+		@apply rounded border border-gray-600 px-2 py-0 dark:border-gray-300 cannot-hover:py-2;
 	}
 
 	.animate-attention {
