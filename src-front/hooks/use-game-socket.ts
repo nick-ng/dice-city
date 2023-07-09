@@ -45,7 +45,7 @@ export const useGameSocket = (
 	);
 	const [playerGameData, setPlayerGameData] = useState<GameData | null>(null);
 	const [connectionStatus, setConnectionStatus] = useState<
-		"not-connected" | "connected" | "not-found"
+		"not-connected" | "connected" | "reconnecting" | "not-found"
 	>("not-connected");
 	const [latency, setLatency] = useState(0);
 
@@ -156,14 +156,15 @@ export const useGameSocket = (
 			);
 
 			webSocketRef.current.addEventListener("close", () => {
-				setConnectionStatus("not-connected");
 				if (reOpenWebSocketRef.current) {
+					setConnectionStatus("reconnecting");
 					console.info(
 						new Date().toLocaleTimeString(),
 						"WebSocket connection lost"
 					);
 					getNewWebSocketRef.current();
 				} else {
+					setConnectionStatus("not-connected");
 					console.info(
 						new Date().toLocaleTimeString(),
 						"WebSocket connection closed"
