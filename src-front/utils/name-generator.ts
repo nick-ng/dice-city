@@ -5,7 +5,7 @@ import { allAdjectives } from "./adjectives.js";
 
 const adjectiveCount = 2;
 
-// @todo(nick-ng): handle plural adjectives?
+// @todo(nick-ng): handle plural adjectives? put nouns in [singular, plural] arrays
 export const getName = (
 	seed: string,
 	name?: string | null,

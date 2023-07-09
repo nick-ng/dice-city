@@ -97,7 +97,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					</div>
 				)}
 				<div>
-					{turnPhase !== "end" && !myTurn && (
+					{myState && turnPhase !== "end" && !myTurn && (
 						<div>
 							Waiting for{" "}
 							{getName(
@@ -189,7 +189,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 							});
 						}}
 					/>
-					<h2>Your Money: {myState.money}</h2>
+					{myState && <h2>Your Money: {myState.money}</h2>}
 					<details
 						open={
 							turnPhase === "end" || (myTurn && turnPhase === "before-build")
@@ -199,7 +199,18 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 							<h2 className="inline-block underline">Supply</h2>
 						</summary>
 						<Build
-							city={myState.city}
+							city={
+								myState?.city || {
+									landmarks: landmarks.reduce(
+										(accumulator, landmark) => ({
+											...accumulator,
+											[landmark]: false,
+										}),
+										{}
+									),
+									establishments: {},
+								}
+							}
 							onBuild={
 								myTurn && turnPhase === "before-build"
 									? (e) => {
@@ -218,11 +229,15 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 							options={options}
 						/>
 					</details>
-					<h2 className="mt-2" id="you-city">
-						Your City, Landmark{myLandmarkCount !== 1 ? "s" : ""}:{" "}
-						{myLandmarkCount}
-					</h2>
-					<City availableLandmarks={landmarks} city={myState.city} />
+					{myState && (
+						<>
+							<h2 className="mt-2" id="you-city">
+								Your City, Landmark{myLandmarkCount !== 1 ? "s" : ""}:{" "}
+								{myLandmarkCount}
+							</h2>
+							<City availableLandmarks={landmarks} city={myState.city} />
+						</>
+					)}
 					{getPlayerOrderStartingFromPlayer(
 						turnOrder,
 						options.playerId,
@@ -249,7 +264,9 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								key={opponentId}
 								className="mt-2"
 								id={`${opponentId}-city`}
-								open={options.alwaysShowCities || turnPhase === "end"}
+								open={
+									!myState || options.alwaysShowCities || turnPhase === "end"
+								}
 							>
 								<summary className="text-2xl">
 									{getName(opponentId, opponentName, showNames)}, Money:{" "}

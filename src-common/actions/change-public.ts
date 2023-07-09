@@ -2,14 +2,14 @@ import type { Action, GameData } from "~common/types/index.js";
 
 import { verifyPassword } from "./verify-password.js";
 
-export const changeSupplyAction = (
+export const changePublicAction = (
 	gameData: GameData,
 	action: Action
 ): { gameData: GameData; error?: string } => {
-	if (action.type !== "change-supply") {
+	if (action.type !== "change-public") {
 		return {
 			gameData,
-			error: "not change-supply",
+			error: "not change-public",
 		};
 	}
 
@@ -25,11 +25,11 @@ export const changeSupplyAction = (
 	if (!isHost) {
 		return {
 			gameData,
-			error: "Only the host can change the supply type",
+			error: "Only the host can make the game public",
 		};
 	}
 
-	const { gameState, gameSettings } = gameData;
+	const { gameState, gameDetails } = gameData;
 	const { publicState } = gameState;
 	const { common } = publicState;
 	const { turnPhase } = common;
@@ -41,7 +41,7 @@ export const changeSupplyAction = (
 		};
 	}
 
-	gameSettings.supplyType = action.payload.supplyType;
+	gameDetails.isPublic = action.payload.isPublic;
 
 	return { gameData };
 };

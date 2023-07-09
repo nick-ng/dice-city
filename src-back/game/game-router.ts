@@ -2,12 +2,65 @@ import { Router } from "express";
 
 import type { NewGameResponse } from "~common/types/index.js";
 
+import { jsonSafeParseS } from "~common/utils/index.js";
+import { gameDataSchema } from "~common/types/schemas/game.js";
 import { newGameRequestSchema } from "~common/types/schemas/message.js";
 import { createGameFromHostId } from "~common/other-stuff/game-stuff.js";
 
-import { xAddExpire, getGameStateKey } from "../redis/index.js";
+import {
+	getClient,
+	xAddExpire,
+	getGameStateKey,
+	getGameId,
+} from "../redis/index.js";
 
 const router = Router();
+
+router.get("/", async (_req, res, _next) => {
+	const games: { gameId: string; playerCount: number }[] = [];
+
+	const redisClient = getClient();
+
+	for await (const gameStateKey of redisClient.scanIterator({
+		MATCH: "game:*:state",
+	})) {
+		const temp = await redisClient.xRevRange(gameStateKey, "+", "-", {
+			COUNT: 1,
+		});
+
+		if (!temp[0]) {
+			continue;
+		}
+
+		const { message } = temp[0];
+
+		const res = jsonSafeParseS(gameDataSchema, message.data);
+
+		if (!res.success) {
+			continue;
+		}
+
+		const { gameDetails, gameState } = res.data;
+		const { turnPhase } = gameState.publicState.common;
+
+		if (turnPhase !== "lobby") {
+			continue;
+		}
+
+		const { players, isPublic } = gameDetails;
+
+		if (!isPublic) {
+			continue;
+		}
+
+		games.push({
+			gameId: getGameId(gameStateKey),
+			playerCount: players.length,
+		});
+	}
+
+	res.json(games);
+});
 
 router.post("/", async (req, res, _next) => {
 	const { body } = req;

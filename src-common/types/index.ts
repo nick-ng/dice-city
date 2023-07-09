@@ -10,6 +10,7 @@ import {
 	deckSchema,
 	gameStateSchema,
 	gameDataSchema,
+	gameListSchema,
 } from "./schemas/game.js";
 import {
 	playerActionsSchema,
@@ -44,6 +45,8 @@ export type BusinessCentreAction = z.infer<typeof businessCentreActionSchema>;
 
 export type NewGameRequest = z.infer<typeof newGameRequestSchema>;
 export type NewGameResponse = z.infer<typeof newGameResponseSchema>;
+
+export type GameListResponse = z.infer<typeof gameListSchema>;
 
 export type WebSocketServerToClientMessage = z.infer<
 	typeof webSocketServerToClientMessageSchema
