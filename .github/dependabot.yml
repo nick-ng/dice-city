@@ -11,6 +11,8 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    ignore:
+      - dependency-name: "prettier"
 
   # Enable version updates for Docker
   - package-ecosystem: "docker"
@@ -20,5 +22,3 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    ignore:
-      - dependency-name: "prettier"
