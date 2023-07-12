@@ -60,4 +60,4 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-front/app/game-screen/lobby.tsx:26: @todo(nick-ng): kick a player from your game if you are the host
 - src-front/app/game-screen/lobby.tsx:27: @todo(nick-ng): ready check?
 - src-front/hooks/use-game-socket.ts:28: @todo(nick-ng): figure out why the screen flashes periodically
-- src-front/utils/name-generator.ts:8: @todo(nick-ng): handle plural adjectives? put nouns in [singular, plural] arrays
+- src-front/utils/name-generator.ts:43: @todo(nick-ng): handle plural adjectives? put nouns in [singular, plural] arrays
