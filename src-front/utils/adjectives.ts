@@ -48,7 +48,7 @@ const colours = [
 	"Olive",
 	"Orange",
 	"Orchid",
-	"Peru",
+	// "Peru",
 	"Pink",
 	"Plum",
 	"Purple",
@@ -101,6 +101,8 @@ const natures = [
 	"Serious",
 ];
 
+const generalOpinions = ["Brutal", "Kind", "Nippy", "Savage"];
+
 const ages = ["Old", "Young", "Elder", "Adolescent"];
 
 const speeds = ["Quick", "Slow", "Fast", "Sluggish"];
@@ -130,46 +132,61 @@ export const allAdjectives = Object.freeze(
 			value: colour,
 			type: "colour",
 			order: COLOUR,
+			allowMultiple: false,
 		})),
 		...count.map((count) => ({
 			value: count,
 			type: "count",
 			order: QUANTITY,
+			allowMultiple: false,
 		})),
 		...sizes.map((size) => ({
 			value: size,
 			type: "size",
 			order: SIZE,
+			allowMultiple: false,
 		})),
 		...natures.map((nature) => ({
 			value: nature,
 			type: "nature",
 			order: GENERAL_OPINION,
+			allowMultiple: false,
+		})),
+		...generalOpinions.map((g) => ({
+			value: g,
+			type: "general_opinion",
+			order: GENERAL_OPINION,
+			allowMultiple: true,
 		})),
 		...ages.map((age) => ({
 			value: age,
 			type: "age",
 			order: AGE,
+			allowMultiple: false,
 		})),
 		...speeds.map((speed) => ({
 			value: speed,
 			type: "speed",
 			order: GENERAL_OPINION,
+			allowMultiple: false,
 		})),
 		...materials.map((material) => ({
 			value: material,
 			type: "material",
 			order: MATERIAL,
+			allowMultiple: false,
 		})),
 		...physicalQualities.map((physicalQuality) => ({
 			value: physicalQuality,
 			type: "physical_quality",
 			order: PHYSICAL_QUALITY,
+			allowMultiple: false,
 		})),
 		...physicalQualitiesB.map((physicalQuality) => ({
 			value: physicalQuality,
 			type: "physical_quality_b",
 			order: PHYSICAL_QUALITY,
+			allowMultiple: true,
 		})),
 	].map((a) => Object.freeze(a))
 );

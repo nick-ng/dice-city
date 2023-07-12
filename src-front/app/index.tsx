@@ -8,6 +8,8 @@ import { useOptions } from "~front/hooks/options-context.js";
 import Container from "~front/layout/container.js";
 import Loading from "./loading/index.js";
 import TopBar from "./top-bar/index.js";
+import NameGenerator from "./name-generator.js";
+
 const Home = lazy(() => import("./home/index.js"));
 const DevFrontEnd = lazy(() => import("./dev-front-end/index.js"));
 const GameScreen = lazy(() => import("./game-screen/index.js"));
@@ -55,6 +57,7 @@ export default function App() {
 					<Route path="/" element={<Home />} />
 					<Route path="/dev/*" element={<DevFrontEnd />} />
 					<Route path="/game/:id" element={<GameScreen />} />
+					<Route path="/name-generator" element={<NameGenerator />} />
 				</Routes>
 			</Container>
 		</Suspense>
