@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 import { useOptions } from "~front/hooks/options-context.js";
 import { useGameSocket } from "~front/hooks/use-game-socket.js";
@@ -10,6 +10,7 @@ import Game from "./game.js";
 
 export default function GameScreen() {
 	const params = useParams() as { id: string };
+	const [search, _setSearch] = useSearchParams();
 	const { options } = useOptions();
 
 	const { playerId, playerPassword } = options;
@@ -40,6 +41,12 @@ export default function GameScreen() {
 			)}
 			{turnPhase !== "lobby" && (
 				<Game gameData={playerGameData} sendViaWebSocket={sendViaWebSocket} />
+			)}
+			{search.get("debug") === "yes" && (
+				<details>
+					<summary>Debug</summary>
+					<pre>{JSON.stringify(playerGameData, null, "  ")}</pre>
+				</details>
 			)}
 		</div>
 	);
