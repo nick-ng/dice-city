@@ -1,19 +1,14 @@
-import { useEffect } from "react";
-
 import type { GameData, PlayerAction } from "~common/types/index.js";
-
+import { useEffect } from "react";
 import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
-
-import { getName, replaceName } from "~front/utils/name-generator.js";
+import { getName } from "~front/utils/name-generator.js";
 import { useOptions } from "~front/hooks/options-context.js";
-
 import Build from "~front/app/build/index.js";
 import City from "~front/app/city/index.js";
 import DiceControls from "./dice-controls.js";
 import HarbourControls from "./harbour-controls.js";
 import BusinessCentreControls from "./business-centre-controls.js";
-import Instructions from "../instructions/index.js";
-import EstablishmentReference from "../establishment-reference/index.js";
+import SideBar from "./side-bar.js";
 
 interface GameProps {
 	gameData: GameData;
@@ -25,14 +20,8 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	const { gameDetails, gameState, gameSettings } = gameData;
 	const { players, isPublic } = gameDetails;
 	const { common, players: playerStates } = gameState.publicState;
-	const {
-		activePlayerId,
-		supply,
-		turnEvents,
-		turnPhase,
-		turnOrder,
-		pendingActions,
-	} = common;
+	const { activePlayerId, supply, turnPhase, turnOrder, pendingActions } =
+		common;
 	const { landmarks } = gameSettings;
 
 	const showNames = isPublic ? options.showNamesPublic : options.showNames;
@@ -78,8 +67,6 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 
 	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
 	// @todo(nick-ng): show what was rolled in the main area
-	// @todo(nick-ng): show something if you go to an in-progress game's url and you aren't in the game
-	// @todo(nick-ng): put side bar in its own component?
 	return (
 		<div className="flex flex-row">
 			<div className="flex-grow">
@@ -283,82 +270,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					})}
 				</div>
 			</div>
-			<div className="ml-2 flex-shrink-0 flex-grow-0 basis-48 pb-12 xl:basis-80 ">
-				<h3>Players</h3>
-				<ul className="ml-4 list-outside">
-					{getPlayerOrderStartingFromPlayer(
-						turnOrder,
-						options.playerId,
-						true
-					).map((playerId) => {
-						const isOpponent = playerId !== options.playerId;
-						const player = players.find((p) => p.id === playerId);
-						const landmarkCount = Object.values(
-							playerStates[playerId].city.landmarks
-						).reduce((p, c) => (c ? p + 1 : p), 0);
-						return (
-							<li
-								className={`${
-									playerId === activePlayerId ? "list-disc" : "list-[circle]"
-								} underline`}
-								key={playerId}
-								role={playerId === options.playerId ? "listitem" : "button"}
-								onClick={() => {
-									let thisPlayerEl: HTMLElement | null = null;
-									for (let i = 0; i < players.length; i++) {
-										if (players[i].id === options.playerId) {
-											continue;
-										}
-
-										const detailEl = document.getElementById(
-											`${players[i].id}-city`
-										);
-										if (detailEl) {
-											if (players[i].id === playerId) {
-												detailEl.setAttribute("open", "");
-												thisPlayerEl = detailEl;
-											} else if (!options.alwaysShowCities) {
-												detailEl.removeAttribute("open");
-											}
-										}
-
-										if (thisPlayerEl) {
-											thisPlayerEl.scrollIntoView({ behavior: "smooth" });
-										}
-									}
-								}}
-							>
-								<span>
-									{getName(playerId, player?.name, showNames || !isOpponent)}
-								</span>
-								<span>
-									{isOpponent
-										? `, M: ${playerStates[playerId].money}, L: ${landmarkCount}`
-										: " (You)"}
-								</span>
-							</li>
-						);
-					})}
-				</ul>
-				<hr />
-				<details className="mb-2" open>
-					<summary className="text-xl">Turn Events</summary>
-					<ul className="ml-4 list-outside list-disc text-sm xl:text-base">
-						{turnEvents.map((event, i) => (
-							<li
-								key={`${event}-${i}`}
-								className="px-0.5 even:bg-gray-200 dark:even:bg-gray-600"
-							>
-								{replaceName(players, !!showNames, options.playerId, event)}
-							</li>
-						))}
-					</ul>
-				</details>
-				<hr />
-				<EstablishmentReference />
-				<hr />
-				<Instructions />
-			</div>
+			<SideBar gameData={gameData} options={options} />
 			<button
 				className="button-default fixed bottom-4 right-4 bg-white dark:bg-gray-800"
 				onClick={() => {

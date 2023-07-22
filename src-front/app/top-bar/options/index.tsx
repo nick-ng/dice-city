@@ -51,6 +51,43 @@ export default function Options() {
 							/>
 							&nbsp; Always Show Cities
 						</label>
+						<label className="block">
+							<input
+								type="checkbox"
+								checked={options.alwaysShowSupply}
+								onChange={() => {
+									setOptions({
+										alwaysShowSupply: !options.alwaysShowSupply,
+									});
+								}}
+							/>
+							&nbsp; Always Show Supply
+						</label>
+						<label className="block">
+							<input
+								type="checkbox"
+								checked={options.alwaysShowEstablishmentList}
+								onChange={() => {
+									setOptions({
+										alwaysShowEstablishmentList:
+											!options.alwaysShowEstablishmentList,
+									});
+								}}
+							/>
+							&nbsp; Always Show Establishment List
+						</label>
+						<label className="block">
+							<input
+								type="checkbox"
+								checked={!options.hideInstructions}
+								onChange={() => {
+									setOptions({
+										hideInstructions: !options.hideInstructions,
+									});
+								}}
+							/>
+							&nbsp; Always Show Instructions
+						</label>
 					</Fieldset>
 				</div>
 			</details>

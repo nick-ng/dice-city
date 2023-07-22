@@ -22,6 +22,9 @@ export interface Options {
 	showNames?: boolean;
 	showNamesPublic?: boolean;
 	alwaysShowCities?: boolean;
+	alwaysShowSupply?: boolean;
+	alwaysShowEstablishmentList?: boolean;
+	hideInstructions?: boolean;
 }
 
 export const defaultOptions: Options = {

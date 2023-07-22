@@ -72,7 +72,7 @@ export default function GameBrowser() {
 	return (
 		<div>
 			<h2>Games</h2>
-			{error && <div>Error getting a game.</div>}
+			{error && <div>{error}</div>}
 			<ToolTip
 				message={!playerName ? "Enter a name in the top left corner." : ""}
 			>
@@ -83,6 +83,8 @@ export default function GameBrowser() {
 						if (!playerName) {
 							return;
 						}
+
+						setError("");
 
 						try {
 							const res = await fetch(`${__API_ORIGIN__}/api/game`, {
@@ -99,9 +101,9 @@ export default function GameBrowser() {
 							navigate(`/game/${gameId}`);
 						} catch (e) {
 							if (e instanceof Error) {
-								setError(`Error starting a new game: ${e.message}`);
+								setError(`Error hosting a new game: ${e.message}`);
 							} else {
-								setError(`Error starting a new game.`);
+								setError(`Error hosting a new game.`);
 							}
 						}
 					}}
