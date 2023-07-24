@@ -51,15 +51,17 @@ export default function App() {
 
 	return (
 		<Suspense fallback={<Loading />}>
-			<Container>
+			<div className="absolute bottom-0 left-0 right-0 top-0">
 				<TopBar />
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/dev/*" element={<DevFrontEnd />} />
-					<Route path="/game/:id" element={<GameScreen />} />
-					<Route path="/name-generator" element={<NameGenerator />} />
-				</Routes>
-			</Container>
+				<div className="h-full pt-10">
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/dev/*" element={<DevFrontEnd />} />
+						<Route path="/game/:id" element={<GameScreen />} />
+						<Route path="/name-generator" element={<NameGenerator />} />
+					</Routes>
+				</div>
+			</div>
 		</Suspense>
 	);
 }

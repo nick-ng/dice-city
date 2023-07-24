@@ -28,7 +28,7 @@ export default function EstablishmentReference({
 							tabIndex={0}
 						>
 							<span>{establishment.display}</span>
-							<div className="absolute -left-32 top-0 hidden bg-white dark:bg-gray-800 xl:-left-40 can-hover:group-hover:block cannot-hover:group-focus:block">
+							<div className="absolute bottom-0 right-4 z-10 hidden bg-white dark:bg-gray-800 can-hover:group-hover:block cannot-hover:group-focus:block">
 								<Building building={establishment} />
 							</div>
 						</li>
