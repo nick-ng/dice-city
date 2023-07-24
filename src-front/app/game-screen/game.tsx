@@ -179,7 +179,9 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					{myState && <h2>Your Money: {myState.money}</h2>}
 					<details
 						open={
-							turnPhase === "end" || (myTurn && turnPhase === "before-build")
+							options.alwaysShowSupply ||
+							turnPhase === "end" ||
+							(myTurn && turnPhase === "before-build")
 						}
 					>
 						<summary className="no-underline">

@@ -2,12 +2,13 @@ import { replaceTags } from "../building/utils.js";
 
 interface InstructionsProps {
 	showStory?: boolean;
+	open?: boolean;
 }
 
-export default function Instructions({ showStory }: InstructionsProps) {
+export default function Instructions({ showStory, open }: InstructionsProps) {
 	return (
 		<div className={"max-w-prose text-sm xl:text-base"}>
-			<details open>
+			<details open={open}>
 				<summary className="text-lg xl:text-xl">Instructions</summary>
 				{showStory && (
 					<p>

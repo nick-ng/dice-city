@@ -91,9 +91,9 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 				</ul>
 			</details>
 			<hr />
-			<EstablishmentReference />
+			<EstablishmentReference open={options.alwaysShowEstablishmentList} />
 			<hr />
-			<Instructions />
+			<Instructions open={!options.hideInstructions} />
 		</div>
 	);
 }

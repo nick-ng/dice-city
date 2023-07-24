@@ -32,13 +32,30 @@ export default class GameConductor {
 		socket: WebSocketType;
 		lastPing: number;
 		latency: number;
-		pingCounter: number;
 	}[];
+	pingIntervalId: ReturnType<typeof setInterval>;
 
 	constructor() {
 		this.gameId = null;
 		this.gameData = null;
 		this.players = [];
+
+		this.pingIntervalId = setInterval(
+			() => {
+				this.players.forEach((player) => {
+					player.lastPing = Date.now();
+					player.socket.send(
+						JSON.stringify({
+							type: "ping",
+							payload: {
+								latency: player.latency,
+							},
+						} as WebSocketServerToClientMessage)
+					);
+				});
+			},
+			10 * 1000 // 10 seconds
+		);
 	}
 
 	async loadGame(gameId: string) {
@@ -135,7 +152,6 @@ export default class GameConductor {
 			socket,
 			lastPing: 0,
 			latency: 0,
-			pingCounter: 0,
 		};
 
 		if (!this.gameData) {
@@ -236,21 +252,6 @@ export default class GameConductor {
 
 			for (let n = 0; n < this.players.length; n++) {
 				const player = this.players[n];
-
-				player.pingCounter += 1;
-
-				if (player.pingCounter % 20 === 0) {
-					player.pingCounter = 0;
-					player.lastPing = Date.now();
-					player.socket.send(
-						JSON.stringify({
-							type: "ping",
-							payload: {
-								latency: player.latency,
-							},
-						} as WebSocketServerToClientMessage)
-					);
-				}
 
 				player.socket.send(
 					JSON.stringify({

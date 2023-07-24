@@ -27,11 +27,9 @@ export const webSocketServerToClientGameDataMessageSchema = z.object({
 
 export const webSocketServerToClientPingMessageSchema = z.object({
 	type: z.literal("ping"),
-	payload: z.optional(
-		z.object({
-			latency: z.optional(z.number()),
-		})
-	),
+	payload: z.object({
+		latency: z.optional(z.number()),
+	}),
 });
 
 export const webSocketServerToClientMessageSchema = z.union([
