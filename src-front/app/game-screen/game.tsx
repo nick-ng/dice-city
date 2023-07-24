@@ -20,8 +20,14 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	const { gameDetails, gameState, gameSettings } = gameData;
 	const { players, isPublic } = gameDetails;
 	const { common, players: playerStates } = gameState.publicState;
-	const { activePlayerId, supply, turnPhase, turnOrder, pendingActions } =
-		common;
+	const {
+		activePlayerId,
+		supply,
+		turnPhase,
+		turnOrder,
+		pendingActions,
+		diceRolls,
+	} = common;
 	const { landmarks } = gameSettings;
 
 	const showNames = isPublic ? options.showNamesPublic : options.showNames;
@@ -70,7 +76,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	return (
 		<div className="flex h-full flex-row">
 			<div className="h-full flex-grow overflow-y-scroll">
-				<div className="md:mx-1 xl:mx-4">
+				<div className="relative md:ml-1 xl:ml-4">
 					<h1 id="game-top">Dice City</h1>
 					{turnPhase === "end" && winner && (
 						<div>
@@ -82,6 +88,25 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 									{getName(winner.id, winner.name, showNames)} is the winner!
 								</h2>
 							)}
+						</div>
+					)}
+					{turnPhase !== "before-roll" && (
+						<div className="border-default absolute right-6 top-4 z-20 flex animate-dice-roll-attention-light animate-dice-roll-move flex-col items-center rounded bg-white pb-2 dark:animate-dice-roll-attention-dark dark:bg-gray-800">
+							<div>
+								{diceRolls.length === 1
+									? "Roll"
+									: `Roll (${diceRolls.reduce((a, r) => a + r, 0)})`}
+							</div>
+							<div className="flex flex-row">
+								{diceRolls.map((roll, i) => (
+									<div
+										key={`${roll}-${i}`}
+										className="border-strong mr-2 flex h-7 w-7 items-center justify-center rounded-lg bg-white first-of-type:ml-2 dark:bg-gray-800 xl:h-12 xl:w-12 xl:text-2xl"
+									>
+										{roll}
+									</div>
+								))}
+							</div>
 						</div>
 					)}
 				</div>

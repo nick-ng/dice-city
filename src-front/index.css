@@ -58,6 +58,10 @@
 		@apply border border-gray-300 dark:border-gray-600;
 	}
 
+	.border-strong {
+		@apply border border-gray-600 dark:border-gray-300;
+	}
+
 	.coin-float {
 		@apply float-left flex h-full items-end;
 		shape-outside: inset(calc(100% - 16px) 0 0);
