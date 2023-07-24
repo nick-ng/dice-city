@@ -47,7 +47,7 @@ export const useGameSocket = (
 	const [connectionStatus, setConnectionStatus] = useState<
 		"not-connected" | "connected" | "reconnecting" | "not-found"
 	>("not-connected");
-	const [latency, setLatency] = useState(0);
+	const [latency, setLatency] = useState(-1);
 
 	const sendViaWebSocket = useCallback(
 		(messageObject: PlayerAction): void => {

@@ -12,7 +12,7 @@ export default function TopBar() {
 	return (
 		<div className="mb-1 flex flex-wrap justify-end">
 			<NameChanger />
-			{!!options.ping && <div>Ping: {options.ping} ms</div>}
+			{typeof options.ping === "number" && <div>Ping: {options.ping} ms</div>}
 			<div className="grow" />
 			<Options />
 			<ItemLayout>

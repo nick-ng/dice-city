@@ -22,7 +22,7 @@ export default function Instructions({ showStory, open }: InstructionsProps) {
 					The goal of Dice City is to build all of your Landmarks. To do so, on
 					your turn you will:
 				</p>
-				<ul className="ml-4 list-outside list-disc">
+				<ul className="ml-5 list-outside list-disc">
 					<li>Roll Dice</li>
 					<li>Activate Establishments</li>
 					<li>Build</li>

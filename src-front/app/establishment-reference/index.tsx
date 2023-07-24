@@ -20,7 +20,7 @@ export default function EstablishmentReference({
 				<div className="cannot-hover:hidden">
 					Hover over an establishment to see what it does
 				</div>
-				<ul className="ml-4 list-outside list-disc">
+				<ul className="ml-5 list-outside list-disc">
 					{establishments.map((establishment) => (
 						<li
 							key={establishment.key}
