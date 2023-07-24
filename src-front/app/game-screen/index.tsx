@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
 import { useOptions } from "~front/hooks/options-context.js";
@@ -11,14 +12,27 @@ import Game from "./game.js";
 export default function GameScreen() {
 	const params = useParams() as { id: string };
 	const [search, _setSearch] = useSearchParams();
-	const { options } = useOptions();
+	const { options, setOptions } = useOptions();
 
 	const { playerId, playerPassword } = options;
 
-	const { playerGameData, sendViaWebSocket } = useGameSocket(params.id, {
-		id: playerId,
-		password: playerPassword,
-	});
+	const { playerGameData, sendViaWebSocket, latency } = useGameSocket(
+		params.id,
+		{
+			id: playerId,
+			password: playerPassword,
+		}
+	);
+
+	useEffect(() => {
+		setOptions({
+			ping: latency,
+		});
+
+		return setOptions({
+			ping: 0,
+		});
+	}, [latency]);
 
 	if (!playerGameData) {
 		return (

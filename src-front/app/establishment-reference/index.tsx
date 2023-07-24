@@ -1,12 +1,18 @@
 import { establishmentReference } from "~common/constants/buildings.js";
 import Building from "../building/index.js";
 
+interface EstablishmentReferenceProps {
+	open?: boolean;
+}
+
 const establishments = Object.values(establishmentReference);
 
-export default function EstablishmentReference() {
+export default function EstablishmentReference({
+	open,
+}: EstablishmentReferenceProps) {
 	return (
 		<div>
-			<details>
+			<details open={open}>
 				<summary className="text-lg">Establishments</summary>
 				<div className="text-sm can-hover:hidden">
 					Tap on an establishment to see what it does
