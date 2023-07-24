@@ -18,6 +18,11 @@ export interface Options {
 	playerName: string;
 	playerId: string;
 	playerPassword: string;
+	perGamePassword: {
+		gameId: string;
+		password: string;
+		lastActionTimestamp: number;
+	}[];
 	darkMode?: "light" | "dark" | "system";
 	showNames?: boolean;
 	showNamesPublic?: boolean;
@@ -31,6 +36,7 @@ export const defaultOptions: Options = {
 	playerName: "",
 	playerId: "",
 	playerPassword: "",
+	perGamePassword: [],
 	darkMode: "system",
 	showNames: true,
 };

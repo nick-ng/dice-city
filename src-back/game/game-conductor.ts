@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { WebSocket as WebSocketType } from "ws";
+import { WebSocket as WebSocketType, RawData as WSRawDataType } from "ws";
 
 import type {
 	GameData,
@@ -160,7 +160,7 @@ export default class GameConductor {
 			);
 		}
 
-		socket.on("message", async (buffer) => {
+		const messageHandler = async (buffer: WSRawDataType) => {
 			const res = jsonSafeParseS(
 				webSocketClientToServerMessageSchema,
 				buffer.toString()
@@ -202,9 +202,13 @@ export default class GameConductor {
 						}
 					);
 			}
-		});
+		};
+
+		socket.on("message", messageHandler);
 
 		socket.on("close", () => {
+			socket.removeListener("message", messageHandler);
+
 			for (let n = 0; n < this.players.length; n++) {
 				if (this.players[n].uuid === uuid) {
 					this.players.splice(n, 1);
@@ -216,6 +220,8 @@ export default class GameConductor {
 				"players",
 				this.players.map((p) => p.playerId)
 			);
+
+			socket.terminate();
 
 			if (this.players.length === 0) {
 				this.gameId = null;
