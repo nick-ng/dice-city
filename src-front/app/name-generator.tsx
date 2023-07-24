@@ -84,7 +84,7 @@ export default function NameGenerator() {
 			>
 				Randomise
 			</button>
-			<ul className="ml-4 mt-2 list-disc">
+			<ul className="ml-5 mt-2 list-disc">
 				{["", ...namePrefixes].map((namePrefix, i) => {
 					const fullName = `${namePrefix}${randomName}`;
 					return (

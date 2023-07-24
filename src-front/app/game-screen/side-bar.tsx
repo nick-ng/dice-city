@@ -21,7 +21,7 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 	return (
 		<div className="ml-2 h-full flex-shrink-0 flex-grow-0 basis-48 overflow-y-auto pb-12 xl:basis-80">
 			<h3>Players</h3>
-			<ul className="ml-4 list-outside">
+			<ul className="ml-5 list-outside">
 				{getPlayerOrderStartingFromPlayer(
 					turnOrder,
 					options.playerId,
@@ -79,7 +79,7 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 			<hr />
 			<details className="mb-2" open>
 				<summary className="text-xl">Turn Events</summary>
-				<ul className="ml-4 list-outside list-disc text-sm xl:text-base">
+				<ul className="ml-5 list-outside list-disc text-sm xl:text-base">
 					{turnEvents.map((event, i) => (
 						<li
 							key={`${event}-${i}`}

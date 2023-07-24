@@ -36,7 +36,7 @@ export default function StateDisplay({ gameData }: StateDisplayProps) {
 			</div>
 			<div>
 				Processed Establishments: {processedEstablishments.length}
-				<ul className="ml-4 list-outside list-disc">
+				<ul className="ml-5 list-outside list-disc">
 					{processedEstablishments.map((establishmentKey) => (
 						<li key={establishmentKey}>{establishmentKey}</li>
 					))}

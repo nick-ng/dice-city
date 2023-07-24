@@ -29,9 +29,11 @@ export default function GameScreen() {
 			ping: latency,
 		});
 
-		return setOptions({
-			ping: 0,
-		});
+		return () => {
+			setOptions({
+				ping: null,
+			});
+		};
 	}, [latency]);
 
 	if (!playerGameData) {

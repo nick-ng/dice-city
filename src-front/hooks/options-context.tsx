@@ -13,7 +13,7 @@ import randomUUID from "~front/utils/random-uuid.js";
 const OPTIONS_STORE = "DICE_CITY_OPTIONS";
 
 export interface Options {
-	ping?: number;
+	ping: number | null;
 	preferredVoice?: string;
 	playerName: string;
 	playerId: string;
@@ -33,6 +33,7 @@ export interface Options {
 }
 
 export const defaultOptions: Options = {
+	ping: null,
 	playerName: "",
 	playerId: "",
 	playerPassword: "",
