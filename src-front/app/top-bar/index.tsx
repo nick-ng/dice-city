@@ -10,7 +10,8 @@ export default function TopBar() {
 	const { options } = useOptions();
 
 	return (
-		<div className="mb-1 flex flex-wrap justify-end">
+		<div className="absolute mb-1 mt-2 flex w-full flex-wrap justify-end">
+			<div className="basis-1" />
 			<NameChanger />
 			{typeof options.ping === "number" && <div>Ping: {options.ping} ms</div>}
 			<div className="grow" />
@@ -23,6 +24,7 @@ export default function TopBar() {
 					GitHub
 				</a>
 			</ItemLayout>
+			<div className="basis-1" />
 		</div>
 	);
 }

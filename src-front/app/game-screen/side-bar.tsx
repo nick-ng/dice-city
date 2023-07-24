@@ -19,7 +19,7 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 	const showNames = isPublic ? options.showNamesPublic : options.showNames;
 
 	return (
-		<div className="ml-2 h-full flex-shrink-0 flex-grow-0 basis-48 overflow-y-auto pb-12 xl:basis-80">
+		<div className="ml-2 h-full flex-shrink-0 flex-grow-0 basis-48 overflow-y-scroll pb-12 xl:basis-80">
 			<h3>Players</h3>
 			<ul className="ml-5 list-outside">
 				{getPlayerOrderStartingFromPlayer(
@@ -38,8 +38,14 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 								playerId === activePlayerId ? "list-disc" : "list-[circle]"
 							} underline`}
 							key={playerId}
-							role={playerId === options.playerId ? "listitem" : "button"}
+							role="button"
 							onClick={() => {
+								if (playerId === options.playerId) {
+									document
+										.getElementById("game-top")
+										?.scrollIntoView({ behavior: "smooth" });
+								}
+
 								let thisPlayerEl: HTMLElement | null = null;
 								for (let i = 0; i < players.length; i++) {
 									if (players[i].id === options.playerId) {
@@ -68,10 +74,9 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 								{getName(playerId, player?.name, showNames || !isOpponent)}
 							</span>
 							<span>
-								{isOpponent
-									? `, M: ${playerStates[playerId].money}, L: ${landmarkCount}`
-									: " (You)"}
+								, M: {playerStates[playerId].money}, L: {landmarkCount}
 							</span>
+							{!isOpponent && <span> (You)</span>}
 						</li>
 					);
 				})}

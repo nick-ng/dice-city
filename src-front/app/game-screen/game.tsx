@@ -68,24 +68,26 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
 	// @todo(nick-ng): show what was rolled in the main area
 	return (
-		<div className="flex flex-row">
-			<div className="flex-grow">
-				<h1>Dice City</h1>
-				{turnPhase === "end" && winner && (
-					<div>
-						<p>The game is over.</p>
-						{winnerId === options.playerId ? (
-							<h2>🏆 You are the winner! 🏆</h2>
-						) : (
-							<h2>
-								{getName(winner.id, winner.name, showNames)} is the winner!
-							</h2>
-						)}
-					</div>
-				)}
+		<div className="flex h-full flex-row">
+			<div className="h-full flex-grow overflow-y-scroll">
+				<div className="md:mx-1 xl:mx-4">
+					<h1 id="game-top">Dice City</h1>
+					{turnPhase === "end" && winner && (
+						<div>
+							<p>The game is over.</p>
+							{winnerId === options.playerId ? (
+								<h2>🏆 You are the winner! 🏆</h2>
+							) : (
+								<h2>
+									{getName(winner.id, winner.name, showNames)} is the winner!
+								</h2>
+							)}
+						</div>
+					)}
+				</div>
 				<div>
 					{myState && turnPhase !== "end" && !myTurn && (
-						<div>
+						<div className="md:mx-1 xl:mx-4">
 							Waiting for{" "}
 							{getName(
 								activePlayerId,
@@ -95,89 +97,94 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 							to finish their turn.
 						</div>
 					)}
-					{pendingActionsForMe.includes("tv-station") && (
-						<div>
-							<h3>TV Station</h3>
-							<p>Choose a player to take 5 coins from.</p>
-							{getPlayerOrderStartingFromPlayer(
-								turnOrder,
-								options.playerId,
-								false
-							).map((opponentId) => {
-								const opponent = players.find((p) => p.id === opponentId);
+					<div className="md:mx-1 xl:mx-4">
+						{pendingActionsForMe.includes("tv-station") && (
+							<div>
+								<h3>TV Station</h3>
+								<p>Choose a player to take 5 coins from.</p>
+								{getPlayerOrderStartingFromPlayer(
+									turnOrder,
+									options.playerId,
+									false
+								).map((opponentId) => {
+									const opponent = players.find((p) => p.id === opponentId);
 
-								return (
-									<button
-										key={opponentId}
-										className="button-default animate-attention px-4 py-2"
-										onClick={() => {
-											sendViaWebSocket({
-												...options,
-												type: "tv-station",
-												payload: {
-													opponentId,
-												},
-											});
-										}}
-									>
-										<span>
-											{getName(opponentId, opponent?.name, showNames)}
-										</span>
-										<span>
-											, M: {playerStates[opponentId].money}, L:{" "}
-											{landmarkCounts[opponentId]}
-										</span>
-									</button>
-								);
-							})}
-						</div>
+									return (
+										<button
+											key={opponentId}
+											className="button-default animate-attention px-4 py-2"
+											onClick={() => {
+												sendViaWebSocket({
+													...options,
+													type: "tv-station",
+													payload: {
+														opponentId,
+													},
+												});
+											}}
+										>
+											<span>
+												{getName(opponentId, opponent?.name, showNames)}
+											</span>
+											<span>
+												, M: {playerStates[opponentId].money}, L:{" "}
+												{landmarkCounts[opponentId]}
+											</span>
+										</button>
+									);
+								})}
+							</div>
+						)}
+						<BusinessCentreControls
+							gameData={gameData}
+							options={options}
+							onClick={(payload) => {
+								sendViaWebSocket({
+									...options,
+									type: "business-centre",
+									payload,
+								});
+							}}
+						/>
+						<HarbourControls
+							gameData={gameData}
+							options={options}
+							onClick={(skip) => {
+								sendViaWebSocket({
+									...options,
+									type: "harbour-change-roll",
+									payload: {
+										skip,
+									},
+								});
+							}}
+						/>
+						<DiceControls
+							gameData={gameData}
+							options={options}
+							rollHandler={(diceCount) => {
+								sendViaWebSocket({
+									...options,
+									type: "roll-dice",
+									payload: { diceCount },
+								});
+							}}
+							rerollHandler={(skip) => {
+								sendViaWebSocket({
+									...options,
+									type: "reroll-dice",
+									payload: {
+										skip,
+									},
+								});
+							}}
+						/>
+					</div>
+					{myState && (
+						<h2 className="md:mx-1 xl:mx-4">Your Money: {myState.money}</h2>
 					)}
-					<BusinessCentreControls
-						gameData={gameData}
-						options={options}
-						onClick={(payload) => {
-							sendViaWebSocket({
-								...options,
-								type: "business-centre",
-								payload,
-							});
-						}}
-					/>
-					<HarbourControls
-						gameData={gameData}
-						options={options}
-						onClick={(skip) => {
-							sendViaWebSocket({
-								...options,
-								type: "harbour-change-roll",
-								payload: {
-									skip,
-								},
-							});
-						}}
-					/>
-					<DiceControls
-						gameData={gameData}
-						options={options}
-						rollHandler={(diceCount) => {
-							sendViaWebSocket({
-								...options,
-								type: "roll-dice",
-								payload: { diceCount },
-							});
-						}}
-						rerollHandler={(skip) => {
-							sendViaWebSocket({
-								...options,
-								type: "reroll-dice",
-								payload: {
-									skip,
-								},
-							});
-						}}
-					/>
-					{myState && <h2>Your Money: {myState.money}</h2>}
 					<details
+						className={`mt-2 bg-gray-100 py-1 dark:bg-gray-700 md:px-1 xl:px-4`}
 						open={
 							options.alwaysShowSupply ||
 							turnPhase === "end" ||
@@ -219,13 +226,13 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						/>
 					</details>
 					{myState && (
-						<>
-							<h2 className="mt-2" id="you-city">
+						<div className="mt-2 bg-green-100 py-1 dark:bg-green-900 md:px-1 xl:px-4">
+							<h2 id="you-city">
 								Your City, Landmark{myLandmarkCount !== 1 ? "s" : ""}:{" "}
 								{myLandmarkCount}
 							</h2>
-							<City availableLandmarks={landmarks} city={myState.city} />
-						</>
+							<City availableLandmarks={landmarks} city={myState.city} isMine />
+						</div>
 					)}
 					{getPlayerOrderStartingFromPlayer(
 						turnOrder,
@@ -251,7 +258,9 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						return (
 							<details
 								key={opponentId}
-								className="mt-2"
+								className={`mt-2 py-1 md:px-1 xl:px-4 ${
+									myState ? "bg-orange-100 dark:dark:bg-orange-900" : ""
+								}`}
 								id={`${opponentId}-city`}
 								open={
 									!myState || options.alwaysShowCities || turnPhase === "end"
@@ -266,6 +275,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								<City
 									availableLandmarks={landmarks}
 									city={opponentState.city}
+									isOpponent={!!myState}
 								/>
 							</details>
 						);
@@ -273,31 +283,6 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				</div>
 			</div>
 			<SideBar gameData={gameData} options={options} />
-			<button
-				className="button-default fixed bottom-4 right-4 bg-white dark:bg-gray-800"
-				onClick={() => {
-					if (!options.alwaysShowCities) {
-						for (let i = 0; i < players.length; i++) {
-							if (players[i].id === options.playerId) {
-								continue;
-							}
-
-							const detailEl = document.getElementById(`${players[i].id}-city`);
-							if (detailEl) {
-								detailEl.removeAttribute("open");
-							}
-						}
-					}
-
-					scrollTo({
-						top: 0,
-						left: 0,
-						behavior: "smooth",
-					});
-				}}
-			>
-				Up ⬆️
-			</button>
 		</div>
 	);
 }
