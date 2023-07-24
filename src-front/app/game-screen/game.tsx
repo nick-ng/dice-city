@@ -72,7 +72,6 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 	}, [turnPhase, myTurn]);
 
 	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
-	// @todo(nick-ng): show what was rolled in the main area
 	return (
 		<div className="flex h-full flex-row">
 			<div className="h-full flex-grow overflow-y-scroll">
