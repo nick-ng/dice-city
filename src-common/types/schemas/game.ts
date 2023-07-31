@@ -77,9 +77,14 @@ const publicStateSchema = z.object({
 					"tv-station",
 					"business-centre",
 					"radio-tower",
-					"amusement-park",
 					"harbour",
 				]),
+			})
+		),
+		autoActions: z.array(
+			z.object({
+				playerId: z.string(),
+				action: z.enum(["amusement-park"]),
 			})
 		),
 		diceRolls: z.array(z.number()),
