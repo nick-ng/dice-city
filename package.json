@@ -67,7 +67,7 @@
 		"zod": "^3.22.2"
 	},
 	"devDependencies": {
-		"@types/mocha": "^10.0.0",
+		"@types/mocha": "^10.0.2",
 		"husky": "^8.0.1",
 		"lint-staged": "^14.0.1",
 		"mocha": "^10.0.0",
