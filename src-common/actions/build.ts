@@ -68,7 +68,7 @@ export const buildAction = (
 
 			trimTurnEvents(
 				turnEvents,
-				`%${
+				`id:${Date.now()}:%${
 					action.playerId
 				}% skipped building anything and collected ${airportCoins} coins from their ${
 					landmarkReference.airport?.display || "Airport"
@@ -77,7 +77,7 @@ export const buildAction = (
 		} else {
 			trimTurnEvents(
 				turnEvents,
-				`%${action.playerId}% skipped building anything.`
+				`id:${Date.now()}:%${action.playerId}% skipped building anything.`
 			);
 		}
 

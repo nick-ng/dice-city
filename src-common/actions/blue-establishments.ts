@@ -129,7 +129,7 @@ export const blueEstablishmentsAction = (
 				if (moneyReceived > 0) {
 					if (shouldExplainTunaBoat) {
 						turnEvents.push(
-							`Rolled ${tunaBoatRolls.join(
+							`id:${Date.now()}:Rolled ${tunaBoatRolls.join(
 								" + "
 							)} = ${moneyPerEstablishment} for Tuna Boats`
 						);
@@ -138,7 +138,7 @@ export const blueEstablishmentsAction = (
 					}
 
 					turnEvents.push(
-						`%${player.playerId}% collected ${moneyReceived} ${
+						`id:${Date.now()}:%${player.playerId}% collected ${moneyReceived} ${
 							moneyReceived === 1 ? "coin" : "coins"
 						} from the bank - ${establishmentCount} ${
 							establishmentCount === 1

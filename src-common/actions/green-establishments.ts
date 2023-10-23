@@ -116,7 +116,7 @@ export const greenEstablishmentsAction = (
 			processedEstablishments.push(establishmentKey);
 
 			turnEvents.push(
-				`%${activePlayerId}% collected ${moneyReceived} ${
+				`id:${Date.now()}:%${activePlayerId}% collected ${moneyReceived} ${
 					moneyReceived === 1 ? "coin" : "coins"
 				} from the bank - ${establishmentCount} ${
 					establishmentCount === 1

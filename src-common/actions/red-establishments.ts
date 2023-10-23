@@ -125,7 +125,7 @@ export const redEstablishmentsAction = (
 
 				if (activePlayerState.money === 0) {
 					turnEvents.push(
-						`%${otherPlayerId}% couldn't collect any coins from %${activePlayerId}% - ${establishmentCount} ${
+						`id:${Date.now()}:%${otherPlayerId}% couldn't collect any coins from %${activePlayerId}% - ${establishmentCount} ${
 							establishmentCount === 1
 								? establishment.display
 								: establishment.pluralDisplay
@@ -137,7 +137,9 @@ export const redEstablishmentsAction = (
 
 				if (activePlayerState.money < totalMoney) {
 					turnEvents.push(
-						`%${otherPlayerId}% collected ${activePlayerState.money} ${
+						`id:${Date.now()}:%${otherPlayerId}% collected ${
+							activePlayerState.money
+						} ${
 							activePlayerState.money === 1 ? "coin" : "coins"
 						} from %${activePlayerId}% - ${establishmentCount} ${
 							establishmentCount === 1
@@ -150,7 +152,7 @@ export const redEstablishmentsAction = (
 					activePlayerState.money = 0;
 				} else {
 					turnEvents.push(
-						`%${otherPlayerId}% collected ${totalMoney} ${
+						`id:${Date.now()}:%${otherPlayerId}% collected ${totalMoney} ${
 							totalMoney === 1 ? "coin" : "coins"
 						} from %${activePlayerId}% - ${establishmentCount} ${
 							establishmentCount === 1

@@ -85,12 +85,17 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 			<details className="mb-2" open>
 				<summary className="text-xl">Turn Events</summary>
 				<ul className="ml-5 list-outside list-disc text-sm xl:text-base">
-					{turnEvents.map((event, i) => (
+					{[...turnEvents].map((event) => (
 						<li
-							key={`${event}-${i}`}
+							key={`${event}`}
 							className="animate-attention-once-light px-0.5 even:bg-gray-100 dark:animate-attention-once-dark dark:even:bg-gray-700"
 						>
-							{replaceName(players, !!showNames, options.playerId, event)}
+							{replaceName(
+								players,
+								!!showNames,
+								options.playerId,
+								event.replace(/id:\d+:/, "")
+							)}
 						</li>
 					))}
 				</ul>

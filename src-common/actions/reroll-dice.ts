@@ -64,12 +64,14 @@ export const rerollDiceAction = (
 
 	if (diceCount === 1) {
 		common.turnEvents.push(
-			`%${activePlayerId}% re-rolled and got a ${common.diceRolls[0]}`
+			`id:${Date.now()}:%${activePlayerId}% re-rolled and got a ${
+				common.diceRolls[0]
+			}`
 		);
 	} else {
 		const rollTotal = common.diceRolls.reduce((prev, curr) => prev + curr, 0);
 		common.turnEvents.push(
-			`%${activePlayerId}% re-rolled and got a ${rollTotal} (${common.diceRolls.join(
+			`id:${Date.now()}:%${activePlayerId}% re-rolled and got a ${rollTotal} (${common.diceRolls.join(
 				" + "
 			)})`
 		);

@@ -97,7 +97,7 @@ export const tvStationAction = (
 
 	if (opponentState.money === 0) {
 		turnEvents.push(
-			`%${activePlayerId}% couldn't collect any coins from %${
+			`id:${Date.now()}:%${activePlayerId}% couldn't collect any coins from %${
 				payload.opponentId
 			}% - ${establishmentCount} ${
 				establishmentCount === 1
@@ -107,7 +107,7 @@ export const tvStationAction = (
 		);
 	} else if (opponentState.money < maxMoney) {
 		turnEvents.push(
-			`%${activePlayerId}% collected ${opponentState.money} ${
+			`id:${Date.now()}:%${activePlayerId}% collected ${opponentState.money} ${
 				opponentState.money === 1 ? "coin" : "coins"
 			} from %${payload.opponentId}% - ${establishmentCount} ${
 				establishmentCount === 1
@@ -120,7 +120,7 @@ export const tvStationAction = (
 		opponentState.money = 0;
 	} else {
 		turnEvents.push(
-			`%${activePlayerId}% collected ${maxMoney} ${
+			`id:${Date.now()}:%${activePlayerId}% collected ${maxMoney} ${
 				maxMoney === 1 ? "coin" : "coins"
 			} from %${payload.opponentId}% - ${establishmentCount} ${
 				establishmentCount === 1
@@ -141,7 +141,9 @@ export const tvStationAction = (
 		if (city.landmarks.cityHall && playerStates[activePlayerId].money === 0) {
 			playerStates[activePlayerId].money = 1;
 
-			turnEvents.push(`%${activePlayerId}% got 1 coin from their City Hall`);
+			turnEvents.push(
+				`id:${Date.now()}:%${activePlayerId}% got 1 coin from their City Hall`
+			);
 		}
 	}
 
