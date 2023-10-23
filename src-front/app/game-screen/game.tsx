@@ -90,7 +90,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						</div>
 					)}
 					{turnPhase !== "before-roll" && (
-						<div className="border-default absolute right-6 top-4 z-20 flex animate-dice-roll-attention-light animate-dice-roll-move flex-col items-center rounded bg-white pb-2 dark:animate-dice-roll-attention-dark dark:bg-gray-800">
+						<div className="border-default absolute right-6 top-4 z-20 flex animate-dice-roll-attention-light flex-col items-center rounded bg-white pb-2 dark:animate-dice-roll-attention-dark dark:bg-gray-800">
 							<div>
 								{diceRolls.length === 1
 									? "Roll"

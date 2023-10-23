@@ -24,7 +24,7 @@ export default function EstablishmentReference({
 					{establishments.map((establishment) => (
 						<li
 							key={establishment.key}
-							className="group relative cursor-pointer py-0.5 even:bg-gray-200 dark:even:bg-gray-600"
+							className="group relative cursor-pointer py-0.5 even:bg-gray-100 dark:even:bg-gray-700"
 							tabIndex={0}
 						>
 							<span>{establishment.display}</span>
