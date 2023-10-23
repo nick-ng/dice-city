@@ -88,7 +88,7 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 					{turnEvents.map((event, i) => (
 						<li
 							key={`${event}-${i}`}
-							className="px-0.5 even:bg-gray-200 dark:even:bg-gray-600"
+							className="animate-attention-once-light px-0.5 even:bg-gray-100 dark:animate-attention-once-dark dark:even:bg-gray-700"
 						>
 							{replaceName(players, !!showNames, options.playerId, event)}
 						</li>
