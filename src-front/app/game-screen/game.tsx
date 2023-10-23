@@ -1,5 +1,5 @@
 import type { GameData, PlayerAction } from "~common/types/index.js";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
 import { getName } from "~front/utils/name-generator.js";
 import { useOptions } from "~front/hooks/options-context.js";
@@ -29,6 +29,9 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		diceRolls,
 	} = common;
 	const { landmarks } = gameSettings;
+	const [prevTurnPhase, setPrevTurnPhase] = useState("");
+	const diceRollSound = useRef(new Audio("/dice-roll.mp3")).current;
+	const yourTurnSound = useRef(new Audio("/chord-ceg.mp3")).current;
 
 	const showNames = isPublic ? options.showNamesPublic : options.showNames;
 
@@ -69,6 +72,27 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				},
 			});
 		}
+
+		if (
+			options.diceRollVolume > 0 &&
+			turnPhase !== "before-roll" &&
+			prevTurnPhase === "before-roll"
+		) {
+			diceRollSound.volume = options.diceRollVolume;
+			diceRollSound.play();
+		}
+
+		if (
+			options.yourTurnVolume > 0 &&
+			myTurn &&
+			turnPhase === "before-roll" &&
+			prevTurnPhase !== "before-roll"
+		) {
+			yourTurnSound.volume = options.yourTurnVolume;
+			yourTurnSound.play();
+		}
+
+		setPrevTurnPhase(turnPhase);
 	}, [turnPhase, myTurn]);
 
 	// @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on

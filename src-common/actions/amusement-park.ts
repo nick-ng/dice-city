@@ -47,13 +47,15 @@ export const amusementParkTurnHandler = (gameData: GameData): GameData => {
 			turnOrder[nextPlayerIndex];
 
 		gameData.gameState.publicState.common.turnEvents.push(
-			`It is %${turnOrder[nextPlayerIndex]}%'s turn`
+			`id:${Date.now()}:It is %${turnOrder[nextPlayerIndex]}%'s turn`
 		);
 	} else {
 		autoActions.splice(amusementParkPendingActionIndex, 1);
 
 		gameData.gameState.publicState.common.turnEvents.push(
-			`%${activePlayerId}% gets another turn because of their ${landmarkReference.amusementPark.display}`
+			`id:${Date.now()}:%${activePlayerId}% gets another turn because of their ${
+				landmarkReference.amusementPark.display
+			}`
 		);
 	}
 

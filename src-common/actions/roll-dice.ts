@@ -95,12 +95,12 @@ export const rollDiceAction = (
 
 	if (diceCount === 1) {
 		common.turnEvents.push(
-			`%${activePlayerId}% rolled a ${common.diceRolls[0]}`
+			`id:${Date.now()}:%${activePlayerId}% rolled a ${common.diceRolls[0]}`
 		);
 	} else {
 		const rollTotal = common.diceRolls.reduce((prev, curr) => prev + curr, 0);
 		common.turnEvents.push(
-			`%${activePlayerId}% rolled a ${rollTotal} (${common.diceRolls.join(
+			`id:${Date.now()}:%${activePlayerId}% rolled a ${rollTotal} (${common.diceRolls.join(
 				" + "
 			)})`
 		);

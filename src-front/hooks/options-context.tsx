@@ -30,6 +30,8 @@ export interface Options {
 	alwaysShowSupply?: boolean;
 	alwaysShowEstablishmentList?: boolean;
 	hideInstructions?: boolean;
+	diceRollVolume: number;
+	yourTurnVolume: number;
 }
 
 export const defaultOptions: Options = {
@@ -40,6 +42,8 @@ export const defaultOptions: Options = {
 	perGamePassword: [],
 	darkMode: "system",
 	showNames: true,
+	diceRollVolume: 0,
+	yourTurnVolume: 0,
 };
 
 const OptionsContext = createContext<{

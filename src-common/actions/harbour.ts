@@ -103,7 +103,7 @@ export const harbourChangeHandler = (
 	}
 
 	common.turnEvents.push(
-		`%${activePlayerId}% changed the dice total from ${diceRoll} to ${
+		`id:${Date.now()}:%${activePlayerId}% changed the dice total from ${diceRoll} to ${
 			diceRoll + common.harbourExtra
 		} with their Harbour.`
 	);
