@@ -19,14 +19,14 @@ export default function Instructions({ showStory, open }: InstructionsProps) {
 				)}
 				<h2>Playing Dice City</h2>
 				<p>
-					The goal of Dice City is to build all of your Landmarks. To do so, on
-					your turn you will:
+					The goal of Dice City is to build all of your Landmarks. On your turn
+					you will do all of the following in order:
 				</p>
-				<ul className="ml-5 list-outside list-disc">
+				<ol className="ml-5 list-outside list-decimal">
 					<li>Roll Dice</li>
-					<li>Activate Establishments</li>
+					<li>Trigger Establishments</li>
 					<li>Build</li>
-				</ul>
+				</ol>
 				<details open>
 					<summary className="text-base xl:text-lg">Roll Dice</summary>
 					<p>Begin your turn by rolling one die.</p>
@@ -37,7 +37,7 @@ export default function Instructions({ showStory, open }: InstructionsProps) {
 				</details>
 				<details open>
 					<summary className="text-base xl:text-lg">
-						Activate Establishments
+						Trigger Establishments
 					</summary>
 					<p>
 						Each establishments has one or more Activation Numbers in the
@@ -45,8 +45,8 @@ export default function Instructions({ showStory, open }: InstructionsProps) {
 					</p>
 					<p>
 						If the dice total matches the activation number of an establishment,
-						it activates. The game will perform instructions at the bottom of
-						the establishment for you.
+						it gets triggered. The game will perform instructions at the bottom
+						of the establishment for you.
 					</p>
 					<p>
 						Some establishments require you to choose how they work. The game
