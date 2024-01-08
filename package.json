@@ -54,7 +54,7 @@
 		"esbuild": "^0.19.11",
 		"express": "^4.18.1",
 		"immer": "^10.0.3",
-		"postcss": "^8.4.32",
+		"postcss": "^8.4.33",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.21.1",
