@@ -11,6 +11,9 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    groups:
+      minor:
+        update-types: ["minor", "patch"]
     ignore:
       - dependency-name: "prettier"
 
@@ -22,3 +25,6 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    groups:
+      minor:
+        update-types: ["minor", "patch"]
