@@ -14,8 +14,6 @@ updates:
     groups:
       minor:
         update-types: ["minor", "patch"]
-    ignore:
-      - dependency-name: "prettier"
 
   # Enable version updates for Docker
   - package-ecosystem: "docker"
