@@ -10,7 +10,7 @@ services:
       - "3232:8080"
     volumes:
       - ./:/usr/src/app
-    command: npm run dev-back
+    command: node ./dist-back/main.js
   worker:
     build:
       context: .
@@ -18,7 +18,7 @@ services:
       target: dev
     volumes:
       - ./:/usr/src/app
-    command: npm run dev-worker
+    command: node ./dist-back/worker.js
   redis:
     image: redis:alpine
     command: redis-server /usr/local/etc/redis/redis.conf

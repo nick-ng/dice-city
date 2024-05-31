@@ -32,6 +32,7 @@ export interface Options {
 	hideInstructions?: boolean;
 	diceRollVolume: number;
 	yourTurnVolume: number;
+	newestEventFirst: boolean;
 }
 
 export const defaultOptions: Options = {
@@ -44,6 +45,7 @@ export const defaultOptions: Options = {
 	showNames: true,
 	diceRollVolume: 0,
 	yourTurnVolume: 0,
+	newestEventFirst: false,
 };
 
 const OptionsContext = createContext<{

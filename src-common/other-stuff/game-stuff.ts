@@ -6,7 +6,7 @@ import type { GameData } from "~common/types/index.js";
 export const createGameFromHostId = (
 	hostId: string,
 	hostName: string,
-	hostPassword: string
+	hostPassword: string,
 ): GameData => {
 	const gameId = randomUUID();
 	return {
@@ -39,6 +39,7 @@ export const createGameFromHostId = (
 		gameState: {
 			publicState: {
 				common: {
+					turn: 0,
 					activePlayerId: "",
 					diceRolls: [],
 					harbourExtra: 0,
@@ -62,9 +63,7 @@ export const createGameFromHostId = (
 				},
 			},
 			secretState: {
-				common: {
-					deck: [],
-				},
+				common: { deck: [] },
 			},
 		},
 		lastActionId: `${Date.now()}-0`,
@@ -81,9 +80,7 @@ export const getPlayerGameData = (gameData: GameData): GameData => {
 		gameState: {
 			publicState: gameData.gameState.publicState,
 			secretState: {
-				common: {
-					deck: [],
-				},
+				common: { deck: [] },
 			},
 		},
 		lastActionId: "",

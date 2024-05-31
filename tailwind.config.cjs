@@ -38,7 +38,7 @@ module.exports = {
 					},
 				},
 				"attention-once-dark": {
-					"0% 100%": {
+					"0%, 100%": {
 						// backgroundColor: "rgb(31, 41, 55)",
 					},
 					"50%": {

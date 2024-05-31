@@ -8,7 +8,7 @@ import { getSupply } from "./supply.js";
 export const startAction = (
 	gameData: GameData,
 	action: Action,
-	skipUpdate = false
+	skipUpdate = false,
 ): { gameData: GameData; error?: string } => {
 	if (action.type !== "start") {
 		return {
@@ -61,6 +61,7 @@ export const startAction = (
 
 	common.turnPhase = "before-roll";
 	common.turnOrder = shuffle(players.map((p) => p.id));
+	common.turn = 1;
 	common.activePlayerId = common.turnOrder[0];
 	const deck = shuffle(getDeck("full", players.length));
 	const temp = getSupply({}, deck, gameSettings.supplyType);
@@ -83,6 +84,16 @@ export const startAction = (
 			}
 		}
 	}
+
+	gameData.gameState.publicState.common.turnEvents.push("The game has started");
+
+	gameData.gameState.publicState.common.turnEvents.push(
+		`id:${Date.now()}:Turn ${common.turn}`,
+	);
+
+	gameData.gameState.publicState.common.turnEvents.push(
+		`id:${Date.now()}:It is %${common.activePlayerId}%'s turn`,
+	);
 
 	return {
 		gameData,

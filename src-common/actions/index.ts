@@ -27,7 +27,7 @@ import { getSupply } from "./supply.js";
 
 export const performAction = (
 	gameData: GameData,
-	action: Action
+	action: Action,
 ): { gameData: GameData; error?: string } => {
 	if (!action.isServer && action.type !== "join") {
 		if (!gameData.gameDetails.players.find((p) => p.id === action.playerId)) {
@@ -115,7 +115,7 @@ export const performAction = (
 			}
 
 			const { gameData: newGameData, gameOver } = checkVictory(
-				tempResult.gameData
+				tempResult.gameData,
 			);
 
 			if (gameOver) {
@@ -129,7 +129,7 @@ export const performAction = (
 			if (pendingActions.length > 0) {
 				console.error(
 					"Unfinished pending actions some how",
-					JSON.stringify(pendingActions)
+					JSON.stringify(pendingActions),
 				);
 
 				pendingActions.splice(0, pendingActions.length);
@@ -138,7 +138,7 @@ export const performAction = (
 			const temp = getSupply(
 				gameData.gameState.publicState.common.supply,
 				gameData.gameState.secretState.common.deck,
-				gameData.gameSettings.supplyType
+				gameData.gameSettings.supplyType,
 			);
 
 			gameData.gameState.publicState.common.supply = temp.supply;
@@ -154,7 +154,7 @@ export const performAction = (
 
 					return accumulator;
 				},
-				{} as { [key: string]: number }
+				{} as { [key: string]: number },
 			);
 
 			let totalAdditions = 0;
