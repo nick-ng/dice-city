@@ -136,20 +136,29 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				</div>
 				<div>
 					{myState && turnPhase !== "end" && !myTurn && (
-						<div className="md:mx-1 xl:mx-4">
-							{turnEvents.length > 0 && (
-								<div className="py-1" key={turnEvents[turnEvents.length - 1]}>
-									<span className="bg-gray-100 dark:bg-gray-700 animate-attention-once-light dark:animate-attention-once-dark dark:even:bg-gray-700 px-2 py-1">
-										{replaceName(
-											players,
-											!!showNames,
-											options.playerId,
-											turnEvents[turnEvents.length - 1],
-										).replace(/id:\d+:/, "")}
-									</span>
-								</div>
-							)}
-							<div>
+						<div className="md:mx-1 xl:mx-4 flex flex-col items-start">
+							{options.turnEventSummaryCount > 0 &&
+								turnEvents.length > 0 &&
+								turnEvents
+									.slice(-options.turnEventSummaryCount)
+									.map((turnEvent) => {
+										return (
+											<div
+												className="py-1 dark:odd:bg-gray-700 odd:bg-gray-100"
+												key={turnEvent}
+											>
+												<span className="animate-attention-once-light dark:animate-attention-once-dark px-2 py-1 ">
+													{replaceName(
+														players,
+														!!showNames,
+														options.playerId,
+														turnEvent,
+													).replace(/id:\d+:/, "")}
+												</span>
+											</div>
+										);
+									})}
+							<div className="dark:odd:bg-gray-700 odd:bg-gray-100 px-2 py-1">
 								Waiting for{" "}
 								{getName(
 									activePlayerId,
