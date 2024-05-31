@@ -1,7 +1,7 @@
 import type { GameData, PlayerAction } from "~common/types/index.js";
 import { useEffect, useRef, useState } from "react";
 import { getPlayerOrderStartingFromPlayer } from "~common/other-stuff/browser-safe-stuff.js";
-import { getName } from "~front/utils/name-generator.js";
+import { getName, replaceName } from "~front/utils/name-generator.js";
 import { useOptions } from "~front/hooks/options-context.js";
 import Build from "~front/app/build/index.js";
 import City from "~front/app/city/index.js";
@@ -24,6 +24,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		activePlayerId,
 		supply,
 		turnPhase,
+		turnEvents,
 		turnOrder,
 		pendingActions,
 		diceRolls,
@@ -42,18 +43,18 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 		(accumulator, [playerId, playerState]) => {
 			accumulator[playerId] = Object.values(playerState.city.landmarks).reduce(
 				(p, c) => (c ? p + 1 : p),
-				0
+				0,
 			);
 
 			return accumulator;
 		},
-		{} as { [playerId: string]: number }
+		{} as { [playerId: string]: number },
 	);
 
 	const myLandmarkCount = landmarkCounts[options.playerId];
 
 	const winnerId = Object.entries(landmarkCounts).find(
-		(p) => p[1] === gameSettings.landmarks.length
+		(p) => p[1] === gameSettings.landmarks.length,
 	)?.[0];
 
 	const winner = players.find((p) => p.id === winnerId);
@@ -136,13 +137,27 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 				<div>
 					{myState && turnPhase !== "end" && !myTurn && (
 						<div className="md:mx-1 xl:mx-4">
-							Waiting for{" "}
-							{getName(
-								activePlayerId,
-								players.find((p) => p.id === activePlayerId)?.name,
-								showNames
-							)}{" "}
-							to finish their turn.
+							{turnEvents.length > 0 && (
+								<div className="py-1" key={turnEvents[turnEvents.length - 1]}>
+									<span className="bg-gray-100 dark:bg-gray-700 animate-attention-once-light dark:animate-attention-once-dark dark:even:bg-gray-700 px-2 py-1">
+										{replaceName(
+											players,
+											!!showNames,
+											options.playerId,
+											turnEvents[turnEvents.length - 1],
+										).replace(/id:\d+:/, "")}
+									</span>
+								</div>
+							)}
+							<div>
+								Waiting for{" "}
+								{getName(
+									activePlayerId,
+									players.find((p) => p.id === activePlayerId)?.name,
+									showNames,
+								)}{" "}
+								to finish their turn.
+							</div>
 						</div>
 					)}
 					<div className="md:mx-1 xl:mx-4">
@@ -153,7 +168,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 								{getPlayerOrderStartingFromPlayer(
 									turnOrder,
 									options.playerId,
-									false
+									false,
 								).map((opponentId) => {
 									const opponent = players.find((p) => p.id === opponentId);
 
@@ -250,7 +265,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 											...accumulator,
 											[landmark]: false,
 										}),
-										{}
+										{},
 									),
 									establishments: {},
 								}
@@ -265,7 +280,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 													buildingKey: e,
 												},
 											});
-									  }
+										}
 									: undefined
 							}
 							supply={supply}
@@ -285,7 +300,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 					{getPlayerOrderStartingFromPlayer(
 						turnOrder,
 						options.playerId,
-						true
+						true,
 					).map((opponentId) => {
 						if (opponentId === options.playerId) {
 							return null;
@@ -300,7 +315,7 @@ export default function Game({ gameData, sendViaWebSocket }: GameProps) {
 						const opponentName = players.find((p) => p.id === opponentId)?.name;
 
 						const landmarkCount = Object.values(
-							playerStates[opponentId].city.landmarks
+							playerStates[opponentId].city.landmarks,
 						).reduce((p, c) => (c ? p + 1 : p), 0);
 
 						return (

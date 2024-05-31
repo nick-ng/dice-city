@@ -62,6 +62,7 @@ const startingState: GameData["gameState"] = {
 			},
 		},
 		common: {
+			turn: 0,
 			activePlayerId: "a",
 			turnPhase: "before-roll",
 			diceRolls: [],
@@ -164,9 +165,7 @@ const startingState: GameData["gameState"] = {
 		},
 	},
 	secretState: {
-		common: {
-			deck: [],
-		},
+		common: { deck: [] },
 	},
 };
 

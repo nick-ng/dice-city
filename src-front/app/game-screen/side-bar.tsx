@@ -25,12 +25,12 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 				{getPlayerOrderStartingFromPlayer(
 					turnOrder,
 					options.playerId,
-					true
+					true,
 				).map((playerId) => {
 					const isOpponent = playerId !== options.playerId;
 					const player = players.find((p) => p.id === playerId);
 					const landmarkCount = Object.values(
-						playerStates[playerId].city.landmarks
+						playerStates[playerId].city.landmarks,
 					).reduce((p, c) => (c ? p + 1 : p), 0);
 					return (
 						<li
@@ -53,7 +53,7 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 									}
 
 									const detailEl = document.getElementById(
-										`${players[i].id}-city`
+										`${players[i].id}-city`,
 									);
 									if (detailEl) {
 										if (players[i].id === playerId) {
@@ -84,21 +84,26 @@ export default function SideBar({ gameData, options }: SideBarProps) {
 			<hr />
 			<details className="mb-2" open>
 				<summary className="text-xl">Turn Events</summary>
-				<ul className="ml-5 list-outside list-disc text-sm xl:text-base">
-					{[...turnEvents].map((event) => (
-						<li
+				<div
+					className={`flex text-sm xl:text-base ${options.newestEventFirst ? "flex-col-reverse" : "flex-col"}`}
+				>
+					{[...turnEvents].map((event, i) => (
+						<div
 							key={`${event}`}
-							className="animate-attention-once-light px-0.5 even:bg-gray-100 dark:animate-attention-once-dark dark:even:bg-gray-700"
+							className="px-2 animate-attention-once-light even:bg-gray-100 dark:animate-attention-once-dark dark:even:bg-gray-700"
+							style={{
+								order: i,
+							}}
 						>
 							{replaceName(
 								players,
 								!!showNames,
 								options.playerId,
-								event.replace(/id:\d+:/, "")
+								event.replace(/id:\d+:/, ""),
 							)}
-						</li>
+						</div>
 					))}
-				</ul>
+				</div>
 			</details>
 			<hr />
 			<EstablishmentReference open={options.alwaysShowEstablishmentList} />

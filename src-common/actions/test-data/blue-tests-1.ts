@@ -72,6 +72,7 @@ const publicPlayersState: GameData["gameState"]["publicState"]["players"] = {
 };
 
 const publicCommonState: GameData["gameState"]["publicState"]["common"] = {
+	turn: 0,
 	activePlayerId: "84c45332-4911-4823-839e-996bad56ba61",
 	turnPhase: "after-roll",
 	diceRolls: [1],
@@ -151,16 +152,14 @@ const makeStartingData = (diceRolls: number[] = [1]): GameData => {
 					...publicCommonState,
 					turnEvents: [
 						`%84c45332-4911-4823-839e-996bad56ba61% rolled a ${diceRolls.reduce(
-							(prev, curr) => prev + curr
+							(prev, curr) => prev + curr,
 						)}${diceRolls.length > 1 ? ` (${diceRolls.join(", ")})` : ""}`,
 					],
 					diceRolls,
 				},
 			},
 			secretState: {
-				common: {
-					deck: [],
-				},
+				common: { deck: [] },
 			},
 		},
 		lastActionId: "1682787615-0",

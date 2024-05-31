@@ -93,6 +93,18 @@ export default function Options() {
 							/>
 							&nbsp; Always Show Instructions
 						</label>
+						<label className="block">
+							<input
+								type="checkbox"
+								checked={options.newestEventFirst}
+								onChange={() => {
+									setOptions({
+										newestEventFirst: !options.newestEventFirst,
+									});
+								}}
+							/>
+							&nbsp; Newest Turn Event On Top
+						</label>
 					</Fieldset>
 					<Fieldset legend="Volume">
 						<table className="w-full">
@@ -116,7 +128,7 @@ export default function Options() {
 												}}
 												onMouseUp={(e) => {
 													diceRollSound.volume = parseFloat(
-														e.currentTarget.value
+														e.currentTarget.value,
 													);
 													diceRollSound.play();
 												}}
@@ -143,7 +155,7 @@ export default function Options() {
 												}}
 												onMouseUp={(e) => {
 													yourTurnSound.volume = parseFloat(
-														e.currentTarget.value
+														e.currentTarget.value,
 													);
 													yourTurnSound.play();
 												}}

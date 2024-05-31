@@ -34,7 +34,7 @@ export const establishmentSchema = landmarkSchema.merge(establishmentOnly);
 
 export const establishmentListSchema = z.record(
 	z.string(),
-	z.array(z.string())
+	z.array(z.string()),
 );
 
 export const supplySchema = z.record(z.string(), z.array(z.string()));
@@ -59,6 +59,7 @@ export const playerSecretsSchema = z.object({
 
 const publicStateSchema = z.object({
 	common: z.object({
+		turn: z.number(),
 		supply: establishmentListSchema,
 		turnOrder: z.array(z.string()),
 		activePlayerId: z.string(),
@@ -79,13 +80,13 @@ const publicStateSchema = z.object({
 					"radio-tower",
 					"harbour",
 				]),
-			})
+			}),
 		),
 		autoActions: z.array(
 			z.object({
 				playerId: z.string(),
 				action: z.enum(["amusement-park"]),
-			})
+			}),
 		),
 		diceRolls: z.array(z.number()),
 		harbourExtra: z.number(),
@@ -98,7 +99,7 @@ const publicStateSchema = z.object({
 			playerId: z.string(),
 			city: citySchema,
 			money: z.number(),
-		})
+		}),
 	),
 });
 
@@ -148,5 +149,5 @@ export const gameListSchema = z.array(
 	z.object({
 		gameId: z.string(),
 		playerCount: z.number(),
-	})
+	}),
 );

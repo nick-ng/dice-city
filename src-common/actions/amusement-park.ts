@@ -37,7 +37,14 @@ export const amusementParkTurnHandler = (gameData: GameData): GameData => {
 	gameData.gameState.publicState.common.turnPhase = "before-roll";
 
 	const amusementParkPendingActionIndex = autoActions.findIndex(
-		(p) => p.action === "amusement-park" && p.playerId === activePlayerId
+		(p) => p.action === "amusement-park" && p.playerId === activePlayerId,
+	);
+
+	gameData.gameState.publicState.common.turn =
+		gameData.gameState.publicState.common.turn + 1;
+
+	gameData.gameState.publicState.common.turnEvents.push(
+		`id:${Date.now()}:Turn ${gameData.gameState.publicState.common.turn}`,
 	);
 
 	if (amusementParkPendingActionIndex < 0) {
@@ -47,7 +54,7 @@ export const amusementParkTurnHandler = (gameData: GameData): GameData => {
 			turnOrder[nextPlayerIndex];
 
 		gameData.gameState.publicState.common.turnEvents.push(
-			`id:${Date.now()}:It is %${turnOrder[nextPlayerIndex]}%'s turn`
+			`id:${Date.now()}:It is %${turnOrder[nextPlayerIndex]}%'s turn`,
 		);
 	} else {
 		autoActions.splice(amusementParkPendingActionIndex, 1);
@@ -55,7 +62,7 @@ export const amusementParkTurnHandler = (gameData: GameData): GameData => {
 		gameData.gameState.publicState.common.turnEvents.push(
 			`id:${Date.now()}:%${activePlayerId}% gets another turn because of their ${
 				landmarkReference.amusementPark.display
-			}`
+			}`,
 		);
 	}
 
