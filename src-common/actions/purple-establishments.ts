@@ -8,7 +8,7 @@ import {
 import { countTagsInEstablishments } from "./common.js";
 
 export const purpleEstablishmentsAction = (
-	gameData: GameData
+	gameData: GameData,
 ): { gameData: GameData; error?: string } => {
 	const { gameState } = gameData;
 	const { publicState } = gameState;
@@ -67,7 +67,7 @@ export const purpleEstablishmentsAction = (
 					const opponentIds = getPlayerOrderStartingFromPlayer(
 						turnOrder,
 						activePlayerId,
-						false
+						false,
 					);
 
 					for (let i = 0; i < opponentIds.length; i++) {
@@ -82,7 +82,7 @@ export const purpleEstablishmentsAction = (
 									establishmentCount === 1
 										? establishment.display
 										: establishment.pluralDisplay
-								}`
+								}`,
 							);
 						} else if (opponentState.money < moneyPerOpponent) {
 							trimTurnEvents(
@@ -93,7 +93,7 @@ export const purpleEstablishmentsAction = (
 									establishmentCount === 1
 										? establishment.display
 										: establishment.pluralDisplay
-								}`
+								}`,
 							);
 
 							activePlayerState.money += opponentState.money;
@@ -107,7 +107,7 @@ export const purpleEstablishmentsAction = (
 									establishmentCount === 1
 										? establishment.display
 										: establishment.pluralDisplay
-								}`
+								}`,
 							);
 
 							activePlayerState.money += moneyPerOpponent;
@@ -141,7 +141,7 @@ export const purpleEstablishmentsAction = (
 					const opponentIds = getPlayerOrderStartingFromPlayer(
 						turnOrder,
 						activePlayerId,
-						false
+						false,
 					);
 
 					for (let i = 0; i < opponentIds.length; i++) {
@@ -150,11 +150,11 @@ export const purpleEstablishmentsAction = (
 
 						const cupCount = countTagsInEstablishments(
 							opponentCity.establishments,
-							"cup"
+							"cup",
 						);
 						const breadCount = countTagsInEstablishments(
 							opponentCity.establishments,
-							"bread"
+							"bread",
 						);
 
 						const moneyPerOpponent = cupCount + breadCount;
@@ -168,7 +168,7 @@ export const purpleEstablishmentsAction = (
 									establishmentCount === 1
 										? establishment.display
 										: establishment.pluralDisplay
-								}`
+								}`,
 							);
 						} else if (opponentState.money < moneyPerOpponent) {
 							trimTurnEvents(
@@ -179,7 +179,7 @@ export const purpleEstablishmentsAction = (
 									establishmentCount === 1
 										? establishment.display
 										: establishment.pluralDisplay
-								}`
+								}`,
 							);
 
 							activePlayerState.money += opponentState.money;
@@ -193,7 +193,7 @@ export const purpleEstablishmentsAction = (
 									establishmentCount === 1
 										? establishment.display
 										: establishment.pluralDisplay
-								}`
+								}`,
 							);
 
 							activePlayerState.money += moneyPerOpponent;
@@ -207,7 +207,7 @@ export const purpleEstablishmentsAction = (
 					const opponentIds = getPlayerOrderStartingFromPlayer(
 						turnOrder,
 						activePlayerId,
-						false
+						false,
 					);
 
 					for (let i = 0; i < opponentIds.length; i++) {
@@ -215,7 +215,7 @@ export const purpleEstablishmentsAction = (
 
 						const moneyPerOpponent = Math.floor(opponentState.money / 2);
 
-						if (moneyPerOpponent === 0) {
+						if (opponentState.money < 10 || moneyPerOpponent === 0) {
 							trimTurnEvents(
 								turnEvents,
 								`%${activePlayerId}% couldn't collect any coins from %${
@@ -224,7 +224,7 @@ export const purpleEstablishmentsAction = (
 									establishmentCount === 1
 										? establishment.display
 										: establishment.pluralDisplay
-								}`
+								}`,
 							);
 						} else {
 							trimTurnEvents(
@@ -235,7 +235,7 @@ export const purpleEstablishmentsAction = (
 									establishmentCount === 1
 										? establishment.display
 										: establishment.pluralDisplay
-								}`
+								}`,
 							);
 
 							activePlayerState.money += moneyPerOpponent;
@@ -249,7 +249,7 @@ export const purpleEstablishmentsAction = (
 					console.error(
 						"Unknown purple establishment",
 						establishmentKey,
-						JSON.stringify(establishment)
+						JSON.stringify(establishment),
 					);
 
 					return;
@@ -269,7 +269,7 @@ export const purpleEstablishmentsAction = (
 
 		trimTurnEvents(
 			turnEvents,
-			`%${activePlayerId}% got 1 coin from their City Hall`
+			`%${activePlayerId}% got 1 coin from their City Hall`,
 		);
 	}
 

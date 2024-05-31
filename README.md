@@ -53,8 +53,8 @@ Create a `/spec` directory next to the files you want to test then create a file
 - src-front\app\game-screen\lobby.tsx:26: @todo(nick-ng): kick a player from your game if you are the host
 - src-front\app\game-screen\lobby.tsx:27: @todo(nick-ng): ready check?
 - src-front\app\game-screen\game.tsx:98: @todo(nick-ng): show if an opponent is deciding who to use their tv station etc. on
-- src-back\worker.ts:1: @todo(nick-ng): put some of these things in a class?
-- src-back\worker.ts:131: @todo(nick-ng): check for "orphaned" games when starting up.
 - src-common\other-stuff\game-stuff.ts:5: @todo(nick-ng): time limit on turns
 - src-common\actions\business-centre.ts:7: @todo(nick-ng): show cards when you hover the buttons.
+- src-back\worker.ts:1: @todo(nick-ng): put some of these things in a class?
+- src-back\worker.ts:131: @todo(nick-ng): check for "orphaned" games when starting up.
 - src-common\actions\roll-dice.ts:6: @todo(nick-ng): make dice rolls deterministic again?
