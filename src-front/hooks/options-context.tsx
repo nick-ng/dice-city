@@ -33,6 +33,7 @@ export interface Options {
 	diceRollVolume: number;
 	yourTurnVolume: number;
 	newestEventFirst: boolean;
+	turnEventSummaryCount: number;
 }
 
 export const defaultOptions: Options = {
@@ -46,6 +47,7 @@ export const defaultOptions: Options = {
 	diceRollVolume: 0,
 	yourTurnVolume: 0,
 	newestEventFirst: false,
+	turnEventSummaryCount: 2,
 };
 
 const OptionsContext = createContext<{

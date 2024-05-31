@@ -105,6 +105,30 @@ export default function Options() {
 							/>
 							&nbsp; Newest Turn Event On Top
 						</label>
+						<label className="flex items-center gap-4">
+							<div>
+								<span className="font-mono">
+									{options.turnEventSummaryCount}
+								</span>
+								<span>&nbsp;Turn Event Summary Items</span>
+							</div>
+							<input
+								className="max-w-24"
+								type="range"
+								min={0}
+								max={5}
+								step={1}
+								value={options.turnEventSummaryCount}
+								onChange={(event) => {
+									setOptions({
+										turnEventSummaryCount: parseInt(
+											event.currentTarget.value,
+											10,
+										),
+									});
+								}}
+							/>
+						</label>
 					</Fieldset>
 					<Fieldset legend="Volume">
 						<table className="w-full">
