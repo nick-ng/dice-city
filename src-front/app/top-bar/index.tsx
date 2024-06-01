@@ -4,7 +4,6 @@ import { useOptions } from "~front/hooks/options-context.js";
 
 import ItemLayout from "./item-layout.js";
 import NameChanger from "./name-changer.js";
-import TheOdds from "./the-odds.js";
 import Options from "./options/index.js";
 
 export default function TopBar() {
@@ -15,8 +14,6 @@ export default function TopBar() {
 			<div className="basis-1" />
 			<NameChanger />
 			{typeof options.ping === "number" && <div>Ping: {options.ping} ms</div>}
-			<div className="grow" />
-			<TheOdds />
 			<div className="grow" />
 			<Options />
 			<ItemLayout>

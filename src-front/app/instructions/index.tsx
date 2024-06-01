@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { replaceTags } from "../building/utils.js";
 
 interface InstructionsProps {
@@ -10,6 +11,9 @@ export default function Instructions({ showStory, open }: InstructionsProps) {
 		<div className={"max-w-prose text-sm xl:text-base"}>
 			<details open={open}>
 				<summary className="text-lg xl:text-xl">Instructions</summary>
+				<Link to="/probability" target="_blank">
+					Dice Roll Probabilities
+				</Link>
 				{showStory && (
 					<p>
 						You are the mayor of a city. Well, it's not much of a city right
