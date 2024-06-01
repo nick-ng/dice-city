@@ -5,10 +5,10 @@ import type { Options } from "~front/hooks/options-context.js";
 
 import { useOptions } from "~front/hooks/options-context.js";
 
-import Container from "~front/layout/container.js";
 import Loading from "./loading/index.js";
 import TopBar from "./top-bar/index.js";
 import NameGenerator from "./name-generator.js";
+import TheOdds from "./the-odds.js";
 
 const Home = lazy(() => import("./home/index.js"));
 const DevFrontEnd = lazy(() => import("./dev-front-end/index.js"));
@@ -35,7 +35,7 @@ export default function App() {
 
 	useEffect(() => {
 		const prefersColorSchemeDark = window.matchMedia(
-			"(prefers-color-scheme: dark)"
+			"(prefers-color-scheme: dark)",
 		);
 
 		const toggleCallBack = () => {
@@ -59,6 +59,7 @@ export default function App() {
 						<Route path="/dev/*" element={<DevFrontEnd />} />
 						<Route path="/game/:id" element={<GameScreen />} />
 						<Route path="/name-generator" element={<NameGenerator />} />
+						<Route path="/probability" element={<TheOdds />} />
 					</Routes>
 				</div>
 			</div>
