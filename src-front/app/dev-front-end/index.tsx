@@ -35,11 +35,6 @@ const components: {
 		path: "state-compare",
 		Element: lazy(() => import("./state-compare/index.js")),
 	},
-	{
-		name: "Probability",
-		path: "probability",
-		Element: lazy(() => import("../top-bar/the-odds.js")),
-	},
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 const DARK_MODE_STORE_KEY = "DARK_MODE_STORE_KEY";
