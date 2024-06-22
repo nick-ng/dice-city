@@ -65,7 +65,7 @@ export const getClient = (name = "default"): RedisClient2 => {
 		console.info(
 			`${new Date().toISOString()}: ${name} Connected. ID: ${
 				newClient.id
-			}. Took ${Date.now() - tic} ms to connect.`
+			}. Took ${Date.now() - tic} ms to connect.`,
 		);
 	});
 
@@ -138,7 +138,7 @@ const listen = async () => {
 					id: streams[streamKey]?.lastId || "$",
 				};
 			}),
-			{ BLOCK: 10000, COUNT: 1 }
+			{ BLOCK: 10000, COUNT: 1 },
 		);
 
 		if (res && res.length > 0) {
