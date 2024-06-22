@@ -1,3 +1,5 @@
+import type { GameData } from "~common/types/index.js";
+
 // @todo(nick-ng): put some of these things in a class?
 import dotenv from "dotenv";
 dotenv.config();
@@ -8,8 +10,6 @@ import { startGameStreamObjectSchema } from "~common/types/schemas/message.js";
 import { playerActionsSchema } from "~common/types/schemas/actions.js";
 import { performAction } from "~common/actions/index.js";
 import { jsonSafeParseS } from "~common/utils/index.js";
-
-import type { GameData } from "~common/types/index.js";
 
 import {
 	MAX_GAME_AGE_SECONDS,
@@ -24,6 +24,7 @@ import {
 import { gameDataSchema } from "~common/types/schemas/game.js";
 
 const INSTANCE_ID = randomUUID();
+const MAX_RANDOM_TIMEOUT_MS = 15;
 
 const sleep = (ms: number) =>
 	new Promise<void>((resolve) => {
@@ -85,7 +86,7 @@ addXRead({
 			messageCallback: async (redisStreamData) => {
 				const res = jsonSafeParseS(
 					playerActionsSchema,
-					redisStreamData.message.data
+					redisStreamData.message.data,
 				);
 
 				if (!res.success) {
@@ -93,34 +94,37 @@ addXRead({
 					return;
 				}
 
-				const error = performAction(games[gameId].gameData, res.data).error;
+				// @todo(nick-ng): check if this fixes the duplicate events issue. i.e. player1 rolled the dice twice
+				setTimeout(() => {
+					const error = performAction(games[gameId].gameData, res.data).error;
 
-				games[gameId].gameData.lastActionId = redisStreamData.id;
+					games[gameId].gameData.lastActionId = redisStreamData.id;
 
-				if (error) {
-					console.debug(
-						"redis stream message data",
-						redisStreamData.message.data
-					);
-					console.error("error when performing action", error);
-					return;
-				}
-
-				xAddExpire(
-					getGameStateKey(gameId),
-					"*",
-					{
-						data: JSON.stringify(games[gameId].gameData),
-					},
-					{
-						TRIM: {
-							strategy: "MAXLEN",
-							strategyModifier: "~",
-							threshold: 10,
-							limit: 3,
-						},
+					if (error) {
+						console.debug(
+							"redis stream message data",
+							redisStreamData.message.data,
+						);
+						console.error("error when performing action", error);
+						return;
 					}
-				);
+
+					xAddExpire(
+						getGameStateKey(gameId),
+						"*",
+						{
+							data: JSON.stringify(games[gameId].gameData),
+						},
+						{
+							TRIM: {
+								strategy: "MAXLEN",
+								strategyModifier: "~",
+								threshold: 10,
+								limit: 3,
+							},
+						},
+					);
+				}, MAX_RANDOM_TIMEOUT_MS * Math.random());
 			},
 		});
 
@@ -160,5 +164,5 @@ console.info(
 	"Worker",
 	INSTANCE_ID,
 	process.env.NODE_ENV,
-	process.env.TS_NODE_PROJECT
+	process.env.TS_NODE_PROJECT,
 );
