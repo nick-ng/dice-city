@@ -1,7 +1,7 @@
-FROM node:22-alpine as dev
+FROM node:23-alpine as dev
 WORKDIR /usr/src/app
 
-FROM node:22-alpine as prod
+FROM node:23-alpine as prod
 
 ARG API_ORIGIN=http://localhost:3232
 ENV NODE_ENV=production
